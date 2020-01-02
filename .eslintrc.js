@@ -6,5 +6,9 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
+        'prettier/@typescript-eslint',
     ],
+    rules: {
+        '@typescript-eslint/no-use-before-define': 'off',
+    },
 };
