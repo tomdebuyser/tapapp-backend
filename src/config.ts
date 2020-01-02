@@ -25,6 +25,14 @@ if (environmentsWithEnvFiles.includes(environment)) {
 }
 
 class Config {
+    static get sentryDsn(): string {
+        return process.env.SENTRY_DSN as string;
+    }
+
+    static get environment(): string {
+        return environment as string;
+    }
+
     static get port(): string {
         return process.env.PORT as string;
     }
@@ -35,6 +43,10 @@ class Config {
 
     static get projectName(): string {
         return process.env.PROJECT_NAME as string;
+    }
+
+    static get rateLimit(): number {
+        return parseInt(process.env.REQUESTS_PER_MINUTE as string, 10);
     }
 }
 
