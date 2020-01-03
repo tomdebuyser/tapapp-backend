@@ -1,5 +1,3 @@
-import { mergeDeepLeft, any } from 'ramda';
-import { DeepPartial } from 'typeorm';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
@@ -15,8 +13,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 
 import { UsersService } from './users.service';
-import { UserRepository, User } from '../database';
+import { UserRepository } from '../database';
 import { EmailAlreadyInUse } from './errors';
+import { createTestUser } from '../util/testing';
 
 describe('UsersService', () => {
     let userService: UsersService;
@@ -49,8 +48,8 @@ describe('UsersService', () => {
 
     describe('createUser', () => {
         it('should create a user with email and reset token', async () => {
-            const email = 'test@mail.com';
-            const token = 'atoken';
+            const email = faker.internet.email();
+            const token = faker.random.alphaNumeric(10);
 
             when(userRepository.findOne(anything())).thenResolve(null);
             when(jwtService.sign(anything(), anything())).thenReturn(token);
@@ -75,10 +74,3 @@ describe('UsersService', () => {
         });
     });
 });
-
-function createTestUser(overrides?: DeepPartial<User>): User {
-    const user = new User();
-    user.email = faker.internet.email();
-
-    return mergeDeepLeft(overrides, user) as User;
-}
