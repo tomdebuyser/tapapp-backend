@@ -20,8 +20,6 @@ if (environmentsWithEnvFiles.includes(environment)) {
         local: join(__dirname, '../.env.local'),
     };
 
-    console.log(__dirname);
-
     config({
         path: envFiles[environment] || envFiles.local,
         example: envFiles.example,
