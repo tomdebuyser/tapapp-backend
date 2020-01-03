@@ -12,6 +12,9 @@ export class User extends BaseEntity {
     @Column({ unique: true })
     email: string;
 
+    /**
+     * Defaults to REGISTERING when not given.
+     */
     @Column({ enum: UserState, default: UserState.Registering, type: 'enum' })
     state: UserState;
 
@@ -21,15 +24,6 @@ export class User extends BaseEntity {
     @Column({ nullable: true })
     resetToken?: string;
 
-    /**
-     * Token used to complete the registration flow, allowing an account to select a password.
-     */
-    @Column({ nullable: true })
-    registerToken?: string;
-
-    /**
-     * Email of the admin that initially created a given account.
-     */
-    @Column()
-    createdBy: string;
+    // TODO: Add user role
+    // TODO: Add createdBy field to show which admin invited the user
 }
