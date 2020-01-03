@@ -55,11 +55,6 @@ pipelines:
       - <<: *build
       - <<: *lint
       - <<: *runTests
-      - step:
-        name: Deploy to development temp
-        deployment: test
-        script:
-          - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_DEVELOP.git HEAD:master
  branches:
     develop:
       - <<: *installDependencies
