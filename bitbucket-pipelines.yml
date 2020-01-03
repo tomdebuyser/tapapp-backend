@@ -1,0 +1,79 @@
+image: node:12
+
+clone:
+  depth: full
+
+definitions:
+  services:
+    postgres:
+      image: sameersbn/postgresql:latest
+      environment:
+        DB_USER: developer
+        DB_PASS: developer
+        DB_NAME: silvernext_api_test
+        DB_EXTENSION: '"uuid-ossp"'
+
+installDependencies: &installDependencies
+  step:
+    name: Install node modules
+    script:
+      - npm install
+    caches:
+      - node
+
+build: &build
+  - step:
+      name: Build project
+      caches:
+        - node
+      script:
+        - npm run build
+
+lint: &lint
+  step:
+    name: Check linting issues
+    caches:
+      - node
+    script:
+      - npm run lint
+
+runTests: &runTests
+  - parallel:
+    - step:
+        name: Run unit tests
+        caches:
+          - node
+        script:
+          - npm run test
+        services:
+          - postgres
+
+pipelines:
+ pull-requests:
+  '**': #this runs as default for any branch not elsewhere defined
+      - <<: *installDependencies
+      - <<: *build
+      - <<: *lint
+      - <<: *runTests
+ branches:
+    develop:
+      - <<: *installDependencies
+      - <<: *build
+      - <<: *lint
+      - <<: *runTests
+      - step:
+          name: Deploy to development
+          deployment: test
+          script:
+            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_DEVELOP.git HEAD:master
+    release/**:
+      - <<: *installDependencies
+      - <<: *build
+      - <<: *lint
+      - <<: *runTests
+      - step:
+          name: Deploy to staging
+          deployment: staging
+          trigger: manual
+          script:
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_STAGING.git HEAD:master
