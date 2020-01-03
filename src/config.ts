@@ -1,5 +1,7 @@
 import { config } from 'dotenv-safe';
 import { join } from 'path';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
 const environment = process.env.NODE_ENV;
 function assertNodeEnv(env: string | undefined): asserts env {
@@ -47,6 +49,16 @@ class Config {
 
     static get rateLimit(): number {
         return parseInt(process.env.REQUESTS_PER_MINUTE as string, 10);
+    }
+
+    static get database(): TypeOrmModuleOptions {
+        return {
+            type: 'postgres',
+            url: process.env.DATABASE_URL,
+            synchronize: false,
+            keepConnectionAlive: true,
+            logging: process.env.DATABASE_LOGGING as LoggerOptions,
+        };
     }
 }
 

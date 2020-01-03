@@ -21,12 +21,22 @@
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "docker:start": "docker-compose -f ./docker/docker-compose.yml up -d",
-        "docker:stop": "docker-compose -f ./docker/docker-compose.yml stop"
+        "docker:stop": "docker-compose -f ./docker/docker-compose.yml stop",
+        "migrate": "yarn typeorm migration:run -f ./data/ormconfig-cli.js",
+        "migrate:revert": "yarn typeorm migration:revert -f ./data/ormconfig-cli.js",
+        "migration:generate": "yarn typeorm migration:generate -f ./data/ormconfig-cli.js",
+        "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+        "db:drop": "yarn typeorm schema:drop -f ./data/ormconfig-cli.js",
+        "db:rollup": "yarn db:drop && yarn run migrate",
+        "seed": "yarn run typeorm migration:run -f ./data/ormconfig-cli.js -c seeds",
+        "seed:generate": "yarn run typeorm migration:create -f ./data/ormconfig-cli.js -c seeds",
+        "seed:revert": "yarn run typeorm migration:revert -f ./data/ormconfig-cli.js -c seeds"
     },
     "dependencies": {
         "@nestjs/common": "^6.7.2",
         "@nestjs/core": "^6.7.2",
         "@nestjs/platform-express": "^6.7.2",
+        "@nestjs/typeorm": "^6.2.0",
         "@sentry/node": "^5.10.2",
         "class-transformer": "^0.2.3",
         "class-validator": "^0.11.0",
@@ -35,9 +45,11 @@
         "express-rate-limit": "^5.0.0",
         "express-rate-limiter": "^1.3.1",
         "helmet": "^3.21.2",
+        "pg": "^7.17.0",
         "reflect-metadata": "^0.1.13",
         "rimraf": "^3.0.0",
-        "rxjs": "^6.5.3"
+        "rxjs": "^6.5.3",
+        "typeorm": "^0.2.22"
     },
     "devDependencies": {
         "@nestjs/cli": "^6.9.0",
