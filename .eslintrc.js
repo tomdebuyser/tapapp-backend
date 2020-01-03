@@ -10,6 +10,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/no-use-before-define': 'off',
+        '@typescript-eslint/interface-name-prefix': 'off',
     },
     env: {
         node: true,

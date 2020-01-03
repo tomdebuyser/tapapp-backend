@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-// import {} from './repositories';
-// import {} from './entities';
+import { UserRepository } from './repositories';
+import { User } from './entities';
 import { Config } from '../config';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
             ...Config.database,
-            entities: [],
+            entities: [User],
         }),
-        TypeOrmModule.forFeature([]),
+        TypeOrmModule.forFeature([UserRepository]),
     ],
     exports: [TypeOrmModule],
 })

@@ -26,6 +26,11 @@ if (environmentsWithEnvFiles.includes(environment)) {
     });
 }
 
+interface IJwtOptions {
+    secret: string;
+    expiresIn: string;
+}
+
 class Config {
     static get sentryDsn(): string {
         return process.env.SENTRY_DSN as string;
@@ -58,6 +63,13 @@ class Config {
             synchronize: false,
             keepConnectionAlive: true,
             logging: process.env.DATABASE_LOGGING as LoggerOptions,
+        };
+    }
+
+    static get jwt(): IJwtOptions {
+        return {
+            secret: process.env.JWT_SECRET as string,
+            expiresIn: process.env.JWT_EXPIRATION_TIME as string,
         };
     }
 }
