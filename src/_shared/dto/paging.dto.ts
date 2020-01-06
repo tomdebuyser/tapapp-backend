@@ -5,9 +5,10 @@ import {
     IsString,
     IsEnum,
 } from 'class-validator';
-import { SortDirection } from '../constants';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+
+import { SortDirection } from '../constants';
 
 export class PagingQuery {
     @ApiProperty({ format: 'integer', required: false })

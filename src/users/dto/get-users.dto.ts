@@ -3,7 +3,6 @@ import { Type } from 'class-transformer';
 
 import { PagingQuery, PagingMeta } from '../../_shared/dto';
 import { UserState } from '../../_shared/constants';
-import { ApiExtraModels } from '@nestjs/swagger';
 
 export enum UsersSortColumns {
     Email = 'email',
@@ -12,7 +11,6 @@ export enum UsersSortColumns {
     UpdatedAt = 'updatedAt',
 }
 
-@ApiExtraModels(PagingQuery)
 export class GetUsersRequestQuery extends PagingQuery {
     @IsOptional()
     @IsEnum(UsersSortColumns)
