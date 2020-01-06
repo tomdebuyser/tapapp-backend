@@ -45,7 +45,6 @@ describe('UsersQueries', () => {
             const result = await usersQueries.getUsers({
                 search: 'nonsensicaljibberish',
             });
-
             expect(result).toMatchSnapshot();
         });
     });
