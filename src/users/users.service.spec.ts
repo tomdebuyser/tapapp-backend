@@ -15,7 +15,7 @@ import * as faker from 'faker';
 import { UsersService } from './users.service';
 import { UserRepository } from '../database';
 import { EmailAlreadyInUse } from './errors';
-import { createTestUser } from '../util/testing';
+import { createTestUser } from '../_util/testing';
 
 describe('UsersService', () => {
     let userService: UsersService;
