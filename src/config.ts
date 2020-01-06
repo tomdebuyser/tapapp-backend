@@ -12,7 +12,7 @@ function assertNodeEnv(env: string | undefined): asserts env {
 
 assertNodeEnv(environment);
 
-const environmentsWithEnvFiles = ['local', 'testing'];
+const environmentsWithEnvFiles = ['local', 'test'];
 if (environmentsWithEnvFiles.includes(environment)) {
     const envFiles = {
         example: join(__dirname, '../.env.example'),

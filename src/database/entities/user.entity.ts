@@ -1,11 +1,7 @@
 import { Entity, Column } from 'typeorm';
 
 import { BaseEntity } from './base.entity';
-
-enum UserState {
-    Registering = 'REGISTERING',
-    Active = 'ACTIVE',
-}
+import { UserState } from '../../_shared/constants';
 
 @Entity()
 export class User extends BaseEntity {

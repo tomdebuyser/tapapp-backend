@@ -27,7 +27,7 @@ build: &build
       caches:
         - node
       script:
-        - npm run build
+        - yarn build
 
 lint: &lint
   step:
@@ -35,7 +35,7 @@ lint: &lint
     caches:
       - node
     script:
-      - npm run lint
+      - yarn lint
 
 runTests: &runTests
   - parallel:
@@ -44,7 +44,9 @@ runTests: &runTests
         caches:
           - node
         script:
-          - npm run test
+          - yarn migrate
+          - yarn seed
+          - yarn test
         services:
           - postgres
 

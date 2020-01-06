@@ -17,6 +17,8 @@ const needsErrorLogging =
 async function bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
 
+    app.setGlobalPrefix('api');
+
     if (needsErrorLogging) {
         addSentryInit(app);
     }
