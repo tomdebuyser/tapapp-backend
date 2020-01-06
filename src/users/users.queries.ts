@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { mergeDeepLeft } from 'ramda';
+
 import {
     GetUsersRequestQuery,
     GetUsersResponse,
@@ -6,7 +8,6 @@ import {
 } from './dto';
 import { UserRepository } from '../database';
 import { SortDirection } from '../_shared/constants';
-import { mergeDeepLeft } from 'ramda';
 
 @Injectable()
 export class UsersQueries {

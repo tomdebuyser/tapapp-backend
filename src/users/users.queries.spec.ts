@@ -1,9 +1,52 @@
+import { Test } from '@nestjs/testing';
+
+import { UsersQueries } from './users.queries';
+import { DatabaseModule, UserRepository } from '../database';
+import { GetUsersRequestQuery, UsersSortColumns } from './dto';
+import { SortDirection } from '../_shared/constants';
+
 describe('UsersQueries', () => {
-    beforeAll(() => {});
+    let userRepositories: UserRepository;
+    let usersQueries: UsersQueries;
+
+    beforeAll(async () => {
+        const module = await Test.createTestingModule({
+            imports: [DatabaseModule],
+            providers: [UsersQueries],
+        }).compile();
+
+        usersQueries = module.get(UsersQueries);
+        userRepositories = module.get(UserRepository);
+    });
+
+    afterAll(() => {
+        userRepositories.manager.connection.close();
+    });
 
     describe('getUsers', () => {
-        it('should return a paged list of users', () => {});
+        const testQueries: GetUsersRequestQuery[] = [
+            {},
+            { skip: 2, take: 2 },
+            { search: 'user1' },
+            {
+                sortBy: UsersSortColumns.CreatedAt,
+                sortDirection: SortDirection.Ascending,
+            },
+        ];
 
-        it('should return an empty list if no users found', () => {});
+        testQueries.forEach((query, index) => {
+            it(`should return a paged list of users: #${index}`, async () => {
+                const result = await usersQueries.getUsers(query);
+                expect(result).toMatchSnapshot();
+            });
+        });
+
+        it('should return an empty list if no users found', async () => {
+            const result = await usersQueries.getUsers({
+                search: 'nonsensicaljibberish',
+            });
+
+            expect(result).toMatchSnapshot();
+        });
     });
 });
