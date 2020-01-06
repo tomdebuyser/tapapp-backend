@@ -6,7 +6,7 @@ import { GetUsersRequestQuery, UsersSortColumns } from './dto';
 import { SortDirection } from '../_shared/constants';
 
 describe('UsersQueries', () => {
-    let userRepositories: UserRepository;
+    let userRepository: UserRepository;
     let usersQueries: UsersQueries;
 
     beforeAll(async () => {
@@ -16,11 +16,11 @@ describe('UsersQueries', () => {
         }).compile();
 
         usersQueries = module.get(UsersQueries);
-        userRepositories = module.get(UserRepository);
+        userRepository = module.get(UserRepository);
     });
 
     afterAll(() => {
-        userRepositories.manager.connection.close();
+        userRepository.manager.connection.close();
     });
 
     describe('getUsers', () => {
