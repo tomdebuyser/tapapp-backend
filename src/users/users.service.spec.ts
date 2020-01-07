@@ -18,7 +18,7 @@ import { EmailAlreadyInUse } from './errors';
 import { createTestUser } from '../_util/testing';
 
 describe('UsersService', () => {
-    let userService: UsersService;
+    let usersService: UsersService;
 
     const userRepository = mock(UserRepository);
     const jwtService = mock(JwtService);
@@ -38,7 +38,7 @@ describe('UsersService', () => {
             ],
         }).compile();
 
-        userService = module.get(UsersService);
+        usersService = module.get(UsersService);
     });
 
     afterEach(() => {
@@ -49,16 +49,19 @@ describe('UsersService', () => {
     describe('createUser', () => {
         it('should create a user with email and reset token', async () => {
             const email = faker.internet.email();
-            const token = faker.random.alphaNumeric(10);
+            const firstName = faker.name.firstName();
+            const resetToken = faker.random.alphaNumeric(10);
 
             when(userRepository.findOne(anything())).thenResolve(null);
-            when(jwtService.sign(anything(), anything())).thenReturn(token);
+            when(jwtService.sign(anything(), anything())).thenReturn(
+                resetToken,
+            );
 
-            await userService.createUser({ email });
+            await usersService.createUser({ email, firstName });
 
             verify(
                 userRepository.save(
-                    objectContaining({ email, resetToken: token }),
+                    objectContaining({ email, resetToken, firstName }),
                 ),
             ).once();
         });
@@ -69,7 +72,7 @@ describe('UsersService', () => {
             );
 
             await expect(
-                userService.createUser({ email: 'doesntmatter@mail.com' }),
+                usersService.createUser({ email: 'doesntmatter@mail.com' }),
             ).rejects.toThrowError(EmailAlreadyInUse);
         });
     });

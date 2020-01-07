@@ -3,6 +3,8 @@ import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
+export type Environment = 'local' | 'test' | 'staging' | 'production';
+
 const environment = process.env.NODE_ENV;
 function assertNodeEnv(env: string | undefined): asserts env {
     if (!env) {
@@ -36,8 +38,8 @@ class Config {
         return process.env.SENTRY_DSN as string;
     }
 
-    static get environment(): string {
-        return environment as string;
+    static get environment(): Environment {
+        return environment as Environment;
     }
 
     static get port(): string {
@@ -71,6 +73,12 @@ class Config {
             secret: process.env.JWT_SECRET as string,
             expiresIn: process.env.JWT_EXPIRATION_TIME as string,
         };
+    }
+
+    static get allowedOrigins(): string[] {
+        return process.env.ALLOWED_ORIGINS.split(',').filter(
+            origin => !!origin,
+        );
     }
 }
 
