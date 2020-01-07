@@ -50,16 +50,18 @@ describe('UsersService', () => {
         it('should create a user with email and reset token', async () => {
             const email = faker.internet.email();
             const firstName = faker.name.firstName();
-            const token = faker.random.alphaNumeric(10);
+            const resetToken = faker.random.alphaNumeric(10);
 
             when(userRepository.findOne(anything())).thenResolve(null);
-            when(jwtService.sign(anything(), anything())).thenReturn(token);
+            when(jwtService.sign(anything(), anything())).thenReturn(
+                resetToken,
+            );
 
             await usersService.createUser({ email, firstName });
 
             verify(
                 userRepository.save(
-                    objectContaining({ email, resetToken: token }),
+                    objectContaining({ email, resetToken, firstName }),
                 ),
             ).once();
         });

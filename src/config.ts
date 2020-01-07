@@ -76,9 +76,9 @@ class Config {
     }
 
     static get allowedOrigins(): string[] {
-        const origins = process.env.ALLOWED_ORIGINS;
-        if (!origins) return null;
-        return origins.split(',').filter(origin => !!origin);
+        return process.env.ALLOWED_ORIGINS.split(',').filter(
+            origin => !!origin,
+        );
     }
 }
 
