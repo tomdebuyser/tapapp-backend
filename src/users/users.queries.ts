@@ -33,6 +33,8 @@ export class UsersQueries {
                 'user.updatedAt',
                 'user.email',
                 'user.state',
+                'user.firstName',
+                'user.lastName',
             ])
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)

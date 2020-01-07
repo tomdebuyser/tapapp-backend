@@ -30,4 +30,6 @@ class GetUsersResponseData {
     updatedAt: Date;
     email: string;
     state: UserState;
+    firstName?: string;
+    lastName?: string;
 }

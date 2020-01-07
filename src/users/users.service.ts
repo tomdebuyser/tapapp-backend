@@ -13,7 +13,7 @@ export class UsersService {
     ) {}
 
     async createUser(body: CreateUserRequest): Promise<void> {
-        const { email } = body;
+        const { email, firstName, lastName } = body;
         const existingUser = await this.userRepository.findOne({
             email,
         });
@@ -25,6 +25,8 @@ export class UsersService {
         const user = new User();
         user.email = email;
         user.resetToken = resetToken;
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
 
         await this.userRepository.save(user);
 
