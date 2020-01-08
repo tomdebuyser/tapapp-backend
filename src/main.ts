@@ -45,7 +45,7 @@ function addSwaggerDocs(app: INestApplication): void {
 
 function addGlobalMiddleware(app: INestApplication): void {
     app.enableCors({
-        origin: Config.allowedOrigins.join(','),
+        origin: Config.allowedOrigins,
         methods: '*',
         credentials: true,
     });
