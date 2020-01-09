@@ -2,7 +2,7 @@ import { Entity, Column } from 'typeorm';
 
 import { BaseEntity } from './base.entity';
 
-class Permissions {
+export class Permissions {
     roles: RolePermissions;
     users: UserPermissions;
 }

@@ -13,15 +13,16 @@ import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 
 import { UsersService } from './users.service';
-import { UserRepository } from '../database';
-import { EmailAlreadyInUse } from './errors';
-import { createTestUser } from '../_util/testing';
+import { UserRepository, RoleRepository } from '../database';
+import { EmailAlreadyInUse, RoleNotFound } from './errors';
+import { createTestUser, createTestRole } from '../_util/testing';
 
 describe('UsersService', () => {
     let usersService: UsersService;
 
     const userRepository = mock(UserRepository);
     const jwtService = mock(JwtService);
+    const roleRepository = mock(RoleRepository);
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -35,6 +36,10 @@ describe('UsersService', () => {
                     provide: JwtService,
                     useValue: instance(jwtService),
                 },
+                {
+                    provide: getCustomRepositoryToken(RoleRepository),
+                    useValue: instance(roleRepository),
+                },
             ],
         }).compile();
 
@@ -44,24 +49,33 @@ describe('UsersService', () => {
     afterEach(() => {
         reset(userRepository);
         reset(jwtService);
+        reset(roleRepository);
     });
 
     describe('createUser', () => {
         it('should create a user with email and reset token', async () => {
             const email = faker.internet.email();
             const firstName = faker.name.firstName();
+            const roleIds = [faker.random.uuid()];
             const resetToken = faker.random.alphaNumeric(10);
+            const roles = [createTestRole()];
 
             when(userRepository.findOne(anything())).thenResolve(null);
             when(jwtService.sign(anything(), anything())).thenReturn(
                 resetToken,
             );
+            when(roleRepository.find(anything())).thenResolve(roles);
 
-            await usersService.createUser({ email, firstName });
+            await usersService.createUser({ email, firstName, roleIds });
 
             verify(
                 userRepository.save(
-                    objectContaining({ email, resetToken, firstName }),
+                    objectContaining({
+                        email,
+                        resetToken,
+                        firstName,
+                        roles,
+                    }),
                 ),
             ).once();
         });
@@ -72,8 +86,23 @@ describe('UsersService', () => {
             );
 
             await expect(
-                usersService.createUser({ email: 'doesntmatter@mail.com' }),
+                usersService.createUser({
+                    email: faker.internet.email(),
+                    roleIds: [faker.random.uuid()],
+                }),
             ).rejects.toThrowError(EmailAlreadyInUse);
+        });
+
+        it('should throw an error when a given role does not exist', async () => {
+            when(userRepository.findOne(anything())).thenResolve(null);
+            when(roleRepository.find(anything())).thenResolve([]);
+
+            await expect(
+                usersService.createUser({
+                    email: faker.internet.email(),
+                    roleIds: [faker.random.uuid()],
+                }),
+            ).rejects.toThrowError(RoleNotFound);
         });
     });
 });
