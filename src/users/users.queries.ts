@@ -35,11 +35,14 @@ export class UsersQueries {
                 'user.state',
                 'user.firstName',
                 'user.lastName',
+                'role.id',
+                'role.name',
             ])
+            .innerJoin('user.roles', 'role')
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)
-            .where('user.email LIKE :search', {
+            .where('user.email ILIKE :search', {
                 search: `%${query.search}%`,
             })
             .getManyAndCount();

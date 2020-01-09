@@ -28,6 +28,7 @@ describe('UsersQueries', () => {
             {},
             { skip: 2, take: 2 },
             { search: 'user1' },
+            { search: 'DEVELOPMENT' },
             {
                 sortBy: UsersSortColumns.CreatedAt,
                 sortDirection: SortDirection.Ascending,

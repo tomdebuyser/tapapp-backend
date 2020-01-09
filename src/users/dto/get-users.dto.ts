@@ -1,7 +1,6 @@
 import { IsOptional, IsEnum } from 'class-validator';
-import { Type } from 'class-transformer';
 
-import { PagingQuery, PagingMeta } from '../../_shared/dto';
+import { PagingQuery, PagingMeta, BaseEntityResponse } from '../../_shared/dto';
 import { UserState } from '../../_shared/constants';
 
 export enum UsersSortColumns {
@@ -14,22 +13,23 @@ export enum UsersSortColumns {
 export class GetUsersRequestQuery extends PagingQuery {
     @IsOptional()
     @IsEnum(UsersSortColumns)
-    sortBy?: UsersSortColumns;
+    readonly sortBy?: UsersSortColumns;
 }
 
 export class GetUsersResponse {
-    meta: PagingMeta;
-    data: GetUsersResponseData[];
+    readonly meta: PagingMeta;
+    readonly data: GetUsersResponseData[];
 }
 
-class GetUsersResponseData {
-    id: string;
-    @Type(() => String)
-    createdAt: Date;
-    @Type(() => String)
-    updatedAt: Date;
-    email: string;
-    state: UserState;
-    firstName?: string;
-    lastName?: string;
+class GetUsersResponseData extends BaseEntityResponse {
+    readonly email: string;
+    readonly state: UserState;
+    readonly roles: GetUsersResponseDataRole[];
+    readonly firstName?: string;
+    readonly lastName?: string;
+}
+
+class GetUsersResponseDataRole {
+    readonly id: string;
+    readonly name: string;
 }
