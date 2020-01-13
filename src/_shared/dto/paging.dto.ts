@@ -39,4 +39,5 @@ export class PagingQuery {
 export class PagingMeta {
     readonly count: number;
     readonly totalCount: number;
+    readonly skip: number;
 }

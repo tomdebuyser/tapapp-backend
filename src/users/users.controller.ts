@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import {
     CreateUserRequest,
@@ -23,7 +24,13 @@ export class UsersController {
     }
 
     @Post()
-    createUser(@Body() body: CreateUserRequest): Promise<void> {
-        return this.usersService.createUser(body);
+    createUser(
+        @Req() request: Request,
+        @Body() body: CreateUserRequest,
+    ): Promise<void> {
+        return this.usersService.createUser(
+            body,
+            request.headers.origin as string,
+        );
     }
 }

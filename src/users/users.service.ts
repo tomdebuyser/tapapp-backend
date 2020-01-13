@@ -5,6 +5,8 @@ import { In } from 'typeorm';
 import { UserRepository, User, RoleRepository } from '../database';
 import { CreateUserRequest } from './dto';
 import { EmailAlreadyInUse, RoleNotFound } from './errors';
+import { MailerService } from '../mailer/mailer.service';
+import { registerMessage } from '../mailer/messages';
 
 @Injectable()
 export class UsersService {
@@ -12,9 +14,10 @@ export class UsersService {
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
         private readonly roleRepository: RoleRepository,
+        private readonly mailerService: MailerService,
     ) {}
 
-    async createUser(body: CreateUserRequest): Promise<void> {
+    async createUser(body: CreateUserRequest, origin: string): Promise<void> {
         const { email, firstName, lastName } = body;
         const roleIds = Array.from(new Set(body.roleIds));
         const existingUser = await this.userRepository.findOne({
@@ -40,6 +43,7 @@ export class UsersService {
 
         await this.userRepository.save(user);
 
-        // TODO: Send mail to inform user
+        // Send mail to inform user
+        this.mailerService.sendMail(registerMessage(email, resetToken, origin));
     }
 }

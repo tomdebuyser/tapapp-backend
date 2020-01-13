@@ -8,6 +8,8 @@ export enum UsersSortColumns {
     State = 'state',
     CreatedAt = 'createdAt',
     UpdatedAt = 'updatedAt',
+    FirstName = 'firstName',
+    LastName = 'lastName',
 }
 
 export class GetUsersRequestQuery extends PagingQuery {

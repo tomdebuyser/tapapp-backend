@@ -51,6 +51,7 @@ export class UsersQueries {
             meta: {
                 count: users.length,
                 totalCount,
+                skip: query.skip,
             },
             data: users,
         };

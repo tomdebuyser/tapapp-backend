@@ -6,6 +6,7 @@ import { UsersService } from './users.service';
 import { DatabaseModule } from '../database';
 import { Config } from '../config';
 import { UsersQueries } from './users.queries';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { UsersQueries } from './users.queries';
         JwtModule.register({
             secret: Config.jwt.secret,
         }),
+        MailerModule,
     ],
     controllers: [UsersController],
     providers: [UsersService, UsersQueries],

@@ -80,6 +80,14 @@ class Config {
             origin => !!origin,
         );
     }
+
+    static get mandrillApiKey(): string {
+        return process.env.MANDRILL_API_KEY as string;
+    }
+
+    static get frontendUrl(): string {
+        return process.env.FRONTEND_URL as string;
+    }
 }
 
 export { Config };

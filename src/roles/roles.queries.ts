@@ -46,6 +46,7 @@ export class RolesQueries {
             meta: {
                 count: roles.length,
                 totalCount,
+                skip: query.skip,
             },
             data: roles,
         };

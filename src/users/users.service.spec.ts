@@ -16,6 +16,7 @@ import { UsersService } from './users.service';
 import { UserRepository, RoleRepository } from '../database';
 import { EmailAlreadyInUse, RoleNotFound } from './errors';
 import { createTestUser, createTestRole } from '../_util/testing';
+import { MailerService } from '../mailer/mailer.service';
 
 describe('UsersService', () => {
     let usersService: UsersService;
@@ -23,6 +24,7 @@ describe('UsersService', () => {
     const userRepository = mock(UserRepository);
     const jwtService = mock(JwtService);
     const roleRepository = mock(RoleRepository);
+    const mailerService = mock(MailerService);
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -39,6 +41,10 @@ describe('UsersService', () => {
                 {
                     provide: getCustomRepositoryToken(RoleRepository),
                     useValue: instance(roleRepository),
+                },
+                {
+                    provide: MailerService,
+                    useValue: instance(mailerService),
                 },
             ],
         }).compile();
@@ -66,7 +72,10 @@ describe('UsersService', () => {
             );
             when(roleRepository.find(anything())).thenResolve(roles);
 
-            await usersService.createUser({ email, firstName, roleIds });
+            await usersService.createUser(
+                { email, firstName, roleIds },
+                'origin',
+            );
 
             verify(
                 userRepository.save(
@@ -86,10 +95,13 @@ describe('UsersService', () => {
             );
 
             await expect(
-                usersService.createUser({
-                    email: faker.internet.email(),
-                    roleIds: [faker.random.uuid()],
-                }),
+                usersService.createUser(
+                    {
+                        email: faker.internet.email(),
+                        roleIds: [faker.random.uuid()],
+                    },
+                    'origin',
+                ),
             ).rejects.toThrowError(EmailAlreadyInUse);
         });
 
@@ -98,10 +110,13 @@ describe('UsersService', () => {
             when(roleRepository.find(anything())).thenResolve([]);
 
             await expect(
-                usersService.createUser({
-                    email: faker.internet.email(),
-                    roleIds: [faker.random.uuid()],
-                }),
+                usersService.createUser(
+                    {
+                        email: faker.internet.email(),
+                        roleIds: [faker.random.uuid()],
+                    },
+                    'origin',
+                ),
             ).rejects.toThrowError(RoleNotFound);
         });
     });
