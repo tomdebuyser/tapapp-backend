@@ -27,7 +27,10 @@ export class UsersService {
             throw new EmailAlreadyInUse();
         }
 
-        const resetToken = this.jwtService.sign({ email }, { expiresIn: '1d' });
+        const resetToken = await this.jwtService.signAsync(
+            { email },
+            { expiresIn: '1d' },
+        );
         const user = new User();
         user.email = email;
         user.resetToken = resetToken;

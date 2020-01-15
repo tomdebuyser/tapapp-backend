@@ -67,7 +67,7 @@ describe('UsersService', () => {
             const roles = [createTestRole()];
 
             when(userRepository.findOne(anything())).thenResolve(null);
-            when(jwtService.sign(anything(), anything())).thenReturn(
+            when(jwtService.signAsync(anything(), anything())).thenResolve(
                 resetToken,
             );
             when(roleRepository.find(anything())).thenResolve(roles);
