@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository } from '../database';
+import { UserRepository, User } from '../database';
 import { ResetPasswordRequest } from './dto';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { UserState } from '../_shared/constants';
@@ -14,6 +14,22 @@ export class AuthenticationService {
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
     ) {}
+
+    async validateCredentials(email: string, password: string): Promise<User> {
+        // Try to find the user
+        const user = await this.userRepository.findOne({ email });
+        if (!user) {
+            throw new UnauthorizedException();
+        }
+
+        // Given password should match the stored hashed password
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            throw new UnauthorizedException();
+        }
+
+        return user;
+    }
 
     async resetPassword(body: ResetPasswordRequest): Promise<void> {
         const { newPassword, resetToken } = body;

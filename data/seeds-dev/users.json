@@ -5,7 +5,7 @@
         "updatedAt": "2020-01-01T08:21:59.730Z",
         "email": "development@icapps.com",
         "state": "ACTIVE",
-        "password": "$2y$10$j29r8CH3upDQjofxw/x1FO4OY/.vLDqzke.kj6bWGHwEAK3MQ/6eO"
+        "password": "$2b$10$JXPifp.CTyoOOENOEli7f.2hFG8wGxYcMKffez9lxS4endBnk81/a"
     },
     {
         "id": "49affd08-f461-4e80-899f-7612e971ff12",
@@ -15,7 +15,7 @@
         "state": "ACTIVE",
         "firstName": "Tom",
         "lastName": "De Buyser",
-        "password": "$2y$10$j29r8CH3upDQjofxw/x1FO4OY/.vLDqzke.kj6bWGHwEAK3MQ/6eO"
+        "password": "$2b$10$JXPifp.CTyoOOENOEli7f.2hFG8wGxYcMKffez9lxS4endBnk81/a"
     },
     {
         "id": "45c2c554-b06a-4209-aba8-b097cb5f8566",
@@ -25,7 +25,7 @@
         "state": "ACTIVE",
         "firstName": "Benno",
         "lastName": "Meysmans",
-        "password": "$2y$10$j29r8CH3upDQjofxw/x1FO4OY/.vLDqzke.kj6bWGHwEAK3MQ/6eO"
+        "password": "$2b$10$JXPifp.CTyoOOENOEli7f.2hFG8wGxYcMKffez9lxS4endBnk81/a"
     },
     {
         "id": "db5e788c-2642-4c40-a63a-f13675048ddc",
@@ -42,7 +42,7 @@
         "updatedAt": "2020-01-02T08:59:59.730Z",
         "email": "user4@silvernext.com",
         "state": "ACTIVE",
-        "password": "$2y$10$j29r8CH3upDQjofxw/x1FO4OY/.vLDqzke.kj6bWGHwEAK3MQ/6eO"
+        "password": "$2b$10$JXPifp.CTyoOOENOEli7f.2hFG8wGxYcMKffez9lxS4endBnk81/a"
     },
     {
         "id": "af965f04-8c7d-4e20-b230-932b0ff3a33f",
