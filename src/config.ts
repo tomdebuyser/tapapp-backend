@@ -33,11 +33,6 @@ interface IJwtOptions {
     expiresIn: string;
 }
 
-interface IRedisOptions {
-    host: string;
-    port: number;
-}
-
 interface ISessionOptions {
     secret: string;
     expiresIn: number;
@@ -95,11 +90,8 @@ class Config {
         return process.env.MANDRILL_API_KEY as string;
     }
 
-    static get redis(): IRedisOptions {
-        return {
-            host: process.env.REDIS_HOST as string,
-            port: parseInt(process.env.REDIS_PORT as string),
-        };
+    static get redisUrl(): string {
+        return process.env.REDIS_URL as string;
     }
 
     static get session(): ISessionOptions {

@@ -7,7 +7,7 @@ import { Config } from './config';
 
 export function addSessionMiddleware(app: INestApplication): void {
     const RedisStore = connectRedis(session);
-    const client = redis.createClient();
+    const client = redis.createClient({ url: Config.redisUrl });
 
     app.use(
         session({
@@ -20,11 +20,7 @@ export function addSessionMiddleware(app: INestApplication): void {
                     Config.environment === 'production' ||
                     Config.environment === 'staging',
             },
-            store: new RedisStore({
-                client,
-                host: Config.redis.host,
-                port: Config.redis.port,
-            }),
+            store: new RedisStore({ client }),
         }),
     );
 
