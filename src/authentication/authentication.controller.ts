@@ -6,8 +6,11 @@ import {
     HttpCode,
     HttpStatus,
     Get,
+    Req,
+    Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Response, Request } from 'express';
 
 import {
     ResetPasswordRequest,
@@ -45,6 +48,17 @@ export class AuthenticationController {
         @UserSession() session: IUserSession,
     ): Promise<LoggedInUserResponse> {
         return this.authQueries.getLoggedInUser(session.userId);
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Post('logout')
+    logout(@Req() request: Request, @Res() response: Response): void {
+        request.session.destroy(() => {
+            request.logout();
+            response.clearCookie('connect.sid');
+            response.send();
+        });
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

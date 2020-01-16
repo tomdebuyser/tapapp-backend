@@ -1,6 +1,6 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { AuthenticationService } from './authentication.service';
 import { IUserSession } from '../_shared/constants';
@@ -20,9 +20,6 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy) {
             username,
             password,
         );
-        if (!user) {
-            throw new UnauthorizedException();
-        }
         return this.authQueries.composeUserSession(user.id);
     }
 }
