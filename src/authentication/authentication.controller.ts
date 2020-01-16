@@ -10,7 +10,7 @@ import {
     Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 
 import {
     ResetPasswordRequest,
@@ -19,10 +19,10 @@ import {
     RequestPasswordResetRequest,
 } from './dto';
 import { AuthenticationService } from './authentication.service';
-import { UserSession } from '../_shared/decorators/user-session.decorator';
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
 import { LoginGuard, AuthenticatedGuard } from '../_shared/guards';
+import { UserSession, Origin } from '../_shared/decorators';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -67,13 +67,10 @@ export class AuthenticationController {
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('request-password-reset')
     requestPasswordReset(
-        @Req() request: Request,
         @Body() body: RequestPasswordResetRequest,
+        @Origin() origin: string,
     ): Promise<void> {
-        return this.authService.requestPasswordReset(
-            body,
-            request.headers.origin as string,
-        );
+        return this.authService.requestPasswordReset(body, origin);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

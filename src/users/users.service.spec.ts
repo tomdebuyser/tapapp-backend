@@ -14,9 +14,15 @@ import * as faker from 'faker';
 
 import { UsersService } from './users.service';
 import { UserRepository, RoleRepository } from '../database';
-import { EmailAlreadyInUse, RoleNotFound } from './errors';
+import {
+    EmailAlreadyInUse,
+    RoleNotFound,
+    UserNotFound,
+    AccountAlreadyActive,
+} from './errors';
 import { createTestUser, createTestRole } from '../_util/testing';
 import { MailerService } from '../mailer/mailer.service';
+import { UserState } from '../_shared/constants';
 
 describe('UsersService', () => {
     let usersService: UsersService;
@@ -145,6 +151,49 @@ describe('UsersService', () => {
                     'origin',
                 ),
             ).rejects.toThrowError(RoleNotFound);
+        });
+    });
+
+    describe('resendRegisterMail', () => {
+        it('should resend the register email correctly', async () => {
+            const user = createTestUser({ state: UserState.Registering });
+            const resetToken = faker.random.alphaNumeric(10);
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+            when(jwtService.signAsync(anything(), anything())).thenResolve(
+                resetToken,
+            );
+
+            await usersService.resendRegisterMail(user.id, 'origin');
+
+            verify(
+                userRepository.save(
+                    objectContaining({
+                        ...user,
+                        resetToken,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should throw an error when the user does not exist', async () => {
+            const userId = faker.random.uuid();
+
+            when(userRepository.findOne(anything())).thenResolve(null);
+
+            await expect(
+                usersService.resendRegisterMail(userId, 'origin'),
+            ).rejects.toThrowError(UserNotFound);
+        });
+
+        it('should throw an error when the user is already active', async () => {
+            const user = createTestUser({ state: UserState.Active });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+
+            await expect(
+                usersService.resendRegisterMail(user.id, 'origin'),
+            ).rejects.toThrowError(AccountAlreadyActive);
         });
     });
 });

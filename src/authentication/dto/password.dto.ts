@@ -2,7 +2,7 @@ import { Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class NewPasswordRequest {
-    @ApiProperty({ format: 'string', required: true })
+    @ApiProperty({ required: true })
     @Matches(
         new RegExp(
             '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$',
