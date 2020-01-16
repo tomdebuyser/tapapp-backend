@@ -12,6 +12,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 import { TokenExpiredError } from 'jsonwebtoken';
+import { UnauthorizedException } from '@nestjs/common';
 
 import { AuthenticationService } from './authentication.service';
 import { UserRepository } from '../database';
@@ -20,7 +21,7 @@ import { UserState } from '../_shared/constants';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 
 describe('AuthenticationService', () => {
-    let authenticationService: AuthenticationService;
+    let authService: AuthenticationService;
 
     const userRepository = mock(UserRepository);
     const jwtService = mock(JwtService);
@@ -40,12 +41,52 @@ describe('AuthenticationService', () => {
             ],
         }).compile();
 
-        authenticationService = module.get(AuthenticationService);
+        authService = module.get(AuthenticationService);
     });
 
     afterEach(() => {
         reset(userRepository);
         reset(jwtService);
+    });
+
+    describe('validateCredentials', () => {
+        it('should validate the login credentials correctly', async () => {
+            const email = faker.internet.email();
+            const password = 'Password1%';
+            const hashedPassword = await authService.hashPassword(password);
+            const user = createTestUser({ email, password: hashedPassword });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+
+            expect(
+                await authService.validateCredentials(email, password),
+            ).toBeTruthy();
+        });
+
+        it('should throw an error when the linked user is not found', async () => {
+            const email = faker.internet.email();
+            const password = 'Password1%';
+            when(userRepository.findOne(anything())).thenResolve(null);
+
+            await expect(
+                authService.validateCredentials(email, password),
+            ).rejects.toThrowError(UnauthorizedException);
+        });
+
+        it('should throw an error when the passwords do not match', async () => {
+            const email = faker.internet.email();
+            const password = 'Password1%';
+            const hashedPassword = await authService.hashPassword(
+                `_${password}`,
+            );
+            const user = createTestUser({ email, password: hashedPassword });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+
+            await expect(
+                authService.validateCredentials(email, password),
+            ).rejects.toThrowError(UnauthorizedException);
+        });
     });
 
     describe('resetPassword', () => {
@@ -60,7 +101,7 @@ describe('AuthenticationService', () => {
                 email: user.email,
             });
 
-            await authenticationService.resetPassword({
+            await authService.resetPassword({
                 newPassword,
                 resetToken,
             });
@@ -85,11 +126,25 @@ describe('AuthenticationService', () => {
             );
 
             await expect(
-                authenticationService.resetPassword({
+                authService.resetPassword({
                     newPassword,
                     resetToken,
                 }),
             ).rejects.toThrowError(ResetTokenExpired);
+        });
+
+        it('should throw an error when resetToken could not be verified', async () => {
+            const newPassword = 'Password1%';
+            const resetToken = faker.random.alphaNumeric(10);
+
+            when(jwtService.verifyAsync(resetToken)).thenThrow(new Error());
+
+            await expect(
+                authService.resetPassword({
+                    newPassword,
+                    resetToken,
+                }),
+            ).rejects.toThrowError(ResetTokenInvalid);
         });
 
         it('should throw an error when resetToken is not linked to a user', async () => {
@@ -101,7 +156,7 @@ describe('AuthenticationService', () => {
             when(jwtService.decode(resetToken)).thenReturn(null);
 
             await expect(
-                authenticationService.resetPassword({
+                authService.resetPassword({
                     newPassword,
                     resetToken,
                 }),
@@ -123,7 +178,7 @@ describe('AuthenticationService', () => {
             });
 
             await expect(
-                authenticationService.resetPassword({
+                authService.resetPassword({
                     newPassword,
                     resetToken,
                 }),

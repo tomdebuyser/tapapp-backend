@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import {
@@ -8,7 +8,9 @@ import {
 } from './dto';
 import { RolesService } from './roles.service';
 import { RolesQueries } from './roles.queries';
+import { AuthenticatedGuard } from '../_shared/guards';
 
+@UseGuards(AuthenticatedGuard)
 @ApiTags('roles')
 @Controller('roles')
 export class RolesController {

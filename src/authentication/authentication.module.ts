@@ -8,6 +8,7 @@ import { DatabaseModule } from '../database';
 import { Config } from '../config';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationQueries } from './authentication.queries';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { AuthenticationQueries } from './authentication.queries';
         AuthenticationService,
         AuthenticationQueries,
         PassportLocalStrategy,
+        SessionSerializer,
     ],
 })
 export class AuthenticationModule {}

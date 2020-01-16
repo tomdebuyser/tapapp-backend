@@ -59,9 +59,10 @@ describe('UsersService', () => {
     });
 
     describe('createUser', () => {
-        it('should create a user with email and reset token', async () => {
+        it('should create a user with email and reset token #1', async () => {
             const email = faker.internet.email();
             const firstName = faker.name.firstName();
+            const lastName = faker.name.lastName();
             const roleIds = [faker.random.uuid()];
             const resetToken = faker.random.alphaNumeric(10);
             const roles = [createTestRole()];
@@ -73,7 +74,7 @@ describe('UsersService', () => {
             when(roleRepository.find(anything())).thenResolve(roles);
 
             await usersService.createUser(
-                { email, firstName, roleIds },
+                { email, firstName, lastName, roleIds },
                 'origin',
             );
 
@@ -83,6 +84,32 @@ describe('UsersService', () => {
                         email,
                         resetToken,
                         firstName,
+                        lastName,
+                        roles,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should create a user with email and reset token #2', async () => {
+            const email = faker.internet.email();
+            const roleIds = [faker.random.uuid()];
+            const resetToken = faker.random.alphaNumeric(10);
+            const roles = [createTestRole()];
+
+            when(userRepository.findOne(anything())).thenResolve(null);
+            when(jwtService.signAsync(anything(), anything())).thenResolve(
+                resetToken,
+            );
+            when(roleRepository.find(anything())).thenResolve(roles);
+
+            await usersService.createUser({ email, roleIds }, 'origin');
+
+            verify(
+                userRepository.save(
+                    objectContaining({
+                        email,
+                        resetToken,
                         roles,
                     }),
                 ),

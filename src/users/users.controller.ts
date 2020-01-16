@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Query, Req } from '@nestjs/common';
+import {
+    Controller,
+    Post,
+    Body,
+    Get,
+    Query,
+    Req,
+    UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 
@@ -9,7 +17,9 @@ import {
 } from './dto';
 import { UsersService } from './users.service';
 import { UsersQueries } from './users.queries';
+import { AuthenticatedGuard } from '../_shared/guards';
 
+@UseGuards(AuthenticatedGuard)
 @ApiTags('users')
 @Controller('users')
 export class UsersController {

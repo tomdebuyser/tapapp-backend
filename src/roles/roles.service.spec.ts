@@ -12,7 +12,7 @@ import {
 import * as faker from 'faker';
 
 import { RolesService } from './roles.service';
-import { RoleRepository } from '../database';
+import { RoleRepository, Permissions } from '../database';
 import { RoleNameAlreadyInUse } from './errors';
 import { createTestRole, createDefaultPermissions } from '../_util/testing';
 
@@ -40,11 +40,16 @@ describe('RolesService', () => {
     });
 
     describe('createRole', () => {
-        it('should create a role with name and permissions', async () => {
+        it('should create a role with name and permissions #1', async () => {
             const name = faker.name.jobTitle();
-            const permissions = {
+            const permissions: Permissions = {
+                roles: {
+                    view: true,
+                    edit: true,
+                },
                 users: {
                     view: true,
+                    edit: true,
                 },
             };
 
@@ -57,6 +62,23 @@ describe('RolesService', () => {
                     objectContaining({
                         name,
                         permissions: createDefaultPermissions(permissions),
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should create a role with name and permissions #2', async () => {
+            const name = faker.name.jobTitle();
+
+            when(roleRepository.findOne(anything())).thenResolve(null);
+
+            await rolesService.createRole({ name, permissions: {} });
+
+            verify(
+                roleRepository.save(
+                    objectContaining({
+                        name,
+                        permissions: createDefaultPermissions(),
                     }),
                 ),
             ).once();

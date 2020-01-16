@@ -8,6 +8,7 @@ import * as rateLimit from 'express-rate-limit';
 
 import { AppModule } from './app.module';
 import { Config } from './config';
+import { addSessionMiddleware } from './session.middleware';
 
 const environmentsWithErrorLogging = ['production', 'staging'];
 const needsErrorLogging =
@@ -25,6 +26,7 @@ async function bootstrap(): Promise<void> {
 
     addSwaggerDocs(app);
     addGlobalMiddleware(app);
+    addSessionMiddleware(app);
 
     if (needsErrorLogging) {
         addSentryErrorHandler(app);

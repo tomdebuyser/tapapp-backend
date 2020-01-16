@@ -4,10 +4,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AuthenticationService } from './authentication.service';
 import { IUserSession } from '../_shared/constants';
+import { AuthenticationQueries } from './authentication.queries';
 
 @Injectable()
 export class PassportLocalStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly authService: AuthenticationService) {
+    constructor(
+        private readonly authService: AuthenticationService,
+        private readonly authQueries: AuthenticationQueries,
+    ) {
         super();
     }
 
@@ -19,8 +23,6 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException();
         }
-        return {
-            userId: user.id,
-        };
+        return this.authQueries.composeUserSession(user.id);
     }
 }

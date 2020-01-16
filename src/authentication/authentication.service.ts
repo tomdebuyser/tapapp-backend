@@ -55,11 +55,15 @@ export class AuthenticationService {
         }
 
         // Update the user in the database
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await this.hashPassword(newPassword);
         user.state = UserState.Active;
         user.password = hashedPassword;
         user.resetToken = null;
 
         await this.userRepository.save(user);
+    }
+
+    hashPassword(password: string): Promise<string> {
+        return bcrypt.hash(password, 10);
     }
 }

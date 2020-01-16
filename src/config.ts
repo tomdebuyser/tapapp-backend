@@ -33,6 +33,16 @@ interface IJwtOptions {
     expiresIn: string;
 }
 
+interface IRedisOptions {
+    host: string;
+    port: number;
+}
+
+interface ISessionOptions {
+    secret: string;
+    expiresIn: number;
+}
+
 class Config {
     static get sentryDsn(): string {
         return process.env.SENTRY_DSN as string;
@@ -85,8 +95,18 @@ class Config {
         return process.env.MANDRILL_API_KEY as string;
     }
 
-    static get frontendUrl(): string {
-        return process.env.FRONTEND_URL as string;
+    static get redis(): IRedisOptions {
+        return {
+            host: process.env.REDIS_HOST as string,
+            port: parseInt(process.env.REDIS_PORT as string),
+        };
+    }
+
+    static get session(): ISessionOptions {
+        return {
+            secret: process.env.SESSION_SECRET as string,
+            expiresIn: parseInt(process.env.SESSION_TTL as string),
+        };
     }
 }
 

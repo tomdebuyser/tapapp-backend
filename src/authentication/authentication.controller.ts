@@ -7,7 +7,6 @@ import {
     HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 
 import {
     ResetPasswordRequest,
@@ -18,6 +17,7 @@ import { AuthenticationService } from './authentication.service';
 import { UserSession } from '../_shared/decorators/user-session.decorator';
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
+import { LoginGuard } from '../_shared/guards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,7 +27,7 @@ export class AuthenticationController {
         private readonly authQueries: AuthenticationQueries,
     ) {}
 
-    @UseGuards(AuthGuard('local'))
+    @UseGuards(LoginGuard)
     @HttpCode(HttpStatus.OK)
     @Post('login')
     login(
@@ -35,7 +35,7 @@ export class AuthenticationController {
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
     ): Promise<LoggedInUserResponse> {
-        return this.authQueries.getLoggedInUser(session);
+        return this.authQueries.getLoggedInUser(session.userId);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
