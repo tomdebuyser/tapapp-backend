@@ -19,12 +19,14 @@ import { UserRepository } from '../database';
 import { createTestUser } from '../_util/testing';
 import { UserState } from '../_shared/constants';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
+import { MailerService } from '../mailer/mailer.service';
 
 describe('AuthenticationService', () => {
     let authService: AuthenticationService;
 
     const userRepository = mock(UserRepository);
     const jwtService = mock(JwtService);
+    const mailerService = mock(MailerService);
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -37,6 +39,10 @@ describe('AuthenticationService', () => {
                 {
                     provide: JwtService,
                     useValue: instance(jwtService),
+                },
+                {
+                    provide: MailerService,
+                    useValue: instance(mailerService),
                 },
             ],
         }).compile();
@@ -86,6 +92,41 @@ describe('AuthenticationService', () => {
             await expect(
                 authService.validateCredentials(email, password),
             ).rejects.toThrowError(UnauthorizedException);
+        });
+    });
+
+    describe('requestPasswordReset', () => {
+        it('should handle the request for password reset correctly', async () => {
+            const email = faker.internet.email();
+            const resetToken = faker.random.alphaNumeric(10);
+
+            when(userRepository.findOne(anything())).thenResolve(
+                createTestUser({ email }),
+            );
+            when(jwtService.signAsync(anything(), anything())).thenResolve(
+                resetToken,
+            );
+
+            await authService.requestPasswordReset({ email }, 'origin');
+
+            verify(
+                userRepository.save(
+                    objectContaining({
+                        email,
+                        resetToken,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should do nothing when no user was found for the given email', async () => {
+            const email = faker.internet.email();
+
+            when(userRepository.findOne(anything())).thenResolve(null);
+
+            await authService.requestPasswordReset({ email }, 'origin');
+
+            verify(userRepository.save(anything())).never();
         });
     });
 

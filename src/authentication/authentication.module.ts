@@ -9,6 +9,7 @@ import { Config } from '../config';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationQueries } from './authentication.queries';
 import { SessionSerializer } from './session.serializer';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { SessionSerializer } from './session.serializer';
             secret: Config.jwt.secret,
         }),
         UsersModule,
+        MailerModule,
     ],
     controllers: [AuthenticationController],
     providers: [

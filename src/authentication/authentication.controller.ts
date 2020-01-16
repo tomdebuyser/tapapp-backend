@@ -16,6 +16,7 @@ import {
     ResetPasswordRequest,
     LoginRequest,
     LoggedInUserResponse,
+    RequestPasswordResetRequest,
 } from './dto';
 import { AuthenticationService } from './authentication.service';
 import { UserSession } from '../_shared/decorators/user-session.decorator';
@@ -53,12 +54,26 @@ export class AuthenticationController {
     @UseGuards(AuthenticatedGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('logout')
-    logout(@Req() request: Request, @Res() response: Response): void {
+    // Using any because the build fails when using passport types for the request
+    // eslint-disable-next-line
+    logout(@Req() request: any, @Res() response: Response): void {
         request.session.destroy(() => {
             request.logout();
             response.clearCookie('connect.sid');
             response.send();
         });
+    }
+
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Post('request-password-reset')
+    requestPasswordReset(
+        @Req() request: Request,
+        @Body() body: RequestPasswordResetRequest,
+    ): Promise<void> {
+        return this.authService.requestPasswordReset(
+            body,
+            request.headers.origin as string,
+        );
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

@@ -4,15 +4,18 @@ import { TokenExpiredError } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
 import { UserRepository, User } from '../database';
-import { ResetPasswordRequest } from './dto';
+import { ResetPasswordRequest, RequestPasswordResetRequest } from './dto';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { UserState } from '../_shared/constants';
+import { MailerService } from '../mailer/mailer.service';
+import { requestPasswordResetMessage } from '../mailer/messages';
 
 @Injectable()
 export class AuthenticationService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
+        private readonly mailerService: MailerService,
     ) {}
 
     async validateCredentials(email: string, password: string): Promise<User> {
@@ -29,6 +32,35 @@ export class AuthenticationService {
         }
 
         return user;
+    }
+
+    async requestPasswordReset(
+        body: RequestPasswordResetRequest,
+        origin: string,
+    ): Promise<void> {
+        const { email } = body;
+
+        // If the user is not found, just do nothing
+        const user = await this.userRepository.findOne({ email });
+        if (!user) {
+            console.info(
+                `Request password reset done for unknown email: ${email}`,
+            );
+            return;
+        }
+
+        // Add resetToken to the user
+        const resetToken = await this.jwtService.signAsync(
+            { email },
+            { expiresIn: '1d' },
+        );
+        user.resetToken = resetToken;
+        await this.userRepository.save(user);
+
+        // Send mail to inform user
+        this.mailerService.sendMail(
+            requestPasswordResetMessage(email, resetToken, origin),
+        );
     }
 
     async resetPassword(body: ResetPasswordRequest): Promise<void> {
