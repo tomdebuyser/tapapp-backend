@@ -5,6 +5,7 @@ import {
     UseGuards,
     HttpCode,
     HttpStatus,
+    Get,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -17,7 +18,7 @@ import { AuthenticationService } from './authentication.service';
 import { UserSession } from '../_shared/decorators/user-session.decorator';
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
-import { LoginGuard } from '../_shared/guards';
+import { LoginGuard, AuthenticatedGuard } from '../_shared/guards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -34,6 +35,14 @@ export class AuthenticationController {
         @UserSession() session: IUserSession,
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
+    ): Promise<LoggedInUserResponse> {
+        return this.authQueries.getLoggedInUser(session.userId);
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Get('authenticate')
+    authenticate(
+        @UserSession() session: IUserSession,
     ): Promise<LoggedInUserResponse> {
         return this.authQueries.getLoggedInUser(session.userId);
     }
