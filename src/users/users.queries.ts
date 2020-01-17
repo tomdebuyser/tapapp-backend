@@ -31,6 +31,8 @@ export class UsersQueries {
                 'user.id',
                 'user.createdAt',
                 'user.updatedAt',
+                'user.createdBy',
+                'user.updatedBy',
                 'user.email',
                 'user.state',
                 'user.firstName',

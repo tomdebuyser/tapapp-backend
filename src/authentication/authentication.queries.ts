@@ -29,6 +29,8 @@ export class AuthenticationQueries {
                 'user.id',
                 'user.createdAt',
                 'user.updatedAt',
+                'user.createdBy',
+                'user.updatedBy',
                 'user.email',
                 'user.state',
                 'user.firstName',

@@ -20,7 +20,8 @@ import {
 import { UsersService } from './users.service';
 import { UsersQueries } from './users.queries';
 import { AuthenticatedGuard } from '../_shared/guards';
-import { Origin } from '../_shared/decorators';
+import { Origin, UserSession } from '../_shared/decorators';
+import { IUserSession } from '../_shared/constants';
 
 @UseGuards(AuthenticatedGuard)
 @ApiTags('users')
@@ -39,17 +40,23 @@ export class UsersController {
     @Post()
     createUser(
         @Body() body: CreateUserRequest,
+        @UserSession() session: IUserSession,
         @Origin() origin: string,
     ): Promise<void> {
-        return this.usersService.createUser(body, origin);
+        return this.usersService.createUser(body, session, origin);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post(':userId/resend-register-mail')
     resendRegisterMail(
         @Param() params: ResendRegisterMailRequestParams,
+        @UserSession() session: IUserSession,
         @Origin() origin: string,
     ): Promise<void> {
-        return this.usersService.resendRegisterMail(params.userId, origin);
+        return this.usersService.resendRegisterMail(
+            params.userId,
+            session,
+            origin,
+        );
     }
 }

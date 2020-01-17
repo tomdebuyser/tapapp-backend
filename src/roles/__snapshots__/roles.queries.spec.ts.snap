@@ -5,6 +5,7 @@ Object {
   "data": Array [
     Role {
       "createdAt": 2019-10-20T08:12:59.730Z,
+      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "id": "d02a468f-0225-463d-a9a4-8c7d05cbe62c",
       "name": "Support",
       "permissions": Object {
@@ -18,9 +19,11 @@ Object {
         },
       },
       "updatedAt": 2019-12-20T08:12:59.730Z,
+      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
     },
     Role {
       "createdAt": 2019-08-20T08:12:59.730Z,
+      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "id": "81388934-7613-4f66-a225-a0d246f65e61",
       "name": "Medewerker",
       "permissions": Object {
@@ -34,9 +37,11 @@ Object {
         },
       },
       "updatedAt": 2019-09-20T08:12:59.730Z,
+      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
     },
     Role {
       "createdAt": 2019-06-20T08:12:59.730Z,
+      "createdBy": null,
       "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
       "name": "Admin",
       "permissions": Object {
@@ -50,6 +55,7 @@ Object {
         },
       },
       "updatedAt": 2019-06-20T08:12:59.730Z,
+      "updatedBy": null,
     },
   ],
   "meta": Object {
@@ -65,6 +71,7 @@ Object {
   "data": Array [
     Role {
       "createdAt": 2019-06-20T08:12:59.730Z,
+      "createdBy": null,
       "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
       "name": "Admin",
       "permissions": Object {
@@ -78,6 +85,7 @@ Object {
         },
       },
       "updatedAt": 2019-06-20T08:12:59.730Z,
+      "updatedBy": null,
     },
   ],
   "meta": Object {
@@ -93,6 +101,7 @@ Object {
   "data": Array [
     Role {
       "createdAt": 2019-06-20T08:12:59.730Z,
+      "createdBy": null,
       "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
       "name": "Admin",
       "permissions": Object {
@@ -106,6 +115,7 @@ Object {
         },
       },
       "updatedAt": 2019-06-20T08:12:59.730Z,
+      "updatedBy": null,
     },
   ],
   "meta": Object {
@@ -121,6 +131,7 @@ Object {
   "data": Array [
     Role {
       "createdAt": 2019-10-20T08:12:59.730Z,
+      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "id": "d02a468f-0225-463d-a9a4-8c7d05cbe62c",
       "name": "Support",
       "permissions": Object {
@@ -134,6 +145,7 @@ Object {
         },
       },
       "updatedAt": 2019-12-20T08:12:59.730Z,
+      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
     },
   ],
   "meta": Object {
@@ -149,6 +161,7 @@ Object {
   "data": Array [
     Role {
       "createdAt": 2019-06-20T08:12:59.730Z,
+      "createdBy": null,
       "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
       "name": "Admin",
       "permissions": Object {
@@ -162,9 +175,11 @@ Object {
         },
       },
       "updatedAt": 2019-06-20T08:12:59.730Z,
+      "updatedBy": null,
     },
     Role {
       "createdAt": 2019-08-20T08:12:59.730Z,
+      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "id": "81388934-7613-4f66-a225-a0d246f65e61",
       "name": "Medewerker",
       "permissions": Object {
@@ -178,9 +193,11 @@ Object {
         },
       },
       "updatedAt": 2019-09-20T08:12:59.730Z,
+      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
     },
     Role {
       "createdAt": 2019-10-20T08:12:59.730Z,
+      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "id": "d02a468f-0225-463d-a9a4-8c7d05cbe62c",
       "name": "Support",
       "permissions": Object {
@@ -194,6 +211,7 @@ Object {
         },
       },
       "updatedAt": 2019-12-20T08:12:59.730Z,
+      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
     },
   ],
   "meta": Object {

@@ -18,11 +18,13 @@ exports[`AuthenticationQueries getLoggedInUser should return no user if not foun
 exports[`AuthenticationQueries getLoggedInUser should return the correct user 1`] = `
 User {
   "createdAt": 2020-01-01T08:21:59.730Z,
+  "createdBy": null,
   "email": "development@icapps.com",
   "firstName": null,
   "id": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
   "lastName": null,
   "state": "ACTIVE",
   "updatedAt": 2020-01-01T08:21:59.730Z,
+  "updatedBy": null,
 }
 `;

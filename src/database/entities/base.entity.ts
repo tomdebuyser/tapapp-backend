@@ -2,6 +2,7 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    Column,
 } from 'typeorm';
 
 export abstract class BaseEntity {
@@ -13,4 +14,10 @@ export abstract class BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column('uuid', { nullable: true })
+    createdBy?: string;
+
+    @Column('uuid', { nullable: true })
+    updatedBy?: string;
 }

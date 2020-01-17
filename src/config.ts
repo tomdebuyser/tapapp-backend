@@ -90,6 +90,10 @@ class Config {
         return process.env.MANDRILL_API_KEY as string;
     }
 
+    static get mailFrom(): string {
+        return process.env.MAIL_FROM as string;
+    }
+
     static get redisUrl(): string {
         return process.env.REDIS_URL as string;
     }

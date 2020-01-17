@@ -31,6 +31,8 @@ export class RolesQueries {
                 'role.id',
                 'role.createdAt',
                 'role.updatedAt',
+                'role.createdBy',
+                'role.updatedBy',
                 'role.name',
                 'role.permissions',
             ])

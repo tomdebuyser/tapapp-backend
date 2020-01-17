@@ -16,9 +16,13 @@ import { UnauthorizedException } from '@nestjs/common';
 
 import { AuthenticationService } from './authentication.service';
 import { UserRepository } from '../database';
-import { createTestUser } from '../_util/testing';
+import { createTestUser, createTestUserSession } from '../_util/testing';
 import { UserState } from '../_shared/constants';
-import { ResetTokenInvalid, ResetTokenExpired } from './errors';
+import {
+    ResetTokenInvalid,
+    ResetTokenExpired,
+    AccountNotActive,
+} from './errors';
 import { MailerService } from '../mailer/mailer.service';
 
 describe('AuthenticationService', () => {
@@ -55,7 +59,7 @@ describe('AuthenticationService', () => {
         reset(jwtService);
     });
 
-    describe('validateCredentials', () => {
+    describe('login', () => {
         it('should validate the login credentials correctly', async () => {
             const email = faker.internet.email();
             const password = 'Password1%';
@@ -64,9 +68,7 @@ describe('AuthenticationService', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            expect(
-                await authService.validateCredentials(email, password),
-            ).toBeTruthy();
+            expect(await authService.login(email, password)).toBeTruthy();
         });
 
         it('should throw an error when the linked user is not found', async () => {
@@ -75,8 +77,24 @@ describe('AuthenticationService', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                authService.validateCredentials(email, password),
+                authService.login(email, password),
             ).rejects.toThrowError(UnauthorizedException);
+        });
+
+        it('should throw an error when the user is not active', async () => {
+            const email = faker.internet.email();
+            const password = 'Password1%';
+            const user = createTestUser({
+                email,
+                password,
+                state: UserState.Registering,
+            });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+
+            await expect(
+                authService.login(email, password),
+            ).rejects.toThrowError(AccountNotActive);
         });
 
         it('should throw an error when the passwords do not match', async () => {
@@ -90,7 +108,7 @@ describe('AuthenticationService', () => {
             when(userRepository.findOne(anything())).thenResolve(user);
 
             await expect(
-                authService.validateCredentials(email, password),
+                authService.login(email, password),
             ).rejects.toThrowError(UnauthorizedException);
         });
     });

@@ -8,6 +8,8 @@ export enum UsersSortColumns {
     State = 'state',
     CreatedAt = 'createdAt',
     UpdatedAt = 'updatedAt',
+    CreatedBy = 'createdBy',
+    UpdatedBy = 'updatedBy',
     FirstName = 'firstName',
     LastName = 'lastName',
 }

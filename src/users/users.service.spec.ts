@@ -20,7 +20,11 @@ import {
     UserNotFound,
     AccountAlreadyActive,
 } from './errors';
-import { createTestUser, createTestRole } from '../_util/testing';
+import {
+    createTestUser,
+    createTestRole,
+    createTestUserSession,
+} from '../_util/testing';
 import { MailerService } from '../mailer/mailer.service';
 import { UserState } from '../_shared/constants';
 
@@ -72,6 +76,7 @@ describe('UsersService', () => {
             const roleIds = [faker.random.uuid()];
             const resetToken = faker.random.alphaNumeric(10);
             const roles = [createTestRole()];
+            const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(null);
             when(jwtService.signAsync(anything(), anything())).thenResolve(
@@ -81,6 +86,7 @@ describe('UsersService', () => {
 
             await usersService.createUser(
                 { email, firstName, lastName, roleIds },
+                session,
                 'origin',
             );
 
@@ -92,6 +98,8 @@ describe('UsersService', () => {
                         firstName,
                         lastName,
                         roles,
+                        createdBy: session.userId,
+                        updatedBy: session.userId,
                     }),
                 ),
             ).once();
@@ -102,6 +110,7 @@ describe('UsersService', () => {
             const roleIds = [faker.random.uuid()];
             const resetToken = faker.random.alphaNumeric(10);
             const roles = [createTestRole()];
+            const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(null);
             when(jwtService.signAsync(anything(), anything())).thenResolve(
@@ -109,7 +118,11 @@ describe('UsersService', () => {
             );
             when(roleRepository.find(anything())).thenResolve(roles);
 
-            await usersService.createUser({ email, roleIds }, 'origin');
+            await usersService.createUser(
+                { email, roleIds },
+                session,
+                'origin',
+            );
 
             verify(
                 userRepository.save(
@@ -117,6 +130,8 @@ describe('UsersService', () => {
                         email,
                         resetToken,
                         roles,
+                        createdBy: session.userId,
+                        updatedBy: session.userId,
                     }),
                 ),
             ).once();
@@ -133,6 +148,7 @@ describe('UsersService', () => {
                         email: faker.internet.email(),
                         roleIds: [faker.random.uuid()],
                     },
+                    createTestUserSession(),
                     'origin',
                 ),
             ).rejects.toThrowError(EmailAlreadyInUse);
@@ -148,6 +164,7 @@ describe('UsersService', () => {
                         email: faker.internet.email(),
                         roleIds: [faker.random.uuid()],
                     },
+                    createTestUserSession(),
                     'origin',
                 ),
             ).rejects.toThrowError(RoleNotFound);
@@ -158,19 +175,22 @@ describe('UsersService', () => {
         it('should resend the register email correctly', async () => {
             const user = createTestUser({ state: UserState.Registering });
             const resetToken = faker.random.alphaNumeric(10);
+            const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(user);
             when(jwtService.signAsync(anything(), anything())).thenResolve(
                 resetToken,
             );
 
-            await usersService.resendRegisterMail(user.id, 'origin');
+            await usersService.resendRegisterMail(user.id, session, 'origin');
 
             verify(
                 userRepository.save(
                     objectContaining({
                         ...user,
                         resetToken,
+                        createdBy: session.userId,
+                        updatedBy: session.userId,
                     }),
                 ),
             ).once();
@@ -182,7 +202,11 @@ describe('UsersService', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                usersService.resendRegisterMail(userId, 'origin'),
+                usersService.resendRegisterMail(
+                    userId,
+                    createTestUserSession(),
+                    'origin',
+                ),
             ).rejects.toThrowError(UserNotFound);
         });
 
@@ -192,7 +216,11 @@ describe('UsersService', () => {
             when(userRepository.findOne(anything())).thenResolve(user);
 
             await expect(
-                usersService.resendRegisterMail(user.id, 'origin'),
+                usersService.resendRegisterMail(
+                    user.id,
+                    createTestUserSession(),
+                    'origin',
+                ),
             ).rejects.toThrowError(AccountAlreadyActive);
         });
     });

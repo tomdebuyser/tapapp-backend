@@ -14,7 +14,11 @@ import * as faker from 'faker';
 import { RolesService } from './roles.service';
 import { RoleRepository, Permissions } from '../database';
 import { RoleNameAlreadyInUse } from './errors';
-import { createTestRole, createDefaultPermissions } from '../_util/testing';
+import {
+    createTestRole,
+    createDefaultPermissions,
+    createTestUserSession,
+} from '../_util/testing';
 
 describe('RolesService', () => {
     let rolesService: RolesService;
@@ -52,16 +56,19 @@ describe('RolesService', () => {
                     edit: true,
                 },
             };
+            const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(null);
 
-            await rolesService.createRole({ name, permissions });
+            await rolesService.createRole({ name, permissions }, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
                         name,
                         permissions: createDefaultPermissions(permissions),
+                        createdBy: session.userId,
+                        updatedBy: session.userId,
                     }),
                 ),
             ).once();
@@ -69,16 +76,19 @@ describe('RolesService', () => {
 
         it('should create a role with name and permissions #2', async () => {
             const name = faker.name.jobTitle();
+            const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(null);
 
-            await rolesService.createRole({ name, permissions: {} });
+            await rolesService.createRole({ name, permissions: {} }, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
                         name,
                         permissions: createDefaultPermissions(),
+                        createdBy: session.userId,
+                        updatedBy: session.userId,
                     }),
                 ),
             ).once();
@@ -88,9 +98,9 @@ describe('RolesService', () => {
             const role = createTestRole();
             when(roleRepository.findOne(anything())).thenResolve(role);
 
-            await expect(rolesService.createRole(role)).rejects.toThrowError(
-                RoleNameAlreadyInUse,
-            );
+            await expect(
+                rolesService.createRole(role, createTestUserSession()),
+            ).rejects.toThrowError(RoleNameAlreadyInUse);
         });
     });
 });

@@ -12,7 +12,7 @@ import {
 } from './errors';
 import { MailerService } from '../mailer/mailer.service';
 import { registerMessage } from '../mailer/messages';
-import { UserState } from '../_shared/constants';
+import { UserState, IUserSession } from '../_shared/constants';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,11 @@ export class UsersService {
         private readonly mailerService: MailerService,
     ) {}
 
-    async createUser(body: CreateUserRequest, origin: string): Promise<void> {
+    async createUser(
+        body: CreateUserRequest,
+        session: IUserSession,
+        origin: string,
+    ): Promise<void> {
         const { email, firstName, lastName } = body;
         const roleIds = Array.from(new Set(body.roleIds));
 
@@ -47,10 +51,14 @@ export class UsersService {
         user.lastName = lastName || null;
 
         // Add reset token and send register mail
-        await this.addResetTokenAndSendMail(user, origin);
+        await this.addResetTokenAndSendMail(user, session, origin);
     }
 
-    async resendRegisterMail(userId: string, origin: string): Promise<void> {
+    async resendRegisterMail(
+        userId: string,
+        session: IUserSession,
+        origin: string,
+    ): Promise<void> {
         // The user should exist and be not active yet
         const existingUser = await this.userRepository.findOne({
             id: userId,
@@ -63,11 +71,12 @@ export class UsersService {
         }
 
         // Add reset token and send register mail
-        await this.addResetTokenAndSendMail(existingUser, origin);
+        await this.addResetTokenAndSendMail(existingUser, session, origin);
     }
 
     private async addResetTokenAndSendMail(
         user: User,
+        session: IUserSession,
         origin: string,
     ): Promise<void> {
         const { email } = user;
@@ -78,6 +87,8 @@ export class UsersService {
             { expiresIn: '1d' },
         );
         user.resetToken = resetToken;
+        user.createdBy = session.userId;
+        user.updatedBy = session.userId;
 
         await this.userRepository.save(user);
 

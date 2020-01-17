@@ -9,6 +9,8 @@ import {
 import { RolesService } from './roles.service';
 import { RolesQueries } from './roles.queries';
 import { AuthenticatedGuard } from '../_shared/guards';
+import { UserSession } from '../_shared/decorators';
+import { IUserSession } from '../_shared/constants';
 
 @UseGuards(AuthenticatedGuard)
 @ApiTags('roles')
@@ -25,7 +27,10 @@ export class RolesController {
     }
 
     @Post()
-    createRole(@Body() body: CreateRoleRequest): Promise<void> {
-        return this.rolesService.createRole(body);
+    createRole(
+        @Body() body: CreateRoleRequest,
+        @UserSession() session: IUserSession,
+    ): Promise<void> {
+        return this.rolesService.createRole(body, session);
     }
 }

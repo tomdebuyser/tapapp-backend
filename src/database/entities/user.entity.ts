@@ -30,6 +30,4 @@ export class User extends BaseEntity {
     @ManyToMany(() => Role)
     @JoinTable()
     roles: Role[];
-
-    // TODO: Add createdBy field to show which admin invited the user
 }

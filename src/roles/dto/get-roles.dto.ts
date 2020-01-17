@@ -8,6 +8,8 @@ export enum RolesSortColumns {
     Name = 'name',
     CreatedAt = 'createdAt',
     UpdatedAt = 'updatedAt',
+    CreatedBy = 'createdBy',
+    UpdatedBy = 'updatedBy',
 }
 
 export class GetRolesRequestQuery extends PagingQuery {

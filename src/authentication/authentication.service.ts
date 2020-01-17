@@ -5,7 +5,11 @@ import * as bcrypt from 'bcrypt';
 
 import { UserRepository, User } from '../database';
 import { ResetPasswordRequest, RequestPasswordResetRequest } from './dto';
-import { ResetTokenInvalid, ResetTokenExpired } from './errors';
+import {
+    ResetTokenInvalid,
+    ResetTokenExpired,
+    AccountNotActive,
+} from './errors';
 import { UserState } from '../_shared/constants';
 import { MailerService } from '../mailer/mailer.service';
 import { requestPasswordResetMessage } from '../mailer/messages';
@@ -18,11 +22,16 @@ export class AuthenticationService {
         private readonly mailerService: MailerService,
     ) {}
 
-    async validateCredentials(email: string, password: string): Promise<User> {
+    async login(email: string, password: string): Promise<User> {
         // Try to find the user
         const user = await this.userRepository.findOne({ email });
         if (!user) {
             throw new UnauthorizedException();
+        }
+
+        // Check if the user has an appropriate state to login
+        if (user.state !== UserState.Active) {
+            throw new AccountNotActive();
         }
 
         // Given password should match the stored hashed password
@@ -55,6 +64,7 @@ export class AuthenticationService {
             { expiresIn: '1d' },
         );
         user.resetToken = resetToken;
+        user.updatedBy = user.id;
         await this.userRepository.save(user);
 
         // Send mail to inform user
@@ -91,6 +101,7 @@ export class AuthenticationService {
         user.state = UserState.Active;
         user.password = hashedPassword;
         user.resetToken = null;
+        user.updatedBy = user.id;
 
         await this.userRepository.save(user);
     }

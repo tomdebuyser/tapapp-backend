@@ -18,7 +18,7 @@ export class MailerService {
     sendMail(message: MandrillMessage): Promise<unknown> {
         return new Promise((resolve, reject) => {
             this.mandrillClient.messages.send(
-                { message: { ...message, from_email: 'silvernext@icapps.be' } }, // eslint-disable-line @typescript-eslint/camelcase
+                { message: { ...message, from_email: Config.mailFrom } }, // eslint-disable-line @typescript-eslint/camelcase
                 function onSuccess(result) {
                     console.info('Mail has been sent!');
                     console.info(message.text);

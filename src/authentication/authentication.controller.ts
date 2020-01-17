@@ -36,9 +36,9 @@ export class AuthenticationController {
     @HttpCode(HttpStatus.OK)
     @Post('login')
     login(
-        @UserSession() session: IUserSession,
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
+        @UserSession() session: IUserSession,
     ): Promise<LoggedInUserResponse> {
         return this.authQueries.getLoggedInUser(session.userId);
     }
