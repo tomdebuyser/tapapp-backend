@@ -1,10 +1,22 @@
-import { Controller, Post, Body, Get, Query, UseGuards } from '@nestjs/common';
+import {
+    Controller,
+    Post,
+    Body,
+    Get,
+    Query,
+    UseGuards,
+    Patch,
+    Param,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import {
     CreateRoleRequest,
     GetRolesResponse,
     GetRolesRequestQuery,
+    RoleResponse,
+    RoleIdParam,
+    UpdateRoleRequest,
 } from './dto';
 import { RolesService } from './roles.service';
 import { RolesQueries } from './roles.queries';
@@ -27,10 +39,26 @@ export class RolesController {
     }
 
     @Post()
-    createRole(
+    async createRole(
         @Body() body: CreateRoleRequest,
         @UserSession() session: IUserSession,
-    ): Promise<void> {
-        return this.rolesService.createRole(body, session);
+    ): Promise<RoleResponse> {
+        const roleId = await this.rolesService.createRole(body, session);
+        return this.rolesQueries.getRole(roleId);
+    }
+
+    @Patch(':roleId')
+    async updateRole(
+        @Body() body: UpdateRoleRequest,
+        @Param() params: RoleIdParam,
+        @UserSession() session: IUserSession,
+    ): Promise<RoleResponse> {
+        // Only the provided properties will be updated
+        const roleId = await this.rolesService.updateRole(
+            body,
+            params.roleId,
+            session,
+        );
+        return this.rolesQueries.getRole(roleId);
     }
 }

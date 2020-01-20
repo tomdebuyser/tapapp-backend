@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import * as faker from 'faker';
 
 import { RolesQueries } from './roles.queries';
 import { DatabaseModule, RoleRepository } from '../database';
@@ -21,6 +22,20 @@ describe('RolesQueries', () => {
 
     afterAll(() => {
         roleRepository.manager.connection.close();
+    });
+
+    describe('getRole', () => {
+        it('should return the requested role correctly', async () => {
+            const result = await rolesQueries.getRole(
+                '0c1510ab-5dca-41e2-8912-ee165140ae90',
+            );
+            expect(result).toMatchSnapshot();
+        });
+
+        it('should return nothing if the requested role does not exist', async () => {
+            const result = await rolesQueries.getRole(faker.random.uuid());
+            expect(result).toMatchSnapshot();
+        });
     });
 
     describe('getRoles', () => {

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 import { RoleRepository, Role } from '../database';
-import { CreateRoleRequest } from './dto';
-import { RoleNameAlreadyInUse } from './errors';
+import { CreateRoleRequest, UpdateRoleRequest } from './dto';
+import { RoleNameAlreadyInUse, RoleNotFound } from './errors';
 import { IUserSession } from '../_shared/constants';
+import { mergeDeepLeft } from 'ramda';
 
 @Injectable()
 export class RolesService {
@@ -12,7 +13,7 @@ export class RolesService {
     async createRole(
         body: CreateRoleRequest,
         session: IUserSession,
-    ): Promise<void> {
+    ): Promise<string> {
         const { name, permissions } = body;
         const existingRole = await this.roleRepository.findOne({ name });
         if (existingRole) {
@@ -35,5 +36,43 @@ export class RolesService {
         role.updatedBy = session.userId;
 
         await this.roleRepository.save(role);
+
+        return role.id;
+    }
+
+    async updateRole(
+        body: UpdateRoleRequest,
+        roleId: string,
+        session: IUserSession,
+    ): Promise<string> {
+        const { name, permissions } = body;
+
+        // The role should already exist
+        const existingRole = await this.roleRepository.findOne({ id: roleId });
+        if (!existingRole) {
+            throw new RoleNotFound();
+        }
+
+        // There should not exist another role with the given name
+        const otherRole = name
+            ? await this.roleRepository.findOne({ name })
+            : null;
+        if (otherRole && otherRole.id !== roleId) {
+            throw new RoleNameAlreadyInUse();
+        }
+
+        // Update the properties if provided
+        if (name) existingRole.name = name;
+        if (permissions) {
+            existingRole.permissions = mergeDeepLeft(
+                permissions,
+                existingRole.permissions,
+            );
+        }
+        existingRole.updatedBy = session.userId;
+
+        await this.roleRepository.save(existingRole);
+
+        return existingRole.id;
     }
 }

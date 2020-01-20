@@ -1,8 +1,7 @@
 import { IsOptional, IsEnum } from 'class-validator';
-import { Type } from 'class-transformer';
 
-import { PagingQuery, PagingMeta, BaseEntityResponse } from '../../_shared/dto';
-import { PermissionsDto } from './permissions.dto';
+import { PagingQuery, PagingMeta } from '../../_shared/dto';
+import { RoleResponse } from './get-role.dto';
 
 export enum RolesSortColumns {
     Name = 'name',
@@ -20,11 +19,5 @@ export class GetRolesRequestQuery extends PagingQuery {
 
 export class GetRolesResponse {
     readonly meta: PagingMeta;
-    readonly data: GetRolesResponseData[];
-}
-
-class GetRolesResponseData extends BaseEntityResponse {
-    readonly name: string;
-    @Type(() => PermissionsDto)
-    readonly permissions: PermissionsDto;
+    readonly data: RoleResponse[];
 }
