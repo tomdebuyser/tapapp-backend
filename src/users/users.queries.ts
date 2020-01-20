@@ -41,9 +41,12 @@ export class UsersQueries {
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)
-            .where('user.email ILIKE :search', {
-                search: `%${query.search}%`,
-            })
+            .where(
+                'user.email ILIKE :search OR user.firstName ILIKE :search OR user.lastName ILIKE :search',
+                {
+                    search: `%${query.search}%`,
+                },
+            )
             .getManyAndCount();
 
         return {

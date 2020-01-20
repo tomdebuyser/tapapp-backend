@@ -486,6 +486,35 @@ exports[`UsersQueries getUsers should return a paged list of users: #4 1`] = `
 Object {
   "data": Array [
     User {
+      "createdAt": 2020-01-01T08:21:59.730Z,
+      "createdBy": "development@icapps.com",
+      "email": "user1@silvernext.com",
+      "firstName": "Tom",
+      "id": "49affd08-f461-4e80-899f-7612e971ff12",
+      "lastName": "De Buyser",
+      "roles": Array [
+        Role {
+          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
+          "name": "Admin",
+        },
+      ],
+      "state": "ACTIVE",
+      "updatedAt": 2020-01-01T08:21:59.730Z,
+      "updatedBy": "development@icapps.com",
+    },
+  ],
+  "meta": Object {
+    "count": 1,
+    "skip": 0,
+    "totalCount": 1,
+  },
+}
+`;
+
+exports[`UsersQueries getUsers should return a paged list of users: #5 1`] = `
+Object {
+  "data": Array [
+    User {
       "createdAt": 2019-01-01T08:32:59.730Z,
       "createdBy": "development@icapps.com",
       "email": "user4@silvernext.com",
