@@ -1,17 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
+import { SelectQueryBuilder } from 'typeorm';
 
 import {
     GetUsersRequestQuery,
     GetUsersResponse,
     UsersSortColumns,
+    UserResponse,
 } from './dto';
-import { UserRepository } from '../database';
+import { UserRepository, User } from '../database';
 import { SortDirection } from '../_shared/constants';
 
 @Injectable()
 export class UsersQueries {
     constructor(private readonly userRepository: UserRepository) {}
+
+    async getUser(userId: string): Promise<UserResponse> {
+        return this.selectUserColumns(
+            this.userRepository.createQueryBuilder('user'),
+        )
+            .where('user.id = :userId', { userId })
+            .getOne();
+    }
 
     async getUsers(
         requestQuery: GetUsersRequestQuery,
@@ -25,22 +35,9 @@ export class UsersQueries {
         };
         const query = mergeDeepLeft(requestQuery, defaultQuery);
 
-        const [users, totalCount] = await this.userRepository
-            .createQueryBuilder('user')
-            .select([
-                'user.id',
-                'user.createdAt',
-                'user.updatedAt',
-                'user.createdBy',
-                'user.updatedBy',
-                'user.email',
-                'user.state',
-                'user.firstName',
-                'user.lastName',
-                'role.id',
-                'role.name',
-            ])
-            .innerJoin('user.roles', 'role')
+        const [users, totalCount] = await this.selectUserColumns(
+            this.userRepository.createQueryBuilder('user'),
+        )
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)
@@ -57,5 +54,25 @@ export class UsersQueries {
             },
             data: users,
         };
+    }
+
+    private selectUserColumns(
+        queryBuilder: SelectQueryBuilder<User>,
+    ): SelectQueryBuilder<User> {
+        return queryBuilder
+            .select([
+                'user.id',
+                'user.createdAt',
+                'user.updatedAt',
+                'user.createdBy',
+                'user.updatedBy',
+                'user.email',
+                'user.state',
+                'user.firstName',
+                'user.lastName',
+                'role.id',
+                'role.name',
+            ])
+            .innerJoin('user.roles', 'role');
     }
 }

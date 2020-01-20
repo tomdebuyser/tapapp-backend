@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { In } from 'typeorm';
 
 import { UserRepository, User, RoleRepository } from '../database';
-import { CreateUserRequest } from './dto';
+import { CreateUserRequest, UpdateUserRequest } from './dto';
 import {
     EmailAlreadyInUse,
     RoleNotFound,
@@ -27,7 +27,7 @@ export class UsersService {
         body: CreateUserRequest,
         session: IUserSession,
         origin: string,
-    ): Promise<void> {
+    ): Promise<string> {
         const { email, firstName, lastName } = body;
         const roleIds = Array.from(new Set(body.roleIds));
 
@@ -52,6 +52,41 @@ export class UsersService {
 
         // Add reset token and send register mail
         await this.addResetTokenAndSendMail(user, session, origin);
+
+        return user.id;
+    }
+
+    async updateUser(
+        body: UpdateUserRequest,
+        userId: string,
+        session: IUserSession,
+    ): Promise<string> {
+        const { firstName, lastName } = body;
+        const roleIds = Array.from(new Set(body.roleIds || []));
+
+        // The user should already exist
+        const existingUser = await this.userRepository.findOne({
+            id: userId,
+        });
+        if (!existingUser) {
+            throw new UserNotFound();
+        }
+
+        // Update the properties if provided
+        const roles = roleIds.length
+            ? await this.roleRepository.find({ id: In(roleIds) })
+            : [];
+        if (roles.length !== roleIds.length) {
+            throw new RoleNotFound();
+        }
+        if (roles.length) existingUser.roles = roles;
+        if (firstName) existingUser.firstName = firstName;
+        if (lastName) existingUser.lastName = lastName;
+        existingUser.updatedBy = session.userId;
+
+        await this.userRepository.save(existingUser);
+
+        return existingUser.id;
     }
 
     async resendRegisterMail(

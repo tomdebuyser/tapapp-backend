@@ -15,7 +15,7 @@ import { Response } from 'express';
 import {
     ResetPasswordRequest,
     LoginRequest,
-    LoggedInUserResponse,
+    AuthenticationUserResponse,
     RequestPasswordResetRequest,
 } from './dto';
 import { AuthenticationService } from './authentication.service';
@@ -39,16 +39,16 @@ export class AuthenticationController {
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
         @UserSession() session: IUserSession,
-    ): Promise<LoggedInUserResponse> {
-        return this.authQueries.getLoggedInUser(session.userId);
+    ): Promise<AuthenticationUserResponse> {
+        return this.authQueries.getAuthenticatedUser(session.userId);
     }
 
     @UseGuards(AuthenticatedGuard)
     @Get('authenticate')
     authenticate(
         @UserSession() session: IUserSession,
-    ): Promise<LoggedInUserResponse> {
-        return this.authQueries.getLoggedInUser(session.userId);
+    ): Promise<AuthenticationUserResponse> {
+        return this.authQueries.getAuthenticatedUser(session.userId);
     }
 
     @UseGuards(AuthenticatedGuard)

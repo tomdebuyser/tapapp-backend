@@ -1,7 +1,7 @@
 import { IsOptional, IsEnum } from 'class-validator';
 
-import { PagingQuery, PagingMeta, BaseEntityResponse } from '../../_shared/dto';
-import { UserState } from '../../_shared/constants';
+import { PagingQuery, PagingMeta } from '../../_shared/dto';
+import { UserResponse } from './get-user.dto';
 
 export enum UsersSortColumns {
     Email = 'email',
@@ -22,18 +22,5 @@ export class GetUsersRequestQuery extends PagingQuery {
 
 export class GetUsersResponse {
     readonly meta: PagingMeta;
-    readonly data: GetUsersResponseData[];
-}
-
-class GetUsersResponseData extends BaseEntityResponse {
-    readonly email: string;
-    readonly state: UserState;
-    readonly roles: GetUsersResponseDataRole[];
-    readonly firstName?: string;
-    readonly lastName?: string;
-}
-
-class GetUsersResponseDataRole {
-    readonly id: string;
-    readonly name: string;
+    readonly data: UserResponse[];
 }

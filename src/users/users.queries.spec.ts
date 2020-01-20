@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import * as faker from 'faker';
 
 import { UsersQueries } from './users.queries';
 import { DatabaseModule, UserRepository } from '../database';
@@ -21,6 +22,20 @@ describe('UsersQueries', () => {
 
     afterAll(() => {
         userRepository.manager.connection.close();
+    });
+
+    describe('getUser', () => {
+        it('should return the requested user correctly', async () => {
+            const result = await usersQueries.getUser(
+                'c4cb4582-1e97-4e3e-9d49-c744c8c1a229',
+            );
+            expect(result).toMatchSnapshot();
+        });
+
+        it('should return nothing if the requested user does not exist', async () => {
+            const result = await usersQueries.getUser(faker.random.uuid());
+            expect(result).toMatchSnapshot();
+        });
     });
 
     describe('getUsers', () => {

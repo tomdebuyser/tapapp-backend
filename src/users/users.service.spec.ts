@@ -171,6 +171,82 @@ describe('UsersService', () => {
         });
     });
 
+    describe('updateUser', () => {
+        it('should update the user correctly #1', async () => {
+            const firstName = faker.name.firstName();
+            const lastName = faker.name.lastName();
+            const user = createTestUser({ id: faker.random.uuid() });
+            const session = createTestUserSession();
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+            when(roleRepository.find(anything())).thenResolve([]);
+
+            await usersService.updateUser(
+                { firstName, lastName },
+                user.id,
+                session,
+            );
+
+            verify(
+                userRepository.save(
+                    objectContaining({
+                        firstName,
+                        lastName,
+                        updatedBy: session.userId,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should update the user correctly #2', async () => {
+            const roleIds = [faker.random.uuid()];
+            const user = createTestUser({ id: faker.random.uuid() });
+            const roles = [createTestRole()];
+            const session = createTestUserSession();
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+            when(roleRepository.find(anything())).thenResolve(roles);
+
+            await usersService.updateUser({ roleIds }, user.id, session);
+
+            verify(
+                userRepository.save(
+                    objectContaining({
+                        roles,
+                        updatedBy: session.userId,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should throw an error when the user does not exist', async () => {
+            when(userRepository.findOne(anything())).thenResolve(null);
+
+            await expect(
+                usersService.updateUser(
+                    {},
+                    faker.random.uuid(),
+                    createTestUserSession(),
+                ),
+            ).rejects.toThrowError(UserNotFound);
+        });
+
+        it('should throw an error when a given role does not exist', async () => {
+            const user = createTestUser({ id: faker.random.uuid() });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+            when(roleRepository.find(anything())).thenResolve([]);
+
+            await expect(
+                usersService.updateUser(
+                    { roleIds: [faker.random.uuid()] },
+                    user.id,
+                    createTestUserSession(),
+                ),
+            ).rejects.toThrowError(RoleNotFound);
+        });
+    });
+
     describe('resendRegisterMail', () => {
         it('should resend the register email correctly', async () => {
             const user = createTestUser({ state: UserState.Registering });

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { UserRepository } from '../database';
 import { IUserSession } from '../_shared/constants';
-import { LoggedInUserResponse } from './dto';
+import { AuthenticationUserResponse } from './dto';
 
 @Injectable()
 export class AuthenticationQueries {
@@ -21,7 +21,9 @@ export class AuthenticationQueries {
         };
     }
 
-    async getLoggedInUser(userId: string): Promise<LoggedInUserResponse> {
+    async getAuthenticatedUser(
+        userId: string,
+    ): Promise<AuthenticationUserResponse> {
         // TODO: Extend this representation with roles later
         return await this.userRepository
             .createQueryBuilder('user')

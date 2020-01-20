@@ -38,13 +38,13 @@ describe('AuthenticationQueries', () => {
     describe('getLoggedInUser', () => {
         it(`should return the correct user`, async () => {
             const userId = 'c4cb4582-1e97-4e3e-9d49-c744c8c1a229';
-            const result = await authQueries.getLoggedInUser(userId);
+            const result = await authQueries.getAuthenticatedUser(userId);
             expect(result).toMatchSnapshot();
         });
 
         it('should return no user if not found', async () => {
             const userId = '63440b0f-59b3-473e-bf87-2c05136cc005';
-            const result = await authQueries.getLoggedInUser(userId);
+            const result = await authQueries.getAuthenticatedUser(userId);
             expect(result).toMatchSnapshot();
         });
     });

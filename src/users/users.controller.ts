@@ -8,6 +8,7 @@ import {
     Param,
     HttpCode,
     HttpStatus,
+    Patch,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -15,7 +16,9 @@ import {
     CreateUserRequest,
     GetUsersResponse,
     GetUsersRequestQuery,
-    ResendRegisterMailRequestParams,
+    UpdateUserRequest,
+    UserIdParam,
+    UserResponse,
 } from './dto';
 import { UsersService } from './users.service';
 import { UsersQueries } from './users.queries';
@@ -38,18 +41,38 @@ export class UsersController {
     }
 
     @Post()
-    createUser(
+    async createUser(
         @Body() body: CreateUserRequest,
         @UserSession() session: IUserSession,
         @Origin() origin: string,
-    ): Promise<void> {
-        return this.usersService.createUser(body, session, origin);
+    ): Promise<UserResponse> {
+        const userId = await this.usersService.createUser(
+            body,
+            session,
+            origin,
+        );
+        return this.usersQueries.getUser(userId);
+    }
+
+    @Patch(':userId')
+    async updateUser(
+        @Body() body: UpdateUserRequest,
+        @Param() params: UserIdParam,
+        @UserSession() session: IUserSession,
+    ): Promise<UserResponse> {
+        // Only the provided properties will be updated
+        const userId = await this.usersService.updateUser(
+            body,
+            params.userId,
+            session,
+        );
+        return this.usersQueries.getUser(userId);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post(':userId/resend-register-mail')
     resendRegisterMail(
-        @Param() params: ResendRegisterMailRequestParams,
+        @Param() params: UserIdParam,
         @UserSession() session: IUserSession,
         @Origin() origin: string,
     ): Promise<void> {
