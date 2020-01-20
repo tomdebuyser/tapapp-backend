@@ -64,7 +64,7 @@ export class AuthenticationService {
             { expiresIn: '1d' },
         );
         user.resetToken = resetToken;
-        user.updatedBy = user.id;
+        user.updatedBy = user.email;
         await this.userRepository.save(user);
 
         // Send mail to inform user
@@ -101,7 +101,7 @@ export class AuthenticationService {
         user.state = UserState.Active;
         user.password = hashedPassword;
         user.resetToken = null;
-        user.updatedBy = user.id;
+        user.updatedBy = user.email;
 
         await this.userRepository.save(user);
     }

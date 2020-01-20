@@ -98,8 +98,8 @@ describe('UsersService', () => {
                         firstName,
                         lastName,
                         roles,
-                        createdBy: session.userId,
-                        updatedBy: session.userId,
+                        createdBy: session.email,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -130,8 +130,8 @@ describe('UsersService', () => {
                         email,
                         resetToken,
                         roles,
-                        createdBy: session.userId,
-                        updatedBy: session.userId,
+                        createdBy: session.email,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -192,7 +192,7 @@ describe('UsersService', () => {
                     objectContaining({
                         firstName,
                         lastName,
-                        updatedBy: session.userId,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -213,7 +213,7 @@ describe('UsersService', () => {
                 userRepository.save(
                     objectContaining({
                         roles,
-                        updatedBy: session.userId,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -265,8 +265,8 @@ describe('UsersService', () => {
                     objectContaining({
                         ...user,
                         resetToken,
-                        createdBy: session.userId,
-                        updatedBy: session.userId,
+                        createdBy: session.email,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();

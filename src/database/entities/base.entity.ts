@@ -15,9 +15,9 @@ export abstract class BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @Column('uuid', { nullable: true })
+    @Column({ nullable: true })
     createdBy?: string;
 
-    @Column('uuid', { nullable: true })
+    @Column({ nullable: true })
     updatedBy?: string;
 }

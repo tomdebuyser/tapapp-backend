@@ -68,8 +68,8 @@ describe('RolesService', () => {
                     objectContaining({
                         name,
                         permissions: createDefaultPermissions(permissions),
-                        createdBy: session.userId,
-                        updatedBy: session.userId,
+                        createdBy: session.email,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -88,8 +88,8 @@ describe('RolesService', () => {
                     objectContaining({
                         name,
                         permissions: createDefaultPermissions(),
-                        createdBy: session.userId,
-                        updatedBy: session.userId,
+                        createdBy: session.email,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();

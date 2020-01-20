@@ -27,7 +27,7 @@ Object {
   "data": Array [
     User {
       "createdAt": 2020-01-01T10:21:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user2@silvernext.com",
       "firstName": "Benno",
       "id": "45c2c554-b06a-4209-aba8-b097cb5f8566",
@@ -44,7 +44,7 @@ Object {
       ],
       "state": "ACTIVE",
       "updatedAt": 2020-01-05T08:21:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
     User {
       "createdAt": 2020-01-02T09:21:59.730Z,
@@ -429,7 +429,7 @@ Object {
   "data": Array [
     User {
       "createdAt": 2020-01-01T08:21:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user1@silvernext.com",
       "firstName": "Tom",
       "id": "49affd08-f461-4e80-899f-7612e971ff12",
@@ -442,7 +442,7 @@ Object {
       ],
       "state": "ACTIVE",
       "updatedAt": 2020-01-01T08:21:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
   ],
   "meta": Object {
@@ -487,7 +487,7 @@ Object {
   "data": Array [
     User {
       "createdAt": 2019-01-01T08:32:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user4@silvernext.com",
       "firstName": null,
       "id": "c356fce8-9f95-4c69-9e71-8f4d74f49b8f",
@@ -500,11 +500,11 @@ Object {
       ],
       "state": "ACTIVE",
       "updatedAt": 2020-01-02T08:59:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
     User {
       "createdAt": 2020-01-01T08:21:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user1@silvernext.com",
       "firstName": "Tom",
       "id": "49affd08-f461-4e80-899f-7612e971ff12",
@@ -517,11 +517,11 @@ Object {
       ],
       "state": "ACTIVE",
       "updatedAt": 2020-01-01T08:21:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
     User {
       "createdAt": 2020-01-01T08:21:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user3@silvernext.com",
       "firstName": "Jens",
       "id": "db5e788c-2642-4c40-a63a-f13675048ddc",
@@ -534,7 +534,7 @@ Object {
       ],
       "state": "REGISTERING",
       "updatedAt": 2020-01-01T08:21:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
     User {
       "createdAt": 2020-01-01T08:21:59.730Z,
@@ -555,7 +555,7 @@ Object {
     },
     User {
       "createdAt": 2020-01-01T10:21:59.730Z,
-      "createdBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "createdBy": "development@icapps.com",
       "email": "user2@silvernext.com",
       "firstName": "Benno",
       "id": "45c2c554-b06a-4209-aba8-b097cb5f8566",
@@ -572,7 +572,7 @@ Object {
       ],
       "state": "ACTIVE",
       "updatedAt": 2020-01-05T08:21:59.730Z,
-      "updatedBy": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+      "updatedBy": "development@icapps.com",
     },
     User {
       "createdAt": 2020-01-02T09:21:59.730Z,

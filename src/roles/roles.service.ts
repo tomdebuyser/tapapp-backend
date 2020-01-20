@@ -32,8 +32,8 @@ export class RolesService {
                 edit: permissions.users?.edit || false,
             },
         };
-        role.createdBy = session.userId;
-        role.updatedBy = session.userId;
+        role.createdBy = session.email;
+        role.updatedBy = session.email;
 
         await this.roleRepository.save(role);
 

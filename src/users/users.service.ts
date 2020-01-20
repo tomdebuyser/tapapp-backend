@@ -80,9 +80,9 @@ export class UsersService {
             throw new RoleNotFound();
         }
         if (roles.length) existingUser.roles = roles;
-        if (firstName) existingUser.firstName = firstName;
-        if (lastName) existingUser.lastName = lastName;
-        existingUser.updatedBy = session.userId;
+        if ('firstName' in body) existingUser.firstName = firstName || null;
+        if ('lastName' in body) existingUser.lastName = lastName || null;
+        existingUser.updatedBy = session.email;
 
         await this.userRepository.save(existingUser);
 
@@ -122,8 +122,8 @@ export class UsersService {
             { expiresIn: '1d' },
         );
         user.resetToken = resetToken;
-        user.createdBy = session.userId;
-        user.updatedBy = session.userId;
+        user.createdBy = session.email;
+        user.updatedBy = session.email;
 
         await this.userRepository.save(user);
 
