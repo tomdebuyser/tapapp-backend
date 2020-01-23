@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
-
-import { RoleRepository, Role } from '../database';
-import { CreateRoleRequest, UpdateRoleRequest } from './dto';
-import { RoleNameAlreadyInUse, RoleNotFound } from './errors';
-import { IUserSession } from '../_shared/constants';
 import { mergeDeepLeft } from 'ramda';
+
+import { RoleRepository, Role, UserRepository } from '../database';
+import { CreateRoleRequest, UpdateRoleRequest } from './dto';
+import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
+import { IUserSession } from '../_shared/constants';
 
 @Injectable()
 export class RolesService {
-    constructor(private readonly roleRepository: RoleRepository) {}
+    constructor(
+        private readonly roleRepository: RoleRepository,
+        private readonly userRepository: UserRepository,
+    ) {}
 
     async createRole(
         body: CreateRoleRequest,
@@ -74,5 +77,25 @@ export class RolesService {
         await this.roleRepository.save(existingRole);
 
         return existingRole.id;
+    }
+
+    async deleteRole(roleId: string): Promise<void> {
+        // The role should already exist
+        const existingRole = await this.roleRepository.findOne({ id: roleId });
+        if (!existingRole) {
+            throw new RoleNotFound();
+        }
+
+        // The role should not be used anymore
+        const userWithRole = await this.userRepository
+            .createQueryBuilder('user')
+            .innerJoin('user.roles', 'role', 'role.id = :roleId', { roleId })
+            .getOne();
+        if (userWithRole) {
+            throw new RoleInUse();
+        }
+
+        // Delete the role
+        await this.roleRepository.delete({ id: roleId });
     }
 }

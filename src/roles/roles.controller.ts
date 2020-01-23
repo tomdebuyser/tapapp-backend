@@ -7,6 +7,9 @@ import {
     UseGuards,
     Patch,
     Param,
+    Delete,
+    HttpCode,
+    HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -60,5 +63,11 @@ export class RolesController {
             session,
         );
         return this.rolesQueries.getRole(roleId);
+    }
+
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Delete(':roleId')
+    deleteRole(@Param() params: RoleIdParam): Promise<void> {
+        return this.rolesService.deleteRole(params.roleId);
     }
 }

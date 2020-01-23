@@ -1,4 +1,8 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+    BadRequestException,
+    NotFoundException,
+    MethodNotAllowedException,
+} from '@nestjs/common';
 
 export class RoleNameAlreadyInUse extends BadRequestException {
     constructor() {
@@ -12,5 +16,14 @@ export class RoleNameAlreadyInUse extends BadRequestException {
 export class RoleNotFound extends NotFoundException {
     constructor() {
         super('The given role was not found', 'ROLE_NOT_FOUND');
+    }
+}
+
+export class RoleInUse extends MethodNotAllowedException {
+    constructor() {
+        super(
+            'It is not possible to delete a role that is being used',
+            'ROLE_IN_USE',
+        );
     }
 }

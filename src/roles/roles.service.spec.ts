@@ -12,19 +12,22 @@ import {
 import * as faker from 'faker';
 
 import { RolesService } from './roles.service';
-import { RoleRepository } from '../database';
-import { RoleNameAlreadyInUse, RoleNotFound } from './errors';
+import { RoleRepository, UserRepository, User } from '../database';
+import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
 import {
     createTestRole,
     createDefaultPermissions,
     createTestUserSession,
+    createTestUser,
 } from '../_util/testing';
 import { PermissionsDto } from './dto';
+import { QueryBuilderMock } from '../_util/mocks';
 
 describe('RolesService', () => {
     let rolesService: RolesService;
 
     const roleRepository = mock(RoleRepository);
+    const userRepository = mock(UserRepository);
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -34,6 +37,10 @@ describe('RolesService', () => {
                     provide: getCustomRepositoryToken(RoleRepository),
                     useValue: instance(roleRepository),
                 },
+                {
+                    provide: getCustomRepositoryToken(UserRepository),
+                    useValue: instance(userRepository),
+                },
             ],
         }).compile();
 
@@ -42,6 +49,7 @@ describe('RolesService', () => {
 
     afterEach(() => {
         reset(roleRepository);
+        reset(userRepository);
     });
 
     describe('createRole', () => {
@@ -190,6 +198,46 @@ describe('RolesService', () => {
                     createTestUserSession(),
                 ),
             ).rejects.toThrowError(RoleNameAlreadyInUse);
+        });
+    });
+
+    describe('deleteRole', () => {
+        it('should delete the role correctly', async () => {
+            const role = createTestRole({ id: faker.random.uuid() });
+            when(roleRepository.findOne(anything())).thenResolve(role);
+            when(userRepository.createQueryBuilder(anything())).thenReturn(
+                QueryBuilderMock.instance<User>(null),
+            );
+
+            await rolesService.deleteRole(role.id);
+
+            verify(
+                roleRepository.delete(
+                    objectContaining({
+                        id: role.id,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should throw an error when the role does not exist', async () => {
+            when(roleRepository.findOne(anything())).thenResolve(null);
+
+            await expect(
+                rolesService.deleteRole(faker.random.uuid()),
+            ).rejects.toThrowError(RoleNotFound);
+        });
+
+        it('should throw an error when the role is still in use', async () => {
+            const role = createTestRole({ id: faker.random.uuid() });
+            when(roleRepository.findOne(anything())).thenResolve(role);
+            when(userRepository.createQueryBuilder(anything())).thenReturn(
+                QueryBuilderMock.instance<User>(createTestUser()),
+            );
+
+            await expect(rolesService.deleteRole(role.id)).rejects.toThrowError(
+                RoleInUse,
+            );
         });
     });
 });
