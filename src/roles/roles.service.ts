@@ -72,7 +72,7 @@ export class RolesService {
                 existingRole.permissions,
             );
         }
-        existingRole.updatedBy = session.userId;
+        existingRole.updatedBy = session.email;
 
         await this.roleRepository.save(existingRole);
 

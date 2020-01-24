@@ -2,7 +2,8 @@ import { DeepPartial } from 'typeorm';
 import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
-import { Role, Permissions } from '../../database';
+import { Role } from '../../database';
+import { createDefaultPermissions } from '../permissions.helper';
 
 export function createTestRole(overrides?: DeepPartial<Role>): Role {
     const role = new Role();
@@ -17,19 +18,4 @@ export function createTestRole(overrides?: DeepPartial<Role>): Role {
     role.updatedAt = new Date();
 
     return mergeDeepLeft(overrides, role) as Role;
-}
-
-export function createDefaultPermissions(
-    overrides?: DeepPartial<Permissions>,
-): Permissions {
-    return mergeDeepLeft(overrides, {
-        users: {
-            view: false,
-            edit: false,
-        },
-        roles: {
-            view: false,
-            edit: false,
-        },
-    });
 }

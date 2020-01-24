@@ -16,12 +16,12 @@ import { RoleRepository, UserRepository, User } from '../database';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
 import {
     createTestRole,
-    createDefaultPermissions,
     createTestUserSession,
     createTestUser,
 } from '../_util/testing';
 import { PermissionsDto } from './dto';
 import { QueryBuilderMock } from '../_util/mocks';
+import { createDefaultPermissions } from '../_util/permissions.helper';
 
 describe('RolesService', () => {
     let rolesService: RolesService;
@@ -143,7 +143,7 @@ describe('RolesService', () => {
                                 edit: role.permissions.users.edit,
                             },
                         },
-                        updatedBy: session.userId,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();
@@ -162,7 +162,7 @@ describe('RolesService', () => {
                 roleRepository.save(
                     objectContaining({
                         name,
-                        updatedBy: session.userId,
+                        updatedBy: session.email,
                     }),
                 ),
             ).once();

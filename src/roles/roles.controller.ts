@@ -23,8 +23,11 @@ import {
 } from './dto';
 import { RolesService } from './roles.service';
 import { RolesQueries } from './roles.queries';
-import { AuthenticatedGuard } from '../_shared/guards';
-import { UserSession } from '../_shared/decorators';
+import {
+    AuthenticatedGuard,
+    RequiredPermissionsGuard,
+} from '../_shared/guards';
+import { UserSession, RequiredPermissions } from '../_shared/decorators';
 import { IUserSession } from '../_shared/constants';
 
 @UseGuards(AuthenticatedGuard)
@@ -36,11 +39,15 @@ export class RolesController {
         private readonly rolesQueries: RolesQueries,
     ) {}
 
+    @RequiredPermissions({ roles: { view: true } })
+    @UseGuards(RequiredPermissionsGuard)
     @Get()
     getRoles(@Query() query: GetRolesRequestQuery): Promise<GetRolesResponse> {
         return this.rolesQueries.getRoles(query);
     }
 
+    @RequiredPermissions({ roles: { edit: true } })
+    @UseGuards(RequiredPermissionsGuard)
     @Post()
     async createRole(
         @Body() body: CreateRoleRequest,
@@ -50,6 +57,8 @@ export class RolesController {
         return this.rolesQueries.getRole(roleId);
     }
 
+    @RequiredPermissions({ roles: { edit: true } })
+    @UseGuards(RequiredPermissionsGuard)
     @Patch(':roleId')
     async updateRole(
         @Body() body: UpdateRoleRequest,
@@ -65,6 +74,8 @@ export class RolesController {
         return this.rolesQueries.getRole(roleId);
     }
 
+    @RequiredPermissions({ roles: { edit: true } })
+    @UseGuards(RequiredPermissionsGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':roleId')
     deleteRole(@Param() params: RoleIdParam): Promise<void> {

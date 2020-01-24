@@ -1,4 +1,4 @@
-import { Role } from '../database';
+import { Permissions } from '../database';
 
 export enum UserState {
     Registering = 'REGISTERING',
@@ -17,5 +17,5 @@ export interface IUserSession {
     state: UserState;
     firstName?: string;
     lastName?: string;
-    roles: Role[];
+    permissions: Permissions;
 }

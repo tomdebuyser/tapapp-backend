@@ -93,7 +93,7 @@ export class UsersService {
         userId: string,
         session: IUserSession,
         origin: string,
-    ): Promise<void> {
+    ): Promise<string> {
         // The user should exist and be not active yet
         const existingUser = await this.userRepository.findOne({
             id: userId,
@@ -107,6 +107,8 @@ export class UsersService {
 
         // Add reset token and send register mail
         await this.addResetTokenAndSendMail(existingUser, session, origin);
+
+        return existingUser.id;
     }
 
     private async addResetTokenAndSendMail(
@@ -132,7 +134,7 @@ export class UsersService {
         this.mailerService.sendMail(registerMessage(email, resetToken, origin));
     }
 
-    async inactivateUser(
+    async deactivateUser(
         userId: string,
         session: IUserSession,
     ): Promise<string> {

@@ -19,8 +19,11 @@ export class UserStateNotAllowed extends MethodNotAllowedException {
     }
 }
 
+/**
+ * Passing the required states is done through the RequiredUserState decorator.
+ */
 @Injectable()
-export class HasUserStateGuard implements CanActivate {
+export class RequiredUserStateGuard implements CanActivate {
     constructor(private readonly reflector: Reflector) {}
 
     public canActivate(context: ExecutionContext): boolean {

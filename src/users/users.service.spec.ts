@@ -303,14 +303,14 @@ describe('UsersService', () => {
         });
     });
 
-    describe('inactivateUser', () => {
-        it('should inactivate the user correctly', async () => {
+    describe('deactivateUser', () => {
+        it('should deactivate the user correctly', async () => {
             const user = createTestUser({ id: faker.random.uuid() });
             const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            await usersService.inactivateUser(user.id, session);
+            await usersService.deactivateUser(user.id, session);
 
             verify(
                 userRepository.update(
@@ -328,7 +328,7 @@ describe('UsersService', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                usersService.inactivateUser(
+                usersService.deactivateUser(
                     faker.random.uuid(),
                     createTestUserSession(),
                 ),

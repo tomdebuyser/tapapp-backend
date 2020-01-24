@@ -2,8 +2,8 @@ import { DeepPartial } from 'typeorm';
 import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
-import { createTestRole } from './create-role.helper';
 import { IUserSession, UserState } from '../../_shared/constants';
+import { createDefaultPermissions } from '../permissions.helper';
 
 export function createTestUserSession(
     overrides?: DeepPartial<IUserSession>,
@@ -14,7 +14,7 @@ export function createTestUserSession(
         state: UserState.Active,
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
-        roles: [createTestRole()],
+        permissions: createDefaultPermissions(),
     };
 
     return mergeDeepLeft(overrides, session) as IUserSession;

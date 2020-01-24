@@ -1,9 +1,10 @@
-import { IsString, ValidateNested } from 'class-validator';
+import { IsString, ValidateNested, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { PermissionsDto } from './permissions.dto';
 
 export class CreateRoleRequest {
+    @IsNotEmpty()
     @IsString()
     readonly name: string;
 
