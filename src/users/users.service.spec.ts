@@ -95,6 +95,7 @@ describe('UsersService', () => {
                     objectContaining({
                         email,
                         resetToken,
+                        state: UserState.Registering,
                         firstName,
                         lastName,
                         roles,
@@ -265,6 +266,7 @@ describe('UsersService', () => {
                     objectContaining({
                         ...user,
                         resetToken,
+                        state: UserState.Registering,
                         createdBy: session.email,
                         updatedBy: session.email,
                     }),
@@ -298,6 +300,39 @@ describe('UsersService', () => {
                     'origin',
                 ),
             ).rejects.toThrowError(AccountAlreadyActive);
+        });
+    });
+
+    describe('inactivateUser', () => {
+        it('should inactivate the user correctly', async () => {
+            const user = createTestUser({ id: faker.random.uuid() });
+            const session = createTestUserSession();
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+
+            await usersService.inactivateUser(user.id, session);
+
+            verify(
+                userRepository.update(
+                    user.id,
+                    objectContaining({
+                        state: UserState.Inactive,
+                        resetToken: null,
+                        updatedBy: session.email,
+                    }),
+                ),
+            ).once();
+        });
+
+        it('should throw an error when the user does not exist', async () => {
+            when(userRepository.findOne(anything())).thenResolve(null);
+
+            await expect(
+                usersService.inactivateUser(
+                    faker.random.uuid(),
+                    createTestUserSession(),
+                ),
+            ).rejects.toThrowError(UserNotFound);
         });
     });
 });

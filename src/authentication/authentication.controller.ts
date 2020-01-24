@@ -23,6 +23,7 @@ import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
 import { LoginGuard, AuthenticatedGuard } from '../_shared/guards';
 import { UserSession, Origin } from '../_shared/decorators';
+import { destroyExpressSession } from '../session.middleware';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -54,14 +55,14 @@ export class AuthenticationController {
     @UseGuards(AuthenticatedGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('logout')
-    // Using any because the build fails when using passport types for the request
-    // eslint-disable-next-line
-    logout(@Req() request: any, @Res() response: Response): void {
-        request.session.destroy(() => {
-            request.logout();
-            response.clearCookie('connect.sid');
-            response.send();
-        });
+    async logout(
+        // Using any because the build fails when using passport types for the request
+        // eslint-disable-next-line
+        @Req() request: any,
+        @Res() response: Response,
+    ): Promise<void> {
+        await destroyExpressSession(request, response);
+        response.send();
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

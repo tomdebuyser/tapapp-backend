@@ -16,14 +16,11 @@ import { UnauthorizedException } from '@nestjs/common';
 
 import { AuthenticationService } from './authentication.service';
 import { UserRepository } from '../database';
-import { createTestUser, createTestUserSession } from '../_util/testing';
+import { createTestUser } from '../_util/testing';
 import { UserState } from '../_shared/constants';
-import {
-    ResetTokenInvalid,
-    ResetTokenExpired,
-    AccountNotActive,
-} from './errors';
+import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { MailerService } from '../mailer/mailer.service';
+import { UserStateNotAllowed } from '../_shared/guards';
 
 describe('AuthenticationService', () => {
     let authService: AuthenticationService;
@@ -94,7 +91,7 @@ describe('AuthenticationService', () => {
 
             await expect(
                 authService.login(email, password),
-            ).rejects.toThrowError(AccountNotActive);
+            ).rejects.toThrowError(UserStateNotAllowed);
         });
 
         it('should throw an error when the passwords do not match', async () => {

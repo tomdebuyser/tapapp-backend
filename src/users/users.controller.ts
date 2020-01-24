@@ -82,4 +82,17 @@ export class UsersController {
             origin,
         );
     }
+
+    @HttpCode(HttpStatus.OK)
+    @Post(':userId/inactivate')
+    async inactivateUser(
+        @Param() params: UserIdParam,
+        @UserSession() session: IUserSession,
+    ): Promise<UserResponse> {
+        const userId = await this.usersService.inactivateUser(
+            params.userId,
+            session,
+        );
+        return this.usersQueries.getUser(userId);
+    }
 }

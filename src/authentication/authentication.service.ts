@@ -5,14 +5,11 @@ import * as bcrypt from 'bcrypt';
 
 import { UserRepository, User } from '../database';
 import { ResetPasswordRequest, RequestPasswordResetRequest } from './dto';
-import {
-    ResetTokenInvalid,
-    ResetTokenExpired,
-    AccountNotActive,
-} from './errors';
+import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { UserState } from '../_shared/constants';
 import { MailerService } from '../mailer/mailer.service';
 import { requestPasswordResetMessage } from '../mailer/messages';
+import { canActivateWithUserState } from '../_shared/guards';
 
 @Injectable()
 export class AuthenticationService {
@@ -29,10 +26,8 @@ export class AuthenticationService {
             throw new UnauthorizedException();
         }
 
-        // Check if the user has an appropriate state to login
-        if (user.state !== UserState.Active) {
-            throw new AccountNotActive();
-        }
+        // Check if user is active
+        canActivateWithUserState(user.state, [UserState.Active]);
 
         // Given password should match the stored hashed password
         const match = await bcrypt.compare(password, user.password);
@@ -95,6 +90,12 @@ export class AuthenticationService {
         if (!user || user.email !== decoded.email) {
             throw new ResetTokenInvalid();
         }
+
+        // Check if the user is not inactive
+        canActivateWithUserState(user.state, [
+            UserState.Active,
+            UserState.Registering,
+        ]);
 
         // Update the user in the database
         const hashedPassword = await this.hashPassword(newPassword);

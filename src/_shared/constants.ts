@@ -3,6 +3,7 @@ import { Role } from '../database';
 export enum UserState {
     Registering = 'REGISTERING',
     Active = 'ACTIVE',
+    Inactive = 'INACTIVE',
 }
 
 export enum SortDirection {

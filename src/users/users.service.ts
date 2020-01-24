@@ -122,6 +122,7 @@ export class UsersService {
             { expiresIn: '1d' },
         );
         user.resetToken = resetToken;
+        user.state = UserState.Registering;
         user.createdBy = session.email;
         user.updatedBy = session.email;
 
@@ -129,5 +130,27 @@ export class UsersService {
 
         // Send mail to inform user
         this.mailerService.sendMail(registerMessage(email, resetToken, origin));
+    }
+
+    async inactivateUser(
+        userId: string,
+        session: IUserSession,
+    ): Promise<string> {
+        // The user should already exist
+        const existingUser = await this.userRepository.findOne(userId);
+        if (!existingUser) {
+            throw new UserNotFound();
+        }
+
+        // Set the state to inactive
+        await this.userRepository.update(userId, {
+            state: UserState.Inactive,
+            resetToken: null,
+            updatedBy: session.email,
+        });
+
+        // TODO: Remove all cookies for this user - Therefore we should store a set of cookies for each user in redis (check astrum)
+
+        return userId;
     }
 }

@@ -1,4 +1,8 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+    BadRequestException,
+    NotFoundException,
+    MethodNotAllowedException,
+} from '@nestjs/common';
 
 export class EmailAlreadyInUse extends BadRequestException {
     constructor() {
@@ -18,7 +22,7 @@ export class UserNotFound extends NotFoundException {
     }
 }
 
-export class AccountAlreadyActive extends BadRequestException {
+export class AccountAlreadyActive extends MethodNotAllowedException {
     constructor() {
         super(
             'The given user already has an active acount',
