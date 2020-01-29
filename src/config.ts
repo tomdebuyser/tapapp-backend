@@ -3,7 +3,12 @@ import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
-export type Environment = 'local' | 'test' | 'staging' | 'production';
+export type Environment =
+    | 'local'
+    | 'development'
+    | 'test'
+    | 'staging'
+    | 'production';
 
 const environment = process.env.NODE_ENV;
 function assertNodeEnv(env: string | undefined): asserts env {
@@ -55,8 +60,8 @@ class Config {
         return process.env.SWAGGER_PATH as string;
     }
 
-    static get projectName(): string {
-        return process.env.PROJECT_NAME as string;
+    static get brandName(): string {
+        return process.env.BRAND_NAME as string;
     }
 
     static get rateLimit(): number {

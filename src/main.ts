@@ -37,7 +37,7 @@ async function bootstrap(): Promise<void> {
 
 function addSwaggerDocs(app: INestApplication): void {
     const options = new DocumentBuilder()
-        .setTitle(Config.projectName)
+        .setTitle(Config.brandName)
         .setDescription('Swagger documentation')
         .setVersion('1.0')
         .build();

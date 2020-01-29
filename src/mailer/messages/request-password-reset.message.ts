@@ -8,8 +8,8 @@ export function requestPasswordResetMessage(
 ): MandrillMessage {
     const url = `${frontendUrl}/auth/choose-password/${resetToken}`;
     return {
-        subject: `${Config.projectName} admin portal - Forgot password`,
-        text: `You initiated a request to reset your password for the ${Config.projectName} admin portal. Reset your password by clicking on this link: ${url}`,
+        subject: `${Config.brandName} admin portal - Forgot password`,
+        text: `You initiated a request to reset your password for the ${Config.brandName} admin portal. Reset your password by clicking on this link: ${url}`,
         to: [{ email }],
     };
 }
