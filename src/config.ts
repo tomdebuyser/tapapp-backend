@@ -1,16 +1,18 @@
 import { config } from 'dotenv-safe';
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { LogLevel } from '@nestjs/common';
 import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
-export type Environment =
-    | 'local'
-    | 'development'
-    | 'test'
-    | 'staging'
-    | 'production';
+export enum Environment {
+    Local = 'local',
+    Development = 'development',
+    Test = 'test',
+    Staging = 'staging',
+    Production = 'production',
+}
 
-const environment = process.env.NODE_ENV;
+const environment = process.env.NODE_ENV as Environment;
 function assertNodeEnv(env: string | undefined): asserts env {
     if (!env) {
         throw Error('NODE ENV must be specified');
@@ -19,11 +21,11 @@ function assertNodeEnv(env: string | undefined): asserts env {
 
 assertNodeEnv(environment);
 
-const environmentsWithEnvFiles = ['local', 'test'];
+const environmentsWithEnvFiles = [Environment.Local, Environment.Test];
 if (environmentsWithEnvFiles.includes(environment)) {
     const envFiles = {
         example: join(__dirname, '../.env.example'),
-        testing: join(__dirname, '../.env.local'),
+        test: join(__dirname, '../.env.local'),
         local: join(__dirname, '../.env.local'),
     };
 
@@ -43,6 +45,22 @@ interface ISessionOptions {
     expiresIn: number;
 }
 
+interface ILoggingOptions {
+    logLevel: LogLevel;
+}
+
+interface IMailingOptions {
+    mandrillApiKey: string;
+    mailFrom: string;
+}
+
+interface IApiOptions {
+    rateLimit: number;
+    swaggerPath: string;
+    port: string;
+    allowedOrigins: string[];
+}
+
 class Config {
     static get sentryDsn(): string {
         return process.env.SENTRY_DSN as string;
@@ -52,20 +70,19 @@ class Config {
         return environment as Environment;
     }
 
-    static get port(): string {
-        return process.env.PORT as string;
-    }
-
-    static get swaggerPath(): string {
-        return process.env.SWAGGER_PATH as string;
-    }
-
     static get brandName(): string {
         return process.env.BRAND_NAME as string;
     }
 
-    static get rateLimit(): number {
-        return parseInt(process.env.REQUESTS_PER_MINUTE as string, 10);
+    static get api(): IApiOptions {
+        return {
+            rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE as string, 10),
+            swaggerPath: process.env.SWAGGER_PATH as string,
+            port: process.env.PORT as string,
+            allowedOrigins: process.env.ALLOWED_ORIGINS.split(',').filter(
+                origin => !!origin,
+            ),
+        };
     }
 
     static get database(): TypeOrmModuleOptions {
@@ -85,18 +102,11 @@ class Config {
         };
     }
 
-    static get allowedOrigins(): string[] {
-        return process.env.ALLOWED_ORIGINS.split(',').filter(
-            origin => !!origin,
-        );
-    }
-
-    static get mandrillApiKey(): string {
-        return process.env.MANDRILL_API_KEY as string;
-    }
-
-    static get mailFrom(): string {
-        return process.env.MAIL_FROM as string;
+    static get mailing(): IMailingOptions {
+        return {
+            mandrillApiKey: process.env.MANDRILL_API_KEY as string,
+            mailFrom: process.env.MAIL_FROM as string,
+        };
     }
 
     static get redisUrl(): string {
@@ -107,6 +117,12 @@ class Config {
         return {
             secret: process.env.SESSION_SECRET as string,
             expiresIn: parseInt(process.env.SESSION_TTL as string),
+        };
+    }
+
+    static get logging(): ILoggingOptions {
+        return {
+            logLevel: process.env.LOG_LEVEL as LogLevel,
         };
     }
 }

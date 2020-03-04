@@ -3,10 +3,16 @@ import { Injectable } from '@nestjs/common';
 
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
+import { LoggerService } from '../logger/logger.service';
+
+const context = 'SessionSerializer';
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
-    constructor(private readonly authQueries: AuthenticationQueries) {
+    constructor(
+        private readonly authQueries: AuthenticationQueries,
+        private readonly logger: LoggerService,
+    ) {
         super();
     }
 
@@ -25,6 +31,11 @@ export class SessionSerializer extends PassportSerializer {
             const session = await this.authQueries.composeUserSession(userId);
             done(null, session);
         } catch (error) {
+            this.logger.warn('Failed to deserialize userId into session', {
+                context,
+                userId,
+                error,
+            });
             done(error);
         }
     }

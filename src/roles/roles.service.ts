@@ -5,12 +5,16 @@ import { RoleRepository, Role, UserRepository } from '../database';
 import { CreateRoleRequest, UpdateRoleRequest } from './dto';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
 import { IUserSession } from '../_shared/constants';
+import { LoggerService } from '../logger/logger.service';
+
+const context = 'RolesService';
 
 @Injectable()
 export class RolesService {
     constructor(
         private readonly roleRepository: RoleRepository,
         private readonly userRepository: UserRepository,
+        private readonly logger: LoggerService,
     ) {}
 
     async createRole(
@@ -20,6 +24,10 @@ export class RolesService {
         const { name, permissions } = body;
         const existingRole = await this.roleRepository.findOne({ name });
         if (existingRole) {
+            this.logger.warn('Failed to create: role name already in use', {
+                context,
+                name,
+            });
             throw new RoleNameAlreadyInUse();
         }
 
@@ -53,6 +61,10 @@ export class RolesService {
         // The role should already exist
         const existingRole = await this.roleRepository.findOne({ id: roleId });
         if (!existingRole) {
+            this.logger.warn('Failed to update: role with id not found', {
+                context,
+                roleId,
+            });
             throw new RoleNotFound();
         }
 
@@ -61,6 +73,11 @@ export class RolesService {
             ? await this.roleRepository.findOne({ name })
             : null;
         if (otherRole && otherRole.id !== roleId) {
+            this.logger.warn('Failed to update: role name already in use', {
+                context,
+                roleId,
+                name,
+            });
             throw new RoleNameAlreadyInUse();
         }
 
@@ -83,6 +100,10 @@ export class RolesService {
         // The role should already exist
         const existingRole = await this.roleRepository.findOne({ id: roleId });
         if (!existingRole) {
+            this.logger.warn('Failed to delete: role with id found', {
+                context,
+                roleId,
+            });
             throw new RoleNotFound();
         }
 
@@ -92,6 +113,10 @@ export class RolesService {
             .innerJoin('user.roles', 'role', 'role.id = :roleId', { roleId })
             .getOne();
         if (userWithRole) {
+            this.logger.warn('Failed to delete role because it is in use', {
+                context,
+                roleId,
+            });
             throw new RoleInUse();
         }
 

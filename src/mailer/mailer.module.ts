@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 
 import { MailerService } from './mailer.service';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({
-    imports: [],
+    imports: [LoggerModule],
     providers: [MailerService],
     exports: [MailerService],
 })

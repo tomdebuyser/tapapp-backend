@@ -10,6 +10,7 @@ import { UsersModule } from '../users/users.module';
 import { AuthenticationQueries } from './authentication.queries';
 import { SessionSerializer } from './session.serializer';
 import { MailerModule } from '../mailer/mailer.module';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { MailerModule } from '../mailer/mailer.module';
         }),
         UsersModule,
         MailerModule,
+        LoggerModule,
     ],
     controllers: [AuthenticationController],
     providers: [

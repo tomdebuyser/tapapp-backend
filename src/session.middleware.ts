@@ -2,9 +2,11 @@ import * as session from 'express-session';
 import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
 import * as passport from 'passport';
-import { INestApplication } from '@nestjs/common';
-import { Config } from './config';
 import { Response } from 'express';
+
+import { INestApplication } from '@nestjs/common';
+import { Config, Environment } from './config';
+import { LoggerService } from './logger/logger.service';
 
 const RedisStore = connectRedis(session);
 const client = redis.createClient({ url: Config.redisUrl });
@@ -18,8 +20,8 @@ export function addSessionMiddleware(app: INestApplication): void {
             cookie: {
                 maxAge: Config.session.expiresIn,
                 secure:
-                    Config.environment === 'production' ||
-                    Config.environment === 'staging',
+                    Config.environment === Environment.Production ||
+                    Config.environment === Environment.Staging,
             },
             store: new RedisStore({ client }),
         }),
@@ -29,7 +31,8 @@ export function addSessionMiddleware(app: INestApplication): void {
     app.use(passport.session());
 
     // Be sure redis errors are logged
-    client.on('error', console.error);
+    const logger = app.get(LoggerService);
+    client.on('error', logger.error);
 }
 
 /**

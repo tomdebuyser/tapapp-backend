@@ -21,6 +21,7 @@ import { UserState } from '../_shared/constants';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { MailerService } from '../mailer/mailer.service';
 import { UserStateNotAllowed } from '../_shared/guards';
+import { LoggerService } from '../logger/logger.service';
 
 describe('AuthenticationService', () => {
     let authService: AuthenticationService;
@@ -33,6 +34,7 @@ describe('AuthenticationService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 AuthenticationService,
+                LoggerService,
                 {
                     provide: getCustomRepositoryToken(UserRepository),
                     useValue: instance(userRepository),

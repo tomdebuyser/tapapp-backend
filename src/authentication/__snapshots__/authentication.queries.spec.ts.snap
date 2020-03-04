@@ -22,7 +22,7 @@ Object {
 }
 `;
 
-exports[`AuthenticationQueries getLoggedInUser should return no user if not found 1`] = `undefined`;
+exports[`AuthenticationQueries getLoggedInUser should return no user if not found 1`] = `null`;
 
 exports[`AuthenticationQueries getLoggedInUser should return the correct user 1`] = `
 Object {

@@ -13,6 +13,9 @@ import {
 import { MailerService } from '../mailer/mailer.service';
 import { registerMessage } from '../mailer/messages';
 import { UserState, IUserSession } from '../_shared/constants';
+import { LoggerService } from '../logger/logger.service';
+
+const context = 'UsersService';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +24,7 @@ export class UsersService {
         private readonly jwtService: JwtService,
         private readonly roleRepository: RoleRepository,
         private readonly mailerService: MailerService,
+        private readonly logger: LoggerService,
     ) {}
 
     async createUser(
@@ -36,6 +40,10 @@ export class UsersService {
             email,
         });
         if (existingUser) {
+            this.logger.warn('Failed to create: user email already in use', {
+                context,
+                email,
+            });
             throw new EmailAlreadyInUse();
         }
 
@@ -43,6 +51,10 @@ export class UsersService {
         const user = new User();
         const roles = await this.roleRepository.find({ id: In(roleIds) });
         if (roles.length !== roleIds.length) {
+            this.logger.warn('Failed to create, roles not found', {
+                context,
+                roleIds,
+            });
             throw new RoleNotFound();
         }
         user.roles = roles;
@@ -69,6 +81,10 @@ export class UsersService {
             id: userId,
         });
         if (!existingUser) {
+            this.logger.warn('Failed to update: user with id not found', {
+                context,
+                userId,
+            });
             throw new UserNotFound();
         }
 
@@ -77,6 +93,10 @@ export class UsersService {
             ? await this.roleRepository.find({ id: In(roleIds) })
             : [];
         if (roles.length !== roleIds.length) {
+            this.logger.warn('Failed to create, roles not found', {
+                context,
+                roleIds,
+            });
             throw new RoleNotFound();
         }
         if (roles.length) existingUser.roles = roles;
@@ -99,6 +119,13 @@ export class UsersService {
             id: userId,
         });
         if (!existingUser) {
+            this.logger.warn(
+                'Failed to resend register email: user with id not found',
+                {
+                    context,
+                    userId,
+                },
+            );
             throw new UserNotFound();
         }
         if (existingUser.state === UserState.Active) {
@@ -141,6 +168,10 @@ export class UsersService {
         // The user should already exist
         const existingUser = await this.userRepository.findOne(userId);
         if (!existingUser) {
+            this.logger.warn('Failed to deactivate: user with id not found', {
+                context,
+                userId,
+            });
             throw new UserNotFound();
         }
 

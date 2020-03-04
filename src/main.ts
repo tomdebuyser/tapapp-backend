@@ -7,10 +7,13 @@ import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
 
 import { AppModule } from './app.module';
-import { Config } from './config';
+import { Config, Environment } from './config';
 import { addSessionMiddleware } from './session.middleware';
 
-const environmentsWithErrorLogging = ['production', 'staging'];
+const environmentsWithErrorLogging = [
+    Environment.Production,
+    Environment.Staging,
+];
 const needsErrorLogging =
     Config.sentryDsn &&
     environmentsWithErrorLogging.includes(Config.environment);
@@ -32,7 +35,7 @@ async function bootstrap(): Promise<void> {
         addSentryErrorHandler(app);
     }
 
-    await app.listen(Config.port);
+    await app.listen(Config.api.port);
 }
 
 function addSwaggerDocs(app: INestApplication): void {
@@ -42,18 +45,18 @@ function addSwaggerDocs(app: INestApplication): void {
         .setVersion('1.0')
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup(Config.swaggerPath, app, document);
+    SwaggerModule.setup(Config.api.swaggerPath, app, document);
 }
 
 function addGlobalMiddleware(app: INestApplication): void {
     app.enableCors({
-        origin: Config.allowedOrigins,
+        origin: Config.api.allowedOrigins,
         methods: ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
     });
     app.use(
         rateLimit({
-            max: Config.rateLimit,
+            max: Config.api.rateLimit,
         }),
     );
     app.use(helmet());

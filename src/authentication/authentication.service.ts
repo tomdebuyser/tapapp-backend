@@ -10,6 +10,9 @@ import { UserState } from '../_shared/constants';
 import { MailerService } from '../mailer/mailer.service';
 import { requestPasswordResetMessage } from '../mailer/messages';
 import { canActivateWithUserState } from '../_shared/guards';
+import { LoggerService } from '../logger/logger.service';
+
+const context = 'Authentication';
 
 @Injectable()
 export class AuthenticationService {
@@ -17,12 +20,14 @@ export class AuthenticationService {
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
         private readonly mailerService: MailerService,
+        private readonly logger: LoggerService,
     ) {}
 
     async login(email: string, password: string): Promise<User> {
         // Try to find the user
         const user = await this.userRepository.findOne({ email });
         if (!user) {
+            this.logger.warn('User not found', { context, email });
             throw new UnauthorizedException();
         }
 
@@ -32,6 +37,10 @@ export class AuthenticationService {
         // Given password should match the stored hashed password
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
+            this.logger.warn('Invalid password for login attempt', {
+                context,
+                email,
+            });
             throw new UnauthorizedException();
         }
 
@@ -47,9 +56,10 @@ export class AuthenticationService {
         // If the user is not found, just do nothing
         const user = await this.userRepository.findOne({ email });
         if (!user) {
-            console.info(
-                `Request password reset done for unknown email: ${email}`,
-            );
+            this.logger.warn('Password reset for unknown email', {
+                context,
+                email,
+            });
             return;
         }
 
@@ -75,7 +85,10 @@ export class AuthenticationService {
         try {
             await this.jwtService.verifyAsync(resetToken);
         } catch (error) {
-            console.error(error);
+            this.logger.warn('Error verifying token for password reset', {
+                context,
+                error,
+            });
             if (error instanceof TokenExpiredError) {
                 throw new ResetTokenExpired();
             }
@@ -88,6 +101,11 @@ export class AuthenticationService {
             resetToken,
         });
         if (!user || user.email !== decoded.email) {
+            this.logger.warn('Invalid reset token', {
+                context,
+                encodedToken: resetToken,
+                decodedToken: decoded,
+            });
             throw new ResetTokenInvalid();
         }
 

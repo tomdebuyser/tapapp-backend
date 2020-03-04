@@ -22,6 +22,7 @@ import {
 import { PermissionsDto } from './dto';
 import { QueryBuilderMock } from '../_util/mocks';
 import { createDefaultPermissions } from '../_util/permissions.helper';
+import { LoggerService } from '../logger/logger.service';
 
 describe('RolesService', () => {
     let rolesService: RolesService;
@@ -33,6 +34,7 @@ describe('RolesService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 RolesService,
+                LoggerService,
                 {
                     provide: getCustomRepositoryToken(RoleRepository),
                     useValue: instance(roleRepository),

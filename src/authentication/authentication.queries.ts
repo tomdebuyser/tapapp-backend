@@ -49,7 +49,7 @@ export class AuthenticationQueries {
             .innerJoin('user.roles', 'role')
             .where('user.id = :userId', { userId })
             .getOne();
-        if (!user) return undefined;
+        if (!user) return null;
         const { roles, ...otherProps } = user;
         return {
             ...otherProps,

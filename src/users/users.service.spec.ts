@@ -27,6 +27,7 @@ import {
 } from '../_util/testing';
 import { MailerService } from '../mailer/mailer.service';
 import { UserState } from '../_shared/constants';
+import { LoggerService } from '../logger/logger.service';
 
 describe('UsersService', () => {
     let usersService: UsersService;
@@ -40,6 +41,7 @@ describe('UsersService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 UsersService,
+                LoggerService,
                 {
                     provide: getCustomRepositoryToken(UserRepository),
                     useValue: instance(userRepository),

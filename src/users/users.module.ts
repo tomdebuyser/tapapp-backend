@@ -7,10 +7,12 @@ import { DatabaseModule } from '../database';
 import { Config } from '../config';
 import { UsersQueries } from './users.queries';
 import { MailerModule } from '../mailer/mailer.module';
+import { LoggerModule } from '../logger/logger.module';
 
 @Module({
     imports: [
         DatabaseModule,
+        LoggerModule,
         JwtModule.register({
             secret: Config.jwt.secret,
         }),
