@@ -178,7 +178,7 @@ describe('AuthenticationService', () => {
             const resetToken = faker.random.alphaNumeric(10);
 
             when(jwtService.verifyAsync(resetToken)).thenThrow(
-                new TokenExpiredError('', 0),
+                new TokenExpiredError('', new Date()),
             );
 
             await expect(
