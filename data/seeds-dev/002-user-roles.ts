@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { readFileSync } from 'fs';
 
-import { loadFixtures, deleteFixtures } from './util/run-seeds';
+import { loadFixtures, deleteFixtures } from '../util/run-seeds';
 
 const entityName = 'user_roles_role';
 const path = `${__dirname}/user-roles.json`;

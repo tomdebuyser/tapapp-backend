@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { readFileSync } from 'fs';
 
-import { loadFixtures, deleteFixtures } from './util/run-seeds';
+import { loadFixtures, deleteFixtures } from '../util/run-seeds';
 
 const entityName = 'User';
 const path = `${__dirname}/users.json`;

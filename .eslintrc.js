@@ -9,10 +9,11 @@ module.exports = {
         'prettier/@typescript-eslint',
     ],
     rules: {
+        'prefer-arrow-callback': 'warn',
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-unused-vars': [
-            'off',
+            'warn',
             { argsIgnorePattern: '^_' },
         ],
     },

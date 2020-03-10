@@ -22,7 +22,7 @@ config({
 const base = {
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: ['./src/database/**/*.entity.ts'],
+    entities: ['./libs/database/**/*.entity.ts'],
 };
 
 module.exports = [
@@ -39,6 +39,14 @@ module.exports = [
         migrations: ['./data/seeds-dev/*.ts'],
         cli: {
             migrationsDir: `./data/seeds-dev`,
+        },
+    },
+    {
+        ...base,
+        name: 'seeds-prod',
+        migrations: ['./data/seeds-prod/*.ts'],
+        cli: {
+            migrationsDir: `./data/seeds-prod`,
         },
     },
 ];

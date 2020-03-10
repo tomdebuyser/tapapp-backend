@@ -1,7 +1,59 @@
 {
     "collection": "@nestjs/schematics",
-    "sourceRoot": "src",
+    "sourceRoot": "apps/silvernext/src",
     "compilerOptions": {
-        "plugins": ["@nestjs/swagger/plugin"]
+        "plugins": ["@nestjs/swagger/plugin"],
+        "webpack": true,
+        "tsConfigPath": "apps/silvernext/tsconfig.app.json",
+        "assets": ["**/.env.*"]
+    },
+    "monorepo": true,
+    "root": "apps/silvernext",
+    "projects": {
+        "silvernext": {
+            "type": "application",
+            "root": "apps/silvernext",
+            "entryFile": "main",
+            "sourceRoot": "apps/silvernext/src",
+            "compilerOptions": {
+                "tsConfigPath": "apps/silvernext/tsconfig.app.json"
+            }
+        },
+        "logger": {
+            "type": "library",
+            "root": "libs/logger",
+            "entryFile": "index",
+            "sourceRoot": "libs/logger/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/logger/tsconfig.lib.json"
+            }
+        },
+        "mailer": {
+            "type": "library",
+            "root": "libs/mailer",
+            "entryFile": "index",
+            "sourceRoot": "libs/mailer/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/mailer/tsconfig.lib.json"
+            }
+        },
+        "database": {
+            "type": "library",
+            "root": "libs/database",
+            "entryFile": "index",
+            "sourceRoot": "libs/database/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/database/tsconfig.lib.json"
+            }
+        },
+        "common": {
+            "type": "library",
+            "root": "libs/common",
+            "entryFile": "index",
+            "sourceRoot": "libs/common/src",
+            "compilerOptions": {
+                "tsConfigPath": "libs/common/tsconfig.lib.json"
+            }
+        }
     }
 }
