@@ -9,7 +9,7 @@ import {
     Req,
     Res,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import {
@@ -25,7 +25,7 @@ import { LoginGuard, AuthenticatedGuard } from '../_shared/guards';
 import { UserSession, Origin } from '../_shared/decorators';
 import { destroyExpressSession } from '../session.middleware';
 
-@ApiTags('auth')
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
     constructor(
@@ -37,6 +37,8 @@ export class AuthenticationController {
     @HttpCode(HttpStatus.OK)
     @Post('login')
     login(
+        // ! This request is unecessary
+        // TODO: GET /users/profile or /users/me + remove body
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
         @UserSession() session: IUserSession,
@@ -44,7 +46,9 @@ export class AuthenticationController {
         return this.authQueries.getAuthenticatedUser(session.userId);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthenticatedGuard)
+    // TODO: give more declarative route name.
     @Get('authenticate')
     authenticate(
         @UserSession() session: IUserSession,
@@ -52,6 +56,7 @@ export class AuthenticationController {
         return this.authQueries.getAuthenticatedUser(session.userId);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthenticatedGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('logout')

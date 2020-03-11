@@ -20,20 +20,38 @@ export function permissionsFromRoles(roles: Role[]): DeepPartial<Permissions> {
  * is contained (sub-object) within the user's permissions.
  * E.g. base = { users: { view: true, edit: false } } - requiredObject = { users: { view: true } } return true
  */
-export function containsPermissionsObject(
-    base: object | boolean,
-    requiredObject: object | boolean,
+export function hasPermissions(
+    permission: object | boolean,
+    requiredPermission: object | boolean,
 ): boolean {
-    if (typeof base !== typeof requiredObject) return false;
-    if (typeof base === 'boolean' && typeof requiredObject === 'boolean')
-        return base === requiredObject;
-    if (isNil(base) && !isNil(requiredObject)) return false;
-    if (!isNil(base) && isNil(requiredObject)) return true;
-    return Object.keys(requiredObject).every(key =>
-        containsPermissionsObject(base[key], requiredObject[key]),
+    // If this condition is false, there is likely an issue with the incoming arguments
+    if (typeof permission !== typeof requiredPermission) {
+        return false;
+    }
+
+    // If there are no required permissions, there is no comparison needed
+    if (isNil(requiredPermission)) {
+        return true;
+    }
+
+    // If there are required permissions, but none are being passed in, there is no access
+    if (isNil(permission) && !isNil(requiredPermission)) {
+        return false;
+    }
+
+    // Compare concrete permissions at the end of a branch in the object
+    if (
+        typeof permission === 'boolean' &&
+        typeof requiredPermission === 'boolean'
+    ) {
+        return permission === requiredPermission;
+    }
+
+    // Recursively execute when not at the tip of the branch yet
+    return Object.keys(requiredPermission).every(key =>
+        hasPermissions(permission[key], requiredPermission[key]),
     );
 }
-
 export function createDefaultPermissions(
     overrides?: DeepPartial<Permissions>,
 ): Permissions {

@@ -8,15 +8,13 @@ import { Reflector } from '@nestjs/core';
 
 import { UserState } from '@libs/database';
 import { IUserSession } from '../constants';
+import { LoggerService } from '@libs/logger';
+
+const loggerContext = 'RequiredUserStateGuard';
 
 export class UserStateNotAllowed extends MethodNotAllowedException {
-    constructor(state: UserState, allowedStates: UserState[]) {
-        super(
-            `This action is not allowed for the user state ${state}. Should be one of [${allowedStates.join(
-                ', ',
-            )}]`,
-            'USER_STATE_NOT_ALLOWED',
-        );
+    constructor() {
+        super('Action not allowed for this user', 'USER_STATE_NOT_ALLOWED');
     }
 }
 
@@ -25,7 +23,10 @@ export class UserStateNotAllowed extends MethodNotAllowedException {
  */
 @Injectable()
 export class RequiredUserStateGuard implements CanActivate {
-    constructor(private readonly reflector: Reflector) {}
+    constructor(
+        private readonly reflector: Reflector,
+        private readonly logger: LoggerService,
+    ) {}
 
     public canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
@@ -34,16 +35,15 @@ export class RequiredUserStateGuard implements CanActivate {
             'states',
             context.getHandler(),
         );
-        return canActivateWithUserState(session?.state, allowedStates);
-    }
-}
 
-export function canActivateWithUserState(
-    state: UserState,
-    allowedStates: UserState[],
-): boolean {
-    if (!allowedStates.includes(state)) {
-        throw new UserStateNotAllowed(state, allowedStates);
+        if (!allowedStates.includes(session?.state)) {
+            this.logger.warn('This action is not allowed for this user', {
+                context: loggerContext,
+                state: session?.state,
+                allowedStates: [UserState.Active, UserState.Registering],
+            });
+            throw new UserStateNotAllowed();
+        }
+        return true;
     }
-    return true;
 }

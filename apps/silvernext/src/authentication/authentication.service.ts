@@ -9,7 +9,7 @@ import { LoggerService } from '@libs/logger';
 import { ResetPasswordRequest, RequestPasswordResetRequest } from './dto';
 import { ResetTokenInvalid, ResetTokenExpired } from './errors';
 import { requestPasswordResetMessage } from '../_shared/messages';
-import { canActivateWithUserState } from '../_shared/guards';
+import { UserStateNotAllowed } from '../_shared/guards';
 
 const context = 'Authentication';
 
@@ -31,7 +31,14 @@ export class AuthenticationService {
         }
 
         // Check if user is active
-        canActivateWithUserState(user.state, [UserState.Active]);
+        if (![UserState.Active].includes(user.state)) {
+            this.logger.warn('This action is not allowed for this user', {
+                context,
+                state: user.state,
+                allowedStates: [UserState.Active],
+            });
+            throw new UserStateNotAllowed();
+        }
 
         // Given password should match the stored hashed password
         const match = await bcrypt.compare(password, user.password);
@@ -109,10 +116,14 @@ export class AuthenticationService {
         }
 
         // Check if the user is not inactive
-        canActivateWithUserState(user.state, [
-            UserState.Active,
-            UserState.Registering,
-        ]);
+        if (![UserState.Active, UserState.Registering].includes(user.state)) {
+            this.logger.warn('This action is not allowed for this user', {
+                context,
+                state: user.state,
+                allowedStates: [UserState.Active, UserState.Registering],
+            });
+            throw new UserStateNotAllowed();
+        }
 
         // Update the user in the database
         const hashedPassword = await this.hashPassword(newPassword);

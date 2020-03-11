@@ -9,12 +9,15 @@ import { DeepPartial } from 'typeorm';
 
 import { Permissions } from '@libs/database';
 import { IUserSession } from '../constants';
-import { containsPermissionsObject } from '../../_util/permissions.helper';
+import { hasPermissions } from '../../_util/permissions.helper';
+import { LoggerService } from '@libs/logger';
+
+const loggerContext = 'RequiredPermissionsGuard';
 
 export class PermissionDenied extends ForbiddenException {
     constructor() {
         super(
-            'The required permissions to perform this action were not found',
+            'Permission required to perform this action',
             'PERMISSION_DENIED',
         );
     }
@@ -25,7 +28,10 @@ export class PermissionDenied extends ForbiddenException {
  */
 @Injectable()
 export class RequiredPermissionsGuard implements CanActivate {
-    constructor(private readonly reflector: Reflector) {}
+    constructor(
+        private readonly reflector: Reflector,
+        private readonly logger: LoggerService,
+    ) {}
 
     public canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
@@ -33,19 +39,15 @@ export class RequiredPermissionsGuard implements CanActivate {
         const requiredPermissions = this.reflector.get<
             DeepPartial<Permissions>
         >('permissions', context.getHandler());
-        return canActivateWithPermissions(
-            session?.permissions,
-            requiredPermissions,
-        );
-    }
-}
 
-function canActivateWithPermissions(
-    permissions: Permissions,
-    requiredPermissions: DeepPartial<Permissions>,
-): boolean {
-    if (!containsPermissionsObject(permissions, requiredPermissions)) {
-        throw new PermissionDenied();
+        if (!hasPermissions(session?.permissions, requiredPermissions)) {
+            this.logger.warn('Permission required to perform this action', {
+                context: loggerContext,
+                sessionPermissions: session?.permissions,
+                requiredPermissions,
+            });
+            throw new PermissionDenied();
+        }
+        return true;
     }
-    return true;
 }

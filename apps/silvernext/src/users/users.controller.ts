@@ -10,7 +10,7 @@ import {
     HttpStatus,
     Patch,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import {
     CreateUserRequest,
@@ -33,8 +33,9 @@ import {
 } from '../_shared/decorators';
 import { IUserSession } from '../_shared/constants';
 
+@ApiBearerAuth()
 @UseGuards(AuthenticatedGuard)
-@ApiTags('users')
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(
@@ -67,6 +68,7 @@ export class UsersController {
 
     @RequiredPermissions({ users: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
+    // TODO: replace by PUT?
     @Patch(':userId')
     async updateUser(
         @Body() body: UpdateUserRequest,

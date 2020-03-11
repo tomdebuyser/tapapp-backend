@@ -1,5 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+    INestApplication,
+    ValidationPipe,
+    NestApplicationOptions,
+} from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { init as initSentry, Handlers } from '@sentry/node';
 import * as helmet from 'helmet';
@@ -10,17 +14,22 @@ import { Environment } from '@libs/common';
 import { AppModule } from './app.module';
 import { Config } from './config';
 import { addSessionMiddleware } from './session.middleware';
+import { LoggerService } from '@libs/logger';
 
-const environmentsWithErrorLogging = [
+const productionLikeEnvironments = [
     Environment.Production,
     Environment.Staging,
 ];
-const needsErrorLogging =
-    Config.sentryDsn &&
-    environmentsWithErrorLogging.includes(Config.environment);
+const isProductionLikeEnvironment = productionLikeEnvironments.includes(
+    Config.environment,
+);
+const needsErrorLogging = Config.sentryDsn && isProductionLikeEnvironment;
+
+const context = 'Bootstrap';
 
 async function bootstrap(): Promise<void> {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, getAppOptions());
+    const logger = app.get(LoggerService);
 
     app.setGlobalPrefix('api');
 
@@ -37,6 +46,9 @@ async function bootstrap(): Promise<void> {
     }
 
     await app.listen(Config.api.port);
+    logger.log(`App running on port [${Config.api.port}]`, {
+        context,
+    });
 }
 
 function addSwaggerDocs(app: INestApplication): void {
@@ -44,6 +56,7 @@ function addSwaggerDocs(app: INestApplication): void {
         .setTitle(Config.brandName)
         .setDescription('Swagger documentation')
         .setVersion('1.0')
+        .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup(Config.api.swaggerPath, app, document);
@@ -81,6 +94,11 @@ function addSentryInit(app: INestApplication): void {
 
 function addSentryErrorHandler(app: INestApplication): void {
     app.use(Handlers.errorHandler());
+}
+
+function getAppOptions(): NestApplicationOptions {
+    // On remote prod-like environments, we want to disable the default logger, so we don't pollute our own logs
+    return isProductionLikeEnvironment ? { logger: false } : {};
 }
 
 bootstrap();

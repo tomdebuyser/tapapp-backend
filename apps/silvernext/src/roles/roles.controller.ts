@@ -11,7 +11,7 @@ import {
     HttpCode,
     HttpStatus,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import {
     CreateRoleRequest,
@@ -30,8 +30,9 @@ import {
 import { UserSession, RequiredPermissions } from '../_shared/decorators';
 import { IUserSession } from '../_shared/constants';
 
+@ApiBearerAuth()
 @UseGuards(AuthenticatedGuard)
-@ApiTags('roles')
+@ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
     constructor(
