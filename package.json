@@ -12,7 +12,7 @@
         "start:dev": "NODE_ENV=local nest start --watch",
         "start:dev:clean": "yarn db:drop && yarn migrate && yarn seed && yarn start:dev",
         "start:debug": "nest start --debug --watch",
-        "start:prod": "node dist/main",
+        "start:prod": "node dist/apps/silvernext/main",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "format:check": "prettier -c \"src/**/*.ts\" \"test/**/*.ts\"",
         "format:fix": "prettier -c  --write \"src/**/*.ts\" \"test/**/*.ts\"",

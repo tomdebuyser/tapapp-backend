@@ -97,8 +97,10 @@ function addSentryErrorHandler(app: INestApplication): void {
 }
 
 function getAppOptions(): NestApplicationOptions {
-    // On remote prod-like environments, we want to disable the default logger, so we don't pollute our own logs
-    return isProductionLikeEnvironment ? { logger: false } : {};
+    // On remote prod-like environments, we want to limit the default logger, so we don't pollute our own logs
+    return isProductionLikeEnvironment
+        ? { logger: ['warn', 'error', 'log'] }
+        : {};
 }
 
 bootstrap();
