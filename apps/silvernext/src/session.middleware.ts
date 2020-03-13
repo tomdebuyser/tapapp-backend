@@ -6,7 +6,6 @@ import * as passport from 'passport';
 import { Response } from 'express';
 
 import { LoggerService } from '@libs/logger';
-import { Environment } from '@libs/common';
 import { Config } from './config';
 
 const RedisStore = connectRedis(session);
