@@ -79,6 +79,7 @@ class Config {
             synchronize: false,
             keepConnectionAlive: true,
             logging: process.env.DATABASE_LOGGING as LoggerOptions,
+            ssl: process.env.DATABASE_SSL === 'true',
         };
     }
 

@@ -23,6 +23,7 @@ const base = {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     entities: ['./libs/database/**/*.entity.ts'],
+    ssl: process.env.DATABASE_SSL === 'true',
 };
 
 module.exports = [

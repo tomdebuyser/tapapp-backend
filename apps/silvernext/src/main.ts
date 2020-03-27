@@ -9,6 +9,7 @@ import { init as initSentry, Handlers } from '@sentry/node';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
+import * as redisStore from 'rate-limit-redis';
 
 import { Environment } from '@libs/common';
 import { AppModule } from './app.module';
@@ -71,6 +72,7 @@ function addGlobalMiddleware(app: INestApplication): void {
     app.use(
         rateLimit({
             max: Config.api.rateLimit,
+            store: new redisStore({ redisURL: Config.redisUrl }),
         }),
     );
     app.use(helmet());
