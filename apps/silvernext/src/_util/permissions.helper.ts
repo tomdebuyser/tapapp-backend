@@ -55,7 +55,7 @@ export function hasPermissions(
 export function createDefaultPermissions(
     overrides?: DeepPartial<Permissions>,
 ): Permissions {
-    return mergeDeepLeft(overrides, {
+    return mergeDeepLeft<DeepPartial<Permissions>, Permissions>(overrides, {
         users: {
             view: false,
             edit: false,

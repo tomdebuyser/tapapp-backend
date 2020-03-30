@@ -1,4 +1,6 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, DeepPartial } from 'typeorm';
+import { plainToClass } from 'class-transformer';
+import { mergeDeepLeft } from 'ramda';
 
 import { BaseEntity } from './base.entity';
 
@@ -27,4 +29,12 @@ export class Role extends BaseEntity {
      */
     @Column({ type: 'json' })
     permissions: Permissions;
+
+    /**
+     * Creates a Role instance with given fields.
+     * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
+     */
+    static create(fields: DeepPartial<Role>): Role {
+        return plainToClass(Role, mergeDeepLeft(fields, new Role()));
+    }
 }

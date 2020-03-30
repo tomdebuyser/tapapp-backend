@@ -53,7 +53,6 @@ export class UsersService {
         }
 
         // Add the roles relationships
-        const user = new User();
         const roles = await this.roleRepository.find({ id: In(roleIds) });
         if (roles.length !== roleIds.length) {
             this.logger.warn('Failed to create, roles not found', {
@@ -62,10 +61,13 @@ export class UsersService {
             });
             throw new RoleNotFound();
         }
-        user.roles = roles;
-        user.email = email;
-        user.firstName = firstName || null;
-        user.lastName = lastName || null;
+
+        const user = User.create({
+            roles,
+            email,
+            firstName: firstName || null,
+            lastName: lastName || null,
+        });
 
         // Add reset token and send register mail
         await this.addResetTokenAndSendMail(user, session, origin);

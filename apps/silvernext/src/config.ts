@@ -62,10 +62,11 @@ class Config {
     }
 
     static get api(): IApiOptions {
+        const DEFAULT_PORT = '3001';
         return {
             rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE as string, 10),
             swaggerPath: process.env.SWAGGER_PATH as string,
-            port: process.env.PORT as string,
+            port: process.env.PORT || DEFAULT_PORT,
             allowedOrigins: process.env.ALLOWED_ORIGINS.split(',').filter(
                 origin => !!origin,
             ),

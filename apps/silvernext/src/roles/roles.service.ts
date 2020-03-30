@@ -31,20 +31,21 @@ export class RolesService {
             throw new RoleNameAlreadyInUse();
         }
 
-        const role = new Role();
-        role.name = name;
-        role.permissions = {
-            roles: {
-                view: permissions.roles?.view || false,
-                edit: permissions.roles?.edit || false,
+        const role = Role.create({
+            name,
+            permissions: {
+                roles: {
+                    view: permissions.roles?.view || false,
+                    edit: permissions.roles?.edit || false,
+                },
+                users: {
+                    view: permissions.users?.view || false,
+                    edit: permissions.users?.edit || false,
+                },
             },
-            users: {
-                view: permissions.users?.view || false,
-                edit: permissions.users?.edit || false,
-            },
-        };
-        role.createdBy = session.email;
-        role.updatedBy = session.email;
+            createdBy: session.email,
+            updatedBy: session.email,
+        });
 
         await this.roleRepository.save(role);
 

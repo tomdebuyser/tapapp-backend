@@ -1,4 +1,6 @@
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable, DeepPartial } from 'typeorm';
+import { mergeDeepLeft } from 'ramda';
+import { plainToClass } from 'class-transformer';
 
 import { BaseEntity } from './base.entity';
 import { Role } from './role.entity';
@@ -35,4 +37,12 @@ export class User extends BaseEntity {
     @ManyToMany(() => Role)
     @JoinTable()
     roles: Role[];
+
+    /**
+     * Creates a User instance with given fields.
+     * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
+     */
+    static create(fields: DeepPartial<User>): User {
+        return plainToClass(User, mergeDeepLeft(fields, new User()));
+    }
 }
