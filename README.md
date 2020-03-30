@@ -1,75 +1,165 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Silvernext
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Monorepo for Silvernext project.
+Find confluence [here](https://icapps.atlassian.net/wiki/spaces/SIL/overview)
 
-## Description
+## Getting started
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Prerequisites
 
-## Installation
+* [Node](https://nodejs.org/en/)
+* [NVM](https://github.com/nvm-sh/nvm)
+* [Docker](https://www.docker.com/products/docker-desktop)
+
+### Project dependencies
 
 ```bash
-$ npm install
+# We use yarn for this project
+$ npm i yarn -g
+
+# NestJS CLI is used to generate new apps and libraries
+$ npm i @nestjs/cli -g
+
+# Install project dependencies
+$ yarn
 ```
 
-## Running the app
+### Docker setup
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Create and run the container - this will also create our database
+$ yarn docker:start
 ```
 
-## Test
+### Database setup
+
+We use a Postgres instance for our database.
 
 ```bash
-# unit tests
-$ npm run test
+# Run the existing migrations
+$ yarn migrate
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Seed the database with initial values
+$ yarn seed
 ```
 
-## Support
+### Running the applications
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Before running the applications, every application needs to have a filled in `.env.local`.
+See each applications `.env.example` for their respective required values.
 
-## Stay in touch
+```bash
+# Run the main application (my-gateway)
+$ yarn start
+# OR for watch mode
+$ yarn start:dev
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## CI/CD
 
-## License
+Every commit for every checked in branch triggers a bitbucket pipelines build.
+Builds triggered by non-master / non-develop branches will attempt to build the applications and run all tests.
 
-  Nest is [MIT licensed](LICENSE).
+Commits to develop will trigger a deployment to our development environment on Heroku,
+all applications in the monorepo are deployed simultaneously.
+
+## Scripts
+
+### Building and running
+
+```bash
+# Removes previous build and create new one
+$ yarn build
+
+# For all start commands: append name of project you want to start, defaults to my-gateway.
+
+# Start application (builds if needed)
+$ yarn start
+
+# Start application in watch mode
+$ yarn start:dev
+
+# Start application in debug mode
+$ yarn start:debug
+
+# Start application in prod mode - separate for different apps
+$ yarn start:prod
+```
+
+### Database
+
+```bash
+# General
+# Drop the entire database
+$ yarn db:drop
+
+# Drop and migrate
+$ yarn db:rollup
+
+
+# Migrations
+# Generate a migration based on current models
+$ yarn migration:generate -n <NameOfMigration>
+
+# Apply all migrations
+$ yarn migrate
+
+# Revert the latest migration
+$ yarn migrate:revert
+
+
+# Seeds
+# Create a new empty dev seed
+$ yarn seed:generate -n <NameOfSeed>
+
+# Apply dev seeds
+$ yarn seed
+
+# Revert the latest dev seed
+$ yarn seed:revert
+
+# Commands exist for production seeds aswell
+$ yarn seed:prod:generate -n <NameOfSeed>
+$ yarn seed:prod
+$ yarn seed:prod:revert
+
+# Convenience command to execute all seeds
+$ yarn seed:all
+```
+
+See [TypeORM CLI](https://typeorm.io/#/using-cli) docs for more possible commands:
+
+### Formatting + linting
+
+```bash
+# Check codebase for formatting errors
+$ yarn format:check
+
+# Format codebase
+$ yarn format:fix
+
+# Check codebase for linting errors
+$ yarn lint
+```
+
+### Docker
+
+```bash
+# Start (and create if necessary) docker containers
+$ yarn docker:start
+
+# Stop running containers
+$ yarn docker:stop
+```
+
+### Testing
+
+```bash
+# Run tests
+$ yarn test
+
+# Append name of files or module you want to test, for example:
+$ yarn test silvernext
+$ yarn test whatever
+$ ...
+```
