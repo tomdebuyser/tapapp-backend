@@ -47,9 +47,8 @@ export class RolesService {
             updatedBy: session.email,
         });
 
-        await this.roleRepository.save(role);
-
-        return role.id;
+        const { id } = await this.roleRepository.save(role);
+        return id;
     }
 
     async updateRole(
@@ -93,7 +92,6 @@ export class RolesService {
         existingRole.updatedBy = session.email;
 
         await this.roleRepository.save(existingRole);
-
         return existingRole.id;
     }
 

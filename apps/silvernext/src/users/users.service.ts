@@ -70,9 +70,7 @@ export class UsersService {
         });
 
         // Add reset token and send register mail
-        await this.addResetTokenAndSendMail(user, session, origin);
-
-        return user.id;
+        return this.addResetTokenAndSendMail(user, session, origin);
     }
 
     async updateUser(
@@ -111,9 +109,8 @@ export class UsersService {
         if ('lastName' in body) existingUser.lastName = lastName || null;
         existingUser.updatedBy = session.email;
 
-        await this.userRepository.save(existingUser);
-
-        return existingUser.id;
+        const { id } = await this.userRepository.save(existingUser);
+        return id;
     }
 
     async resendRegisterMail(
@@ -141,15 +138,17 @@ export class UsersService {
 
         // Add reset token and send register mail
         await this.addResetTokenAndSendMail(existingUser, session, origin);
-
         return existingUser.id;
     }
 
+    /**
+     * Returns the id of the user
+     */
     private async addResetTokenAndSendMail(
         user: User,
         session: IUserSession,
         origin: string,
-    ): Promise<void> {
+    ): Promise<string> {
         const { email } = user;
 
         // Create a resetToken for the user
@@ -162,10 +161,12 @@ export class UsersService {
         user.createdBy = session.email;
         user.updatedBy = session.email;
 
-        await this.userRepository.save(user);
+        const { id } = await this.userRepository.save(user);
 
         // Send mail to inform user
         this.mailerService.sendMail(registerMessage(email, resetToken, origin));
+
+        return id;
     }
 
     async deactivateUser(

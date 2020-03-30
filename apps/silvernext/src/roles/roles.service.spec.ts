@@ -73,6 +73,10 @@ describe('RolesService', () => {
             const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(null);
+            when(roleRepository.save(anything())).thenCall(role => ({
+                ...role,
+                id: faker.random.uuid(),
+            }));
 
             await rolesService.createRole({ name, permissions }, session);
 
@@ -93,6 +97,10 @@ describe('RolesService', () => {
             const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(null);
+            when(roleRepository.save(anything())).thenCall(role => ({
+                ...role,
+                id: faker.random.uuid(),
+            }));
 
             await rolesService.createRole({ name, permissions: {} }, session);
 
@@ -132,6 +140,10 @@ describe('RolesService', () => {
             const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
+            when(roleRepository.save(anything())).thenCall(role => ({
+                ...role,
+                id: faker.random.uuid(),
+            }));
 
             await rolesService.updateRole({ permissions }, role.id, session);
 
@@ -160,6 +172,10 @@ describe('RolesService', () => {
             const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
+            when(roleRepository.save(anything())).thenCall(role => ({
+                ...role,
+                id: faker.random.uuid(),
+            }));
 
             await rolesService.updateRole({ name }, role.id, session);
 

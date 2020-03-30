@@ -27,18 +27,19 @@ const isProductionLikeEnvironment = productionLikeEnvironments.includes(
 const needsErrorLogging = Config.sentryDsn && isProductionLikeEnvironment;
 
 const context = 'Bootstrap';
+const API_PREFIX = 'api';
 
 async function bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule, getAppOptions());
     const logger = app.get(LoggerService);
 
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix(API_PREFIX);
 
     if (needsErrorLogging) {
         addSentryInit(app);
     }
 
-    addSwaggerDocs(app);
+    addSwaggerDocs(app, logger);
     addGlobalMiddleware(app);
     addSessionMiddleware(app);
 
@@ -52,7 +53,7 @@ async function bootstrap(): Promise<void> {
     });
 }
 
-function addSwaggerDocs(app: INestApplication): void {
+function addSwaggerDocs(app: INestApplication, logger: LoggerService): void {
     const options = new DocumentBuilder()
         .setTitle(Config.brandName)
         .setDescription('Swagger documentation')
@@ -60,7 +61,10 @@ function addSwaggerDocs(app: INestApplication): void {
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup(Config.api.swaggerPath, app, document);
+    const fullSwaggerPath = `${API_PREFIX}/${Config.api.swaggerPath}`;
+    SwaggerModule.setup(fullSwaggerPath, app, document);
+
+    logger.log(`Swagger running at [${fullSwaggerPath}]`, { context });
 }
 
 function addGlobalMiddleware(app: INestApplication): void {

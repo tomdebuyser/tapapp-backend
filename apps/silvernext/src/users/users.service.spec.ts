@@ -87,6 +87,10 @@ describe('UsersService', () => {
                 resetToken,
             );
             when(roleRepository.find(anything())).thenResolve(roles);
+            when(userRepository.save(anything())).thenCall(user => ({
+                ...user,
+                id: faker.random.uuid(),
+            }));
 
             await usersService.createUser(
                 { email, firstName, lastName, roleIds },
@@ -122,6 +126,10 @@ describe('UsersService', () => {
                 resetToken,
             );
             when(roleRepository.find(anything())).thenResolve(roles);
+            when(userRepository.save(anything())).thenCall(user => ({
+                ...user,
+                id: faker.random.uuid(),
+            }));
 
             await usersService.createUser(
                 { email, roleIds },
@@ -185,6 +193,10 @@ describe('UsersService', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
             when(roleRepository.find(anything())).thenResolve([]);
+            when(userRepository.save(anything())).thenCall(user => ({
+                ...user,
+                id: faker.random.uuid(),
+            }));
 
             await usersService.updateUser(
                 { firstName, lastName },
@@ -211,6 +223,10 @@ describe('UsersService', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
             when(roleRepository.find(anything())).thenResolve(roles);
+            when(userRepository.save(anything())).thenCall(user => ({
+                ...user,
+                id: faker.random.uuid(),
+            }));
 
             await usersService.updateUser({ roleIds }, user.id, session);
 
@@ -262,6 +278,10 @@ describe('UsersService', () => {
             when(jwtService.signAsync(anything(), anything())).thenResolve(
                 resetToken,
             );
+            when(userRepository.save(anything())).thenCall(user => ({
+                ...user,
+                id: faker.random.uuid(),
+            }));
 
             await usersService.resendRegisterMail(user.id, session, 'origin');
 

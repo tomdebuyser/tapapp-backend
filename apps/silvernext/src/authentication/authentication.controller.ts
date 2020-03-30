@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 import {
     ResetPasswordRequest,
@@ -21,9 +22,8 @@ import {
 import { AuthenticationService } from './authentication.service';
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
-import { LoginGuard, AuthenticatedGuard } from '../_shared/guards';
+import { AuthenticatedGuard, destroyExpressSession } from '../_shared/guards';
 import { UserSession, Origin } from '../_shared/decorators';
-import { destroyExpressSession } from '../session.middleware';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -33,17 +33,15 @@ export class AuthenticationController {
         private readonly authQueries: AuthenticationQueries,
     ) {}
 
-    @UseGuards(LoginGuard)
+    @UseGuards(AuthGuard())
     @HttpCode(HttpStatus.OK)
     @Post('login')
     login(
-        // ! This request is unecessary
-        // TODO: GET /users/profile or /users/me + remove body
         // body is not used, but here for swagger docs
         @Body() _body: LoginRequest,
         @UserSession() session: IUserSession,
-    ): Promise<AuthenticationUserResponse> {
-        return this.authQueries.getAuthenticatedUser(session.userId);
+    ): IUserSession {
+        return session;
     }
 
     @ApiBearerAuth()
