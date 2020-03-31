@@ -1,10 +1,6 @@
-import {
-    IsEmail,
-    IsString,
-    IsOptional,
-    ArrayNotEmpty,
-    IsUUID,
-} from 'class-validator';
+import { IsEmail, IsOptional, ArrayNotEmpty, IsUUID } from 'class-validator';
+
+import { IsName } from '../../_shared/validators';
 
 export class CreateUserRequest {
     @IsEmail()
@@ -14,11 +10,11 @@ export class CreateUserRequest {
     @ArrayNotEmpty()
     readonly roleIds: string[];
 
-    @IsString()
     @IsOptional()
+    @IsName()
     readonly firstName?: string;
 
-    @IsString()
     @IsOptional()
+    @IsName()
     readonly lastName?: string;
 }

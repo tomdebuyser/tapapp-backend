@@ -1,18 +1,17 @@
-import { IsString, ValidateNested, IsOptional, IsUUID } from 'class-validator';
+import { ValidateNested, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { PermissionsDto } from './permissions.dto';
+import { IsName } from '../../_shared/validators';
 
 export class UpdateRoleRequest {
-    @IsOptional()
-    @IsString()
-    readonly name?: string;
+    @IsName()
+    readonly name: string;
 
-    @IsOptional()
     @Type(() => PermissionsDto)
     @ValidateNested()
-    readonly permissions?: PermissionsDto;
+    readonly permissions: PermissionsDto;
 }
 
 export class RoleIdParam {

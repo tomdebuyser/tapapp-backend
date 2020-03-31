@@ -8,7 +8,7 @@ import {
     Param,
     HttpCode,
     HttpStatus,
-    Patch,
+    Put,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
@@ -50,6 +50,12 @@ export class UsersController {
         return this.usersQueries.getUsers(query);
     }
 
+    @RequiredPermissions({ users: { view: true } })
+    @Get(':userId')
+    getUser(@Param('userId') userId: string): Promise<UserResponse> {
+        return this.usersQueries.getUser(userId);
+    }
+
     @RequiredPermissions({ users: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
     @Post()
@@ -68,8 +74,7 @@ export class UsersController {
 
     @RequiredPermissions({ users: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
-    // TODO: replace by PUT?
-    @Patch(':userId')
+    @Put(':userId')
     async updateUser(
         @Body() body: UpdateUserRequest,
         @Param() params: UserIdParam,

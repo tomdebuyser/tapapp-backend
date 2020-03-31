@@ -5,7 +5,7 @@ import {
     Get,
     Query,
     UseGuards,
-    Patch,
+    Put,
     Param,
     Delete,
     HttpCode,
@@ -47,6 +47,13 @@ export class RolesController {
         return this.rolesQueries.getRoles(query);
     }
 
+    @RequiredPermissions({ roles: { view: true } })
+    @UseGuards(RequiredPermissionsGuard)
+    @Get(':roleId')
+    getRole(@Param('roleId') roleId: string): Promise<RoleResponse> {
+        return this.rolesQueries.getRole(roleId);
+    }
+
     @RequiredPermissions({ roles: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
     @Post()
@@ -60,7 +67,7 @@ export class RolesController {
 
     @RequiredPermissions({ roles: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
-    @Patch(':roleId')
+    @Put(':roleId')
     async updateRole(
         @Body() body: UpdateRoleRequest,
         @Param() params: RoleIdParam,

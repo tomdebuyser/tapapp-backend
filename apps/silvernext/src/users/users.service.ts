@@ -78,9 +78,6 @@ export class UsersService {
         userId: string,
         session: IUserSession,
     ): Promise<string> {
-        const { firstName, lastName } = body;
-        const roleIds = Array.from(new Set(body.roleIds || []));
-
         // The user should already exist
         const existingUser = await this.userRepository.findOne({
             id: userId,
@@ -93,7 +90,8 @@ export class UsersService {
             throw new UserNotFound();
         }
 
-        // Update the properties if provided
+        // Checks if each given role id matches an existing role
+        const roleIds = Array.from(new Set(body.roleIds || []));
         const roles = roleIds.length
             ? await this.roleRepository.find({ id: In(roleIds) })
             : [];
@@ -104,13 +102,15 @@ export class UsersService {
             });
             throw new RoleNotFound();
         }
-        if (roles.length) existingUser.roles = roles;
-        if ('firstName' in body) existingUser.firstName = firstName || null;
-        if ('lastName' in body) existingUser.lastName = lastName || null;
+
+        const { firstName, lastName } = body;
+        existingUser.roles = roles;
+        existingUser.firstName = firstName || null;
+        existingUser.lastName = lastName || null;
         existingUser.updatedBy = session.email;
 
-        const { id } = await this.userRepository.save(existingUser);
-        return id;
+        await this.userRepository.save(existingUser);
+        return existingUser.id;
     }
 
     async resendRegisterMail(

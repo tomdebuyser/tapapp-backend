@@ -138,6 +138,7 @@ describe('RolesService', () => {
             };
             const role = createTestRole();
             const session = createTestUserSession();
+            const name = faker.name.jobTitle();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(roleRepository.save(anything())).thenCall(role => ({
@@ -145,11 +146,16 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.updateRole({ permissions }, role.id, session);
+            await rolesService.updateRole(
+                { permissions, name },
+                role.id,
+                session,
+            );
 
             verify(
                 roleRepository.save(
                     objectContaining({
+                        name,
                         permissions: {
                             roles: {
                                 view: role.permissions.roles.view,
@@ -170,6 +176,7 @@ describe('RolesService', () => {
             const name = faker.name.jobTitle();
             const role = createTestRole();
             const session = createTestUserSession();
+            const permissions = createDefaultPermissions();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(roleRepository.save(anything())).thenCall(role => ({
@@ -177,12 +184,17 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.updateRole({ name }, role.id, session);
+            await rolesService.updateRole(
+                { name, permissions },
+                role.id,
+                session,
+            );
 
             verify(
                 roleRepository.save(
                     objectContaining({
                         name,
+                        permissions,
                         updatedBy: session.email,
                     }),
                 ),
@@ -194,7 +206,7 @@ describe('RolesService', () => {
 
             await expect(
                 rolesService.updateRole(
-                    {},
+                    { name: 'test', permissions: createDefaultPermissions() },
                     faker.random.uuid(),
                     createTestUserSession(),
                 ),
@@ -214,7 +226,7 @@ describe('RolesService', () => {
 
             await expect(
                 rolesService.updateRole(
-                    { name },
+                    { name, permissions: createDefaultPermissions() },
                     roleId,
                     createTestUserSession(),
                 ),

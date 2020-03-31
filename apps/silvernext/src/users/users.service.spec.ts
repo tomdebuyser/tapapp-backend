@@ -190,16 +190,21 @@ describe('UsersService', () => {
             const lastName = faker.name.lastName();
             const user = createTestUser({ id: faker.random.uuid() });
             const session = createTestUserSession();
+            const roleIds = [faker.random.uuid(), faker.random.uuid()];
+            const roles = [
+                createTestRole({ id: roleIds[0] }),
+                createTestRole({ id: roleIds[1] }),
+            ];
 
             when(userRepository.findOne(anything())).thenResolve(user);
-            when(roleRepository.find(anything())).thenResolve([]);
+            when(roleRepository.find(anything())).thenResolve(roles);
             when(userRepository.save(anything())).thenCall(user => ({
                 ...user,
                 id: faker.random.uuid(),
             }));
 
             await usersService.updateUser(
-                { firstName, lastName },
+                { firstName, lastName, roleIds },
                 user.id,
                 session,
             );
@@ -207,6 +212,7 @@ describe('UsersService', () => {
             verify(
                 userRepository.save(
                     objectContaining({
+                        roles,
                         firstName,
                         lastName,
                         updatedBy: session.email,
@@ -245,7 +251,11 @@ describe('UsersService', () => {
 
             await expect(
                 usersService.updateUser(
-                    {},
+                    {
+                        firstName: faker.name.firstName(),
+                        lastName: faker.name.lastName(),
+                        roleIds: [faker.random.uuid()],
+                    },
                     faker.random.uuid(),
                     createTestUserSession(),
                 ),

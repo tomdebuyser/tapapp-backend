@@ -56,8 +56,6 @@ export class RolesService {
         roleId: string,
         session: IUserSession,
     ): Promise<string> {
-        const { name, permissions } = body;
-
         // The role should already exist
         const existingRole = await this.roleRepository.findOne({ id: roleId });
         if (!existingRole) {
@@ -69,6 +67,7 @@ export class RolesService {
         }
 
         // There should not exist another role with the given name
+        const { name, permissions } = body;
         const otherRole = name
             ? await this.roleRepository.findOne({ name })
             : null;
@@ -81,14 +80,11 @@ export class RolesService {
             throw new RoleNameAlreadyInUse();
         }
 
-        // Update the properties if provided
-        if (name) existingRole.name = name;
-        if (permissions) {
-            existingRole.permissions = mergeDeepLeft(
-                permissions,
-                existingRole.permissions,
-            );
-        }
+        existingRole.name = name;
+        existingRole.permissions = mergeDeepLeft(
+            permissions,
+            existingRole.permissions,
+        );
         existingRole.updatedBy = session.email;
 
         await this.roleRepository.save(existingRole);

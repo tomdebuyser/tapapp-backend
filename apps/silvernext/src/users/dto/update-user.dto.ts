@@ -1,18 +1,19 @@
-import { IsUUID, IsString, IsOptional, ArrayNotEmpty } from 'class-validator';
+import { IsUUID, IsOptional, ArrayNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { IsName } from '../../_shared/validators';
 
 export class UpdateUserRequest {
     @IsUUID('4', { each: true })
-    @IsOptional()
     @ArrayNotEmpty()
-    readonly roleIds?: string[];
+    readonly roleIds: string[];
 
-    @IsString()
     @IsOptional()
+    @IsName()
     readonly firstName?: string;
 
-    @IsString()
     @IsOptional()
+    @IsName()
     readonly lastName?: string;
 }
 
