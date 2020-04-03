@@ -1,8 +1,7 @@
 import { Entity, Column, DeepPartial } from 'typeorm';
 import { plainToClass } from 'class-transformer';
-import { mergeDeepLeft } from 'ramda';
 
-import { BaseEntity } from './base.entity';
+import { AuditedEntity } from './audited.entity';
 
 export class Permissions {
     roles: RolePermissions;
@@ -20,7 +19,7 @@ class UserPermissions {
 }
 
 @Entity()
-export class Role extends BaseEntity {
+export class Role extends AuditedEntity {
     @Column({ unique: true })
     name: string;
 
@@ -35,6 +34,6 @@ export class Role extends BaseEntity {
      * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
      */
     static create(fields: DeepPartial<Role>): Role {
-        return plainToClass(Role, mergeDeepLeft(fields, new Role()));
+        return plainToClass(Role, fields);
     }
 }

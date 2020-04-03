@@ -12,10 +12,4 @@ export class BaseEntityResponse {
     @ApiProperty({ required: true })
     @Type(() => String)
     updatedAt: Date;
-
-    @ApiProperty({ required: false })
-    createdBy?: string;
-
-    @ApiProperty({ required: false })
-    updatedBy?: string;
 }

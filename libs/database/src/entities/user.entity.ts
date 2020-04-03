@@ -1,9 +1,8 @@
 import { Entity, Column, ManyToMany, JoinTable, DeepPartial } from 'typeorm';
-import { mergeDeepLeft } from 'ramda';
 import { plainToClass } from 'class-transformer';
 
-import { BaseEntity } from './base.entity';
 import { Role } from './role.entity';
+import { AuditedEntity } from './audited.entity';
 
 export enum UserState {
     Registering = 'REGISTERING',
@@ -12,7 +11,7 @@ export enum UserState {
 }
 
 @Entity()
-export class User extends BaseEntity {
+export class User extends AuditedEntity {
     @Column({ unique: true })
     email: string;
 
@@ -43,6 +42,6 @@ export class User extends BaseEntity {
      * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
      */
     static create(fields: DeepPartial<User>): User {
-        return plainToClass(User, mergeDeepLeft(fields, new User()));
+        return plainToClass(User, fields);
     }
 }
