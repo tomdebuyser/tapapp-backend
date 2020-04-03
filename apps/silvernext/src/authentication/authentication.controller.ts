@@ -10,7 +10,7 @@ import {
     Res,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 
 import {
@@ -18,6 +18,7 @@ import {
     LoginRequest,
     AuthenticationUserResponse,
     RequestPasswordResetRequest,
+    ChangePasswordRequest,
 } from './dto';
 import { AuthenticationService } from './authentication.service';
 import { IUserSession } from '../_shared/constants';
@@ -46,8 +47,7 @@ export class AuthenticationController {
 
     @ApiBearerAuth()
     @UseGuards(AuthenticatedGuard)
-    // TODO: give more declarative route name.
-    @Get('authenticate')
+    @Get('me')
     authenticate(
         @UserSession() session: IUserSession,
     ): Promise<AuthenticationUserResponse> {
@@ -59,9 +59,7 @@ export class AuthenticationController {
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('logout')
     async logout(
-        // Using any because the build fails when using passport types for the request
-        // eslint-disable-next-line
-        @Req() request: any,
+        @Req() request: Request,
         @Res() response: Response,
     ): Promise<void> {
         await destroyExpressSession(request, response);
@@ -81,5 +79,13 @@ export class AuthenticationController {
     @Post('reset-password')
     resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
         return this.authService.resetPassword(body);
+    }
+
+    @Post('change-password')
+    changePassword(
+        @Body() body: ChangePasswordRequest,
+        @UserSession() session: IUserSession,
+    ): Promise<void> {
+        return this.authService.changePassword(body, session.userId);
     }
 }

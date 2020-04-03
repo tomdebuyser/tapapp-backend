@@ -17,6 +17,8 @@ const excludeFromRequestBody = (body: RequestBody): RequestBody => {
     const propsToExclude: string[] = [
         'password',
         'accessToken',
+        'newPassword',
+        'oldPassword',
         'refreshToken',
     ];
 

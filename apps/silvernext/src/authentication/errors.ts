@@ -11,3 +11,12 @@ export class ResetTokenExpired extends BadRequestException {
         super('The given resetToken is expired', 'RESET_TOKEN_EXPIRED');
     }
 }
+
+export class InvalidOldPassword extends BadRequestException {
+    constructor() {
+        super(
+            'The password you entered is not your current password',
+            'INVALID_OLD_PASSWORD',
+        );
+    }
+}

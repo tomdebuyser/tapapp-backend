@@ -6,8 +6,16 @@ import * as bcrypt from 'bcrypt';
 import { UserRepository, User, UserState } from '@libs/database';
 import { MailerService } from '@libs/mailer';
 import { LoggerService } from '@libs/logger';
-import { ResetPasswordRequest, RequestPasswordResetRequest } from './dto';
-import { ResetTokenInvalid, ResetTokenExpired } from './errors';
+import {
+    ResetPasswordRequest,
+    RequestPasswordResetRequest,
+    ChangePasswordRequest,
+} from './dto';
+import {
+    ResetTokenInvalid,
+    ResetTokenExpired,
+    InvalidOldPassword,
+} from './errors';
 import { requestPasswordResetMessage } from '../_shared/messages';
 import { UserStateNotAllowed } from '../_shared/guards';
 
@@ -137,5 +145,24 @@ export class AuthenticationService {
 
     hashPassword(password: string): Promise<string> {
         return bcrypt.hash(password, 10);
+    }
+
+    async changePassword(
+        body: ChangePasswordRequest,
+        userId: string,
+    ): Promise<void> {
+        const user = await this.userRepository.findOne(userId);
+
+        const isCorrectOldPassword = await bcrypt.compare(
+            body.oldPassword,
+            user.password,
+        );
+
+        if (!isCorrectOldPassword) {
+            throw new InvalidOldPassword();
+        }
+
+        user.password = await this.hashPassword(body.newPassword);
+        await this.userRepository.save(user);
     }
 }

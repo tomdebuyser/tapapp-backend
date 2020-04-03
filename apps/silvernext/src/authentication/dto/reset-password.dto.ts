@@ -1,8 +1,11 @@
 import { IsJWT } from 'class-validator';
 
-import { NewPasswordRequest } from './password.dto';
+import { IsPassword } from '../../_shared/validators';
 
-export class ResetPasswordRequest extends NewPasswordRequest {
+export class ResetPasswordRequest {
     @IsJWT()
     readonly resetToken: string;
+
+    @IsPassword()
+    readonly newPassword: string;
 }

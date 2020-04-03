@@ -8,18 +8,24 @@ import {
     verify,
     objectContaining,
     reset,
+    capture,
 } from 'ts-mockito';
 import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, BadRequestException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 import { LoggerService } from '@libs/logger';
 import { UserRepository, UserState } from '@libs/database';
 import { MailerService } from '@libs/mailer';
 import { AuthenticationService } from './authentication.service';
 import { createTestUser } from '../_util/testing';
-import { ResetTokenInvalid, ResetTokenExpired } from './errors';
+import {
+    ResetTokenInvalid,
+    ResetTokenExpired,
+    InvalidOldPassword,
+} from './errors';
 import { UserStateNotAllowed } from '../_shared/guards';
 
 describe('AuthenticationService', () => {
@@ -243,6 +249,45 @@ describe('AuthenticationService', () => {
                     resetToken,
                 }),
             ).rejects.toThrowError(ResetTokenInvalid);
+        });
+    });
+
+    describe('changePassword', () => {
+        it('should successfully change password', async () => {
+            const oldPassword = 'my_old_password';
+            when(userRepository.findOne(anything())).thenResolve(
+                createTestUser({ password: bcrypt.hashSync(oldPassword, 10) }),
+            );
+
+            const newPassword = 'my_new_password';
+            await authService.changePassword(
+                {
+                    oldPassword,
+                    newPassword: 'my_new_password',
+                },
+                faker.random.uuid(),
+            );
+
+            const [savedUser] = capture(userRepository.save).last();
+            expect(bcrypt.compareSync(newPassword, savedUser.password)).toBe(
+                true,
+            );
+        });
+
+        it('should fail when the old password is wrong', async () => {
+            when(userRepository.findOne(anything())).thenResolve(
+                createTestUser({ password: 'my_old_password' }),
+            );
+
+            await expect(
+                authService.changePassword(
+                    {
+                        oldPassword: 'my_invalid_old_password',
+                        newPassword: 'my_new_password',
+                    },
+                    faker.random.uuid(),
+                ),
+            ).rejects.toThrowError(InvalidOldPassword);
         });
     });
 });

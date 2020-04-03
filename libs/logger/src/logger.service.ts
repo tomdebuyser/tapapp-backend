@@ -73,7 +73,7 @@ function formatMessage(data: IFormatMessageArgs): string {
         'dd/MM/yyyy, HH:mm:s',
     );
     const flattenedParameters = flattenParameters(parameters);
-    const formattedParameters = isEmpty(flattenedParameters)
+    const formattedParameters = !isEmpty(flattenedParameters)
         ? `[${flattenedParameters.join(', ')}]`
         : '';
 
