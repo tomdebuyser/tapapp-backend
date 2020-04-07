@@ -13,7 +13,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { LoggerService } from '@libs/logger';

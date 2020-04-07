@@ -55,7 +55,7 @@ export class LoggerInterceptor implements NestInterceptor {
             tap(() => {
                 this.logger.log(formatLogMessage, {
                     context: 'Response',
-                    body: excludeFromRequestBody(req.body),
+                    status: context.switchToHttp().getRequest().statusCode,
                 });
             }),
         );
