@@ -45,7 +45,7 @@ runTests: &runTests
           - node
         script:
           - yarn migrate
-          - yarn seed
+          - yarn seed:all
           - yarn test
         services:
           - postgres
