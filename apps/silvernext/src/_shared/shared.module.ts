@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 
 import { LoggerModule } from '@libs/logger';
 import { DatabaseModule } from '@libs/database';
 import { Config } from '../config';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [

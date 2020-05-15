@@ -1,5 +1,4 @@
 import { Config } from '../../config';
-
 import { MandrillMessage } from '@libs/mailer';
 
 export function registerMessage(

@@ -7,8 +7,26 @@ module.exports = {
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
+        'plugin:import/warnings',
     ],
     rules: {
+        'import/order': [
+            'error',
+            {
+                groups: [
+                    ['builtin', 'external'],
+                    ['internal', 'parent', 'sibling', 'index'],
+                ],
+                pathGroups: [
+                    {
+                        pattern: '@libs/**',
+                        group: 'internal',
+                    },
+                ],
+                pathGroupsExcludedImportTypes: ['builtin'],
+                'newlines-between': 'always',
+            },
+        ],
         'prefer-arrow-callback': 'warn',
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
