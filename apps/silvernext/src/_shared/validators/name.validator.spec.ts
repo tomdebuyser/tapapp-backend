@@ -8,7 +8,7 @@ class TestIsName {
 }
 
 describe('NameValidator', () => {
-    const validNames = ['Tester', 'Goede naam', 'Streepjes-mogen'];
+    const validNames = ['Tester', 'Goede naam', 'Streepjes-mogen', "O'Brian"];
     validNames.forEach(name => {
         it(`should pass for good names: ${name}`, () => {
             const instance = new TestIsName();

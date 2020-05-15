@@ -67,6 +67,7 @@ function formatMessage(data: IFormatMessageArgs): string {
 
     const formattedContext = colours.context(context);
     const formattedLabel = themed(label.toUpperCase());
+    const formattedLevel = themed(data.level.toUpperCase());
     const formattedMessage = themed(data.message);
     const formattedTimestamp = format(
         new Date(timestamp),
@@ -77,7 +78,7 @@ function formatMessage(data: IFormatMessageArgs): string {
         ? `[${flattenedParameters.join(', ')}]`
         : '';
 
-    return `[${formattedLabel}] - ${formattedTimestamp}   [${formattedContext}] "${formattedMessage}" ${formattedParameters}`;
+    return `[${formattedLabel}] - ${formattedTimestamp}  [${formattedLevel}] [${formattedContext}] "${formattedMessage}" ${formattedParameters}`;
 }
 
 @Injectable()
