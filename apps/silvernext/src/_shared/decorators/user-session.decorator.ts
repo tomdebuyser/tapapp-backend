@@ -1,4 +1,5 @@
-import { Request } from 'express';
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-export const UserSession = createParamDecorator((_, req: Request) => req.user);
+export const UserSession = createParamDecorator(
+    (_, context: ExecutionContext) => context.switchToHttp().getRequest().user,
+);

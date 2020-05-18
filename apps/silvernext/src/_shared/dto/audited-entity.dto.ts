@@ -1,5 +1,5 @@
-import { Type } from "class-transformer";
-import { ApiProperty } from "@nestjs/swagger";
+import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditedEntityResponse {
     @ApiProperty({ required: true })

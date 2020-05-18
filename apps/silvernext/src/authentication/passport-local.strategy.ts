@@ -26,7 +26,9 @@ export class PassportLocalStrategy extends PassportStrategy(Strategy) {
             this.authService
                 .login(username, password)
                 .then(user => this.authQueries.composeUserSession(user.id))
-                .then(session => req.logIn(session, () => resolve(session)))
+                .then(session =>
+                    (req as any).logIn(session, () => resolve(session)),
+                )
                 .catch(error => reject(error)),
         );
     }

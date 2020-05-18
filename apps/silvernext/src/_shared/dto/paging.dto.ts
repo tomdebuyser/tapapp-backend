@@ -1,27 +1,20 @@
-import {
-    IsInt,
-    IsPositive,
-    IsOptional,
-    IsString,
-    IsEnum,
-} from 'class-validator';
+import { IsOptional, IsString, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 import { SortDirection } from '../constants';
+import { IsNonNegativeInteger } from '../validators';
 
 export class PagingQuery {
     @ApiProperty({ required: false })
     @IsOptional()
-    @IsInt()
-    @IsPositive()
+    @IsNonNegativeInteger()
     @Type(() => Number)
     readonly take?: number;
 
     @ApiProperty({ required: false })
     @IsOptional()
-    @IsInt()
-    @IsPositive()
+    @IsNonNegativeInteger()
     @Type(() => Number)
     readonly skip?: number;
 

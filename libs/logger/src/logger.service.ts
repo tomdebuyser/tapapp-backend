@@ -1,11 +1,12 @@
 import { Injectable, LogLevel } from '@nestjs/common';
 import * as winston from 'winston';
-import { format as logFormat } from 'logform';
+import { format as logFormat, Format } from 'logform';
 import * as chalk from 'chalk';
 import { format } from 'date-fns';
 import { isEmpty, flatten, is } from 'ramda';
 
 import { LoggerConfig } from './logger.config';
+import { Environment } from '@libs/common';
 
 const colours = {
     info: chalk.cyan,
@@ -57,7 +58,7 @@ function flattenParameters(params: object, parentKey?: string): unknown[] {
                       )}=${colours.value(value)}`
                     : `${colours.key(key)}=${colours.value(value)}`;
             })
-            .filter(value => !isEmpty(value)),
+            .filter((value) => !isEmpty(value)),
     );
 }
 
@@ -69,16 +70,18 @@ function formatMessage(data: IFormatMessageArgs): string {
     const formattedLabel = themed(label.toUpperCase());
     const formattedLevel = themed(data.level.toUpperCase());
     const formattedMessage = themed(data.message);
-    const formattedTimestamp = format(
-        new Date(timestamp),
-        'dd/MM/yyyy, HH:mm:s',
-    );
+
+    // On remote environments, our logging infrastructure adds its own timestamps, so we don't provide them.
+    const formattedTimestamp = timestamp
+        ? `- ${format(new Date(timestamp), 'dd/MM/yyyy, HH:mm:s')} `
+        : '';
+
     const flattenedParameters = flattenParameters(parameters);
     const formattedParameters = !isEmpty(flattenedParameters)
         ? `[${flattenedParameters.join(', ')}]`
         : '';
 
-    return `[${formattedLabel}] - ${formattedTimestamp}  [${formattedLevel}] [${formattedContext}] "${formattedMessage}" ${formattedParameters}`;
+    return `[${formattedLabel}] ${formattedTimestamp} [${formattedLevel}] [${formattedContext}] "${formattedMessage}" ${formattedParameters}`;
 }
 
 @Injectable()
@@ -86,19 +89,25 @@ export class LoggerService {
     private logger: winston.Logger;
 
     constructor(private readonly config: LoggerConfig) {
+        let formats: Format[] = [
+            logFormat.label({
+                label: this.config.environment || 'NO_ENV_FOUND',
+            }),
+            logFormat.metadata(),
+            logFormat.printf(formatMessage),
+        ];
+
+        // Only add timestamps for local environment
+        if (this.config.environment === Environment.Local) {
+            formats = [logFormat.timestamp(), ...formats];
+        }
+
         this.logger = winston.createLogger({
             level: this.config.logLevel,
             defaultMeta: {
                 context: 'NO_CONTEXT',
             },
-            format: logFormat.combine(
-                logFormat.timestamp(),
-                logFormat.label({
-                    label: this.config.environment || 'NO_ENV_FOUND',
-                }),
-                logFormat.metadata(),
-                logFormat.printf(formatMessage),
-            ),
+            format: logFormat.combine(...formats),
             transports: [new winston.transports.Console()],
         });
     }

@@ -8,7 +8,8 @@ import { LoggerService } from '@libs/logger';
 import { Config } from './config';
 
 const RedisStore = connectRedis(session);
-const client = redis.createClient({ url: Config.redisUrl });
+// Due to conflicting types in connect-redis and redis, we have to type as any here to compile
+const client: any = redis.createClient({ url: Config.redisUrl });
 
 export function addSessionMiddleware(app: INestApplication): void {
     app.use(

@@ -13,5 +13,6 @@ export function createTestUser(overrides?: DeepPartial<User>): User {
         state: UserState.Active,
         roles: [createTestRole()],
     };
-    return User.create(mergeDeepLeft(overrides, user));
+    // Have to cast 'as User' here because of bad typing in Ramda
+    return User.create(mergeDeepLeft(overrides, user) as User);
 }
