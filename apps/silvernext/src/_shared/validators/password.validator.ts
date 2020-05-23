@@ -28,7 +28,7 @@ class IsPasswordConstraint implements ValidatorConstraintInterface {
 
         const trimmedValue = value.trim();
         const isCorrectLength =
-            trimmedValue.length > 8 && trimmedValue.length < 255;
+            trimmedValue.length >= 8 && trimmedValue.length < 255;
 
         // Only allow alphanumeric characters, dashes, and spaces
         const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;

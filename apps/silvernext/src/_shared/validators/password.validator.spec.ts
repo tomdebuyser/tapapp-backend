@@ -12,6 +12,7 @@ describe('PasswordValidator', () => {
         'Ditpasswordk4nermeedoor!',
         'poTvErdeKKe_dit_is_een_st3vig_passwoord',
         'Juistgeno3g',
+        'Test1234',
     ];
     validPasswords.forEach(password => {
         it(`should pass for good passwords: ${password}`, () => {
