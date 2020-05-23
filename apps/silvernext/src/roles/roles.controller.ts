@@ -60,9 +60,8 @@ export class RolesController {
     async createRole(
         @Body() body: CreateRoleRequest,
         @UserSession() session: IUserSession,
-    ): Promise<RoleResponse> {
-        const roleId = await this.rolesService.createRole(body, session);
-        return this.rolesQueries.getRole(roleId);
+    ): Promise<void> {
+        await this.rolesService.createRole(body, session);
     }
 
     @RequiredPermissions({ roles: { edit: true } })
@@ -72,21 +71,15 @@ export class RolesController {
         @Body() body: UpdateRoleRequest,
         @Param() params: RoleIdParam,
         @UserSession() session: IUserSession,
-    ): Promise<RoleResponse> {
-        // Only the provided properties will be updated
-        const roleId = await this.rolesService.updateRole(
-            body,
-            params.roleId,
-            session,
-        );
-        return this.rolesQueries.getRole(roleId);
+    ): Promise<void> {
+        await this.rolesService.updateRole(body, params.roleId, session);
     }
 
     @RequiredPermissions({ roles: { edit: true } })
     @UseGuards(RequiredPermissionsGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':roleId')
-    deleteRole(@Param() params: RoleIdParam): Promise<void> {
-        return this.rolesService.deleteRole(params.roleId);
+    async deleteRole(@Param() params: RoleIdParam): Promise<void> {
+        await this.rolesService.deleteRole(params.roleId);
     }
 }

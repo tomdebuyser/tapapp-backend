@@ -63,13 +63,8 @@ export class UsersController {
         @Body() body: CreateUserRequest,
         @UserSession() session: IUserSession,
         @Origin() origin: string,
-    ): Promise<UserResponse> {
-        const userId = await this.usersService.createUser(
-            body,
-            session,
-            origin,
-        );
-        return this.usersQueries.getUser(userId);
+    ): Promise<void> {
+        await this.usersService.createUser(body, session, origin);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -79,14 +74,8 @@ export class UsersController {
         @Body() body: UpdateUserRequest,
         @Param() params: UserIdParam,
         @UserSession() session: IUserSession,
-    ): Promise<UserResponse> {
-        // Only the provided properties will be updated
-        const userId = await this.usersService.updateUser(
-            body,
-            params.userId,
-            session,
-        );
-        return this.usersQueries.getUser(userId);
+    ): Promise<void> {
+        await this.usersService.updateUser(body, params.userId, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -97,13 +86,12 @@ export class UsersController {
         @Param() params: UserIdParam,
         @UserSession() session: IUserSession,
         @Origin() origin: string,
-    ): Promise<UserResponse> {
-        const userId = await this.usersService.resendRegisterMail(
+    ): Promise<void> {
+        await this.usersService.resendRegisterMail(
             params.userId,
             session,
             origin,
         );
-        return this.usersQueries.getUser(userId);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -113,11 +101,7 @@ export class UsersController {
     async deactivateUser(
         @Param() params: UserIdParam,
         @UserSession() session: IUserSession,
-    ): Promise<UserResponse> {
-        const userId = await this.usersService.deactivateUser(
-            params.userId,
-            session,
-        );
-        return this.usersQueries.getUser(userId);
+    ): Promise<void> {
+        await this.usersService.deactivateUser(params.userId, session);
     }
 }

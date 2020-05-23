@@ -3,6 +3,7 @@ import {
     INestApplication,
     ValidationPipe,
     NestApplicationOptions,
+    BadRequestException,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { init as initSentry, Handlers } from '@sentry/node';
@@ -84,6 +85,14 @@ function addGlobalMiddleware(app: INestApplication): void {
         new ValidationPipe({
             whitelist: true,
             transform: true,
+            exceptionFactory: (errors): BadRequestException =>
+                new BadRequestException(
+                    errors.map(error => ({
+                        children: error.children,
+                        constraints: error.constraints,
+                        property: error.property,
+                    })),
+                ),
         }),
     );
     app.use(compression());

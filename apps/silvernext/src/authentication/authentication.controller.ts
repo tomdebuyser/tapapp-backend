@@ -68,24 +68,24 @@ export class AuthenticationController {
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('request-password-reset')
-    requestPasswordReset(
+    async requestPasswordReset(
         @Body() body: RequestPasswordResetRequest,
         @Origin() origin: string,
     ): Promise<void> {
-        return this.authService.requestPasswordReset(body, origin);
+        await this.authService.requestPasswordReset(body, origin);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('reset-password')
-    resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
-        return this.authService.resetPassword(body);
+    async resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
+        await this.authService.resetPassword(body);
     }
 
     @Post('change-password')
-    changePassword(
+    async changePassword(
         @Body() body: ChangePasswordRequest,
         @UserSession() session: IUserSession,
     ): Promise<void> {
-        return this.authService.changePassword(body, session.userId);
+        await this.authService.changePassword(body, session.userId);
     }
 }
