@@ -1,8 +1,4 @@
-import {
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { PrimaryColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 /**
  * Base fields for each entity:
@@ -10,7 +6,7 @@ import {
  * - Primary key (uuid)
  */
 export abstract class BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn({ default: () => 'uuid_generate_v4()', type: 'uuid' })
     id: string;
 
     @CreateDateColumn()

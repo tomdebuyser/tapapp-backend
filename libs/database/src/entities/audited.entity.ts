@@ -1,5 +1,5 @@
 import {
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
     CreateDateColumn,
     UpdateDateColumn,
     Column,
@@ -12,7 +12,7 @@ import {
  * - Created by and updated by fields, not managed by database, to be filled in
  */
 export abstract class AuditedEntity {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn({ default: () => 'uuid_generate_v4()', type: 'uuid' })
     id: string;
 
     @CreateDateColumn()

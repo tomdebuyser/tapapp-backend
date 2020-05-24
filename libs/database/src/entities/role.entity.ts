@@ -1,5 +1,6 @@
 import { Entity, Column, DeepPartial } from 'typeorm';
 import { plainToClass } from 'class-transformer';
+import { v4 as uuid } from 'uuid';
 
 import { AuditedEntity } from './audited.entity';
 
@@ -34,6 +35,6 @@ export class Role extends AuditedEntity {
      * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
      */
     static create(fields: DeepPartial<Role>): Role {
-        return plainToClass(Role, fields);
+        return plainToClass(Role, { id: uuid(), ...fields });
     }
 }

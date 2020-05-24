@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToMany, JoinTable, DeepPartial } from 'typeorm';
 import { plainToClass } from 'class-transformer';
+import { v4 as uuid } from 'uuid';
 
 import { Role } from './role.entity';
 import { AuditedEntity } from './audited.entity';
@@ -42,6 +43,6 @@ export class User extends AuditedEntity {
      * Auto-generated fields (id, dates, ...) are NOT filled in automatically by this method.
      */
     static create(fields: DeepPartial<User>): User {
-        return plainToClass(User, fields);
+        return plainToClass(User, { id: uuid(), ...fields });
     }
 }
