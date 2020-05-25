@@ -8,7 +8,7 @@ import {
 const validatorName = 'IsPassword';
 
 export function IsPassword(validationOptions?: ValidationOptions) {
-    return function(object: object, propertyName: string): void {
+    return function (object: object, propertyName: string): void {
         registerDecorator({
             name: validatorName,
             target: object.constructor,

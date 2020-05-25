@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import * as session from 'express-session';
 import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
-import * as passport from 'passport';
 
 import { LoggerService } from '@libs/logger';
 import { Config } from './config';
@@ -25,9 +24,6 @@ export function addSessionMiddleware(app: INestApplication): void {
             store: new RedisStore({ client }),
         }),
     );
-
-    app.use(passport.initialize());
-    app.use(passport.session());
 
     // Be sure redis errors are logged
     const logger = app.get(LoggerService);

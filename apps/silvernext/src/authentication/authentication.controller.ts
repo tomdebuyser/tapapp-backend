@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Response, Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 
 import {
     ResetPasswordRequest,
@@ -34,15 +33,18 @@ export class AuthenticationController {
         private readonly authQueries: AuthenticationQueries,
     ) {}
 
-    @UseGuards(AuthGuard())
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    login(
-        // body is not used, but here for swagger docs
-        @Body() _body: LoginRequest,
-        @UserSession() session: IUserSession,
-    ): IUserSession {
-        return session;
+    async login(
+        @Body() body: LoginRequest,
+        @Req() request: Request,
+    ): Promise<AuthenticationUserResponse> {
+        const user = await this.authService.login(body.username, body.password);
+
+        // Add authenticated user's id to session cookie
+        request.session.userId = user.id;
+
+        return this.authQueries.getAuthenticatedUser(user.id);
     }
 
     @ApiBearerAuth()

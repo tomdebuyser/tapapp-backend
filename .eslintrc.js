@@ -10,6 +10,8 @@ module.exports = {
         'plugin:import/warnings',
     ],
     rules: {
+        'import/no-unused-modules': 'warn',
+        'import/no-default-export': 'error',
         'import/order': [
             'error',
             {

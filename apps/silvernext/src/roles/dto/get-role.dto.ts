@@ -5,6 +5,7 @@ import { PermissionsDto } from './permissions.dto';
 
 export class RoleResponse extends AuditedEntityResponse {
     readonly name: string;
+
     @Type(() => PermissionsDto)
     readonly permissions: PermissionsDto;
 }

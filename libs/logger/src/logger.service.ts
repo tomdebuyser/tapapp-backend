@@ -58,7 +58,7 @@ function flattenParameters(params: object, parentKey?: string): unknown[] {
                       )}=${colours.value(value)}`
                     : `${colours.key(key)}=${colours.value(value)}`;
             })
-            .filter((value) => !isEmpty(value)),
+            .filter(value => !isEmpty(value)),
     );
 }
 

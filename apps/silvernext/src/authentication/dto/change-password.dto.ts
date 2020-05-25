@@ -5,8 +5,8 @@ import { IsPassword } from '../../_shared/validators';
 export class ChangePasswordRequest {
     @IsNotEmpty()
     @IsString()
-    oldPassword: string;
+    readonly oldPassword: string;
 
     @IsPassword()
-    newPassword: string;
+    readonly newPassword: string;
 }
