@@ -3,8 +3,8 @@
 if [[ "$NODE_ENV" == 'development' ]];
 then
     # Drops db, migrates & seeds.
-    yarn db:rollup && yarn seed:all
+    yarn db:rollup && yarn db:seed:all
 else
-    # Perform migration and re-seed production values (GW parameters)
-    yarn migrate && yarn seed:prod
+    # Perform migration and re-seed production values
+    yarn db:migrate && yarn db:seed:prod
 fi
