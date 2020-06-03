@@ -23,7 +23,7 @@ import { AuthenticationService } from './authentication.service';
 import { IUserSession } from '../_shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
 import { AuthenticatedGuard, destroyExpressSession } from '../_shared/guards';
-import { UserSession, Origin } from '../_shared/decorators';
+import { UserSession } from '../_shared/decorators';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -72,9 +72,8 @@ export class AuthenticationController {
     @Post('request-password-reset')
     async requestPasswordReset(
         @Body() body: RequestPasswordResetRequest,
-        @Origin() origin: string,
     ): Promise<void> {
-        await this.authService.requestPasswordReset(body, origin);
+        await this.authService.requestPasswordReset(body);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

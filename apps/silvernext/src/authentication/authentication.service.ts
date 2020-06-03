@@ -16,7 +16,6 @@ import {
     ResetTokenExpired,
     InvalidOldPassword,
 } from './errors';
-import { requestPasswordResetMessage } from '../_shared/messages';
 import { UserStateNotAllowed } from '../_shared/guards';
 
 const context = 'Authentication';
@@ -63,7 +62,6 @@ export class AuthenticationService {
 
     async requestPasswordReset(
         body: RequestPasswordResetRequest,
-        origin: string,
     ): Promise<void> {
         const { email } = body;
 
@@ -87,9 +85,16 @@ export class AuthenticationService {
         await this.userRepository.save(user);
 
         // Send mail to inform user
-        this.mailerService.sendMail(
-            requestPasswordResetMessage(email, resetToken, origin),
-        );
+        this.mailerService
+            .sendRequestPasswordResetMail(user, resetToken)
+            .catch(() =>
+                this.logger.error(
+                    'Sending request password reset mail failed',
+                    {
+                        context,
+                    },
+                ),
+            );
     }
 
     async resetPassword(body: ResetPasswordRequest): Promise<void> {

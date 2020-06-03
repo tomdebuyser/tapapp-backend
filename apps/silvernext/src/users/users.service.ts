@@ -17,7 +17,6 @@ import {
     UserNotFound,
     AccountAlreadyActive,
 } from './errors';
-import { registerMessage } from '../_shared/messages';
 import { IUserSession } from '../_shared/constants';
 
 const context = 'UsersService';
@@ -35,7 +34,6 @@ export class UsersService {
     async createUser(
         body: CreateUserRequest,
         session: IUserSession,
-        origin: string,
     ): Promise<string> {
         const { email, firstName, lastName } = body;
         const roleIds = Array.from(new Set(body.roleIds));
@@ -70,7 +68,7 @@ export class UsersService {
         });
 
         // Add reset token and send register mail
-        return this.addResetTokenAndSendMail(user, session, origin);
+        return this.addResetTokenAndSendMail(user, session);
     }
 
     async updateUser(
@@ -116,7 +114,6 @@ export class UsersService {
     async resendRegisterMail(
         userId: string,
         session: IUserSession,
-        origin: string,
     ): Promise<string> {
         // The user should exist and be not active yet
         const existingUser = await this.userRepository.findOne({
@@ -137,7 +134,7 @@ export class UsersService {
         }
 
         // Add reset token and send register mail
-        await this.addResetTokenAndSendMail(existingUser, session, origin);
+        await this.addResetTokenAndSendMail(existingUser, session);
         return existingUser.id;
     }
 
@@ -147,7 +144,6 @@ export class UsersService {
     private async addResetTokenAndSendMail(
         user: User,
         session: IUserSession,
-        origin: string,
     ): Promise<string> {
         const { email } = user;
 
@@ -164,7 +160,13 @@ export class UsersService {
         const { id } = await this.userRepository.save(user);
 
         // Send mail to inform user
-        this.mailerService.sendMail(registerMessage(email, resetToken, origin));
+        this.mailerService
+            .sendRegisterMail(user, session.email, resetToken)
+            .catch(() =>
+                this.logger.warn('Sending registration mail failed', {
+                    context,
+                }),
+            );
 
         return id;
     }

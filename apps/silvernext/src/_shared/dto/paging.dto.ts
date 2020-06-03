@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 import { SortDirection } from '../constants';
-import { IsNonNegativeInteger } from '../validators';
+import { IsNonNegativeInteger } from '@libs/common/validators';
 
 export class PagingQuery {
     @ApiProperty({ required: false })

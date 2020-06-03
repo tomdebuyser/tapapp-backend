@@ -1,7 +1,7 @@
 import { IsUUID, IsOptional, ArrayNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsName } from '../../_shared/validators';
+import { IsName } from '@libs/common/validators';
 
 export class UpdateUserRequest {
     @IsUUID('4', { each: true })

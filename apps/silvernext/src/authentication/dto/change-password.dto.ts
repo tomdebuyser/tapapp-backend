@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-import { IsPassword } from '../../_shared/validators';
+import { IsPassword } from '@libs/common/validators';
 
 export class ChangePasswordRequest {
     @IsNotEmpty()

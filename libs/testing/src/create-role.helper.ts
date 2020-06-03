@@ -3,17 +3,20 @@ import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
 import { Role } from '@libs/database';
-import { createDefaultPermissions } from '../permissions.helper';
 
 export function createTestRole(overrides?: DeepPartial<Role>): Role {
     const role: DeepPartial<Role> = {
         name: faker.name.jobTitle(),
-        permissions: createDefaultPermissions({
+        permissions: {
             users: {
                 view: true,
                 edit: true,
             },
-        }),
+            roles: {
+                view: false,
+                edit: false,
+            },
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
     };

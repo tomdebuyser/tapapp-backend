@@ -3,8 +3,8 @@ import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
 import { UserState } from '@libs/database';
-import { IUserSession } from '../../_shared/constants';
-import { createDefaultPermissions } from '../permissions.helper';
+import { IUserSession } from '../_shared/constants';
+import { createDefaultPermissions } from './permissions.helper';
 
 export function createTestUserSession(
     overrides?: DeepPartial<IUserSession>,

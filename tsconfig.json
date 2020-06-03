@@ -1,25 +1,51 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "declaration": true,
-        "removeComments": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "es2017",
-        "sourceMap": true,
-        "outDir": "./dist",
-        "baseUrl": "./",
-        "incremental": true,
-        "paths": {
-            "@libs/logger": ["libs/logger/src"],
-            "@libs/logger/*": ["libs/logger/src/*"],
-            "@libs/mailer": ["libs/mailer/src"],
-            "@libs/mailer/*": ["libs/mailer/src/*"],
-            "@libs/database": ["libs/database/src"],
-            "@libs/database/*": ["libs/database/src/*"],
-            "@libs/common": ["libs/common/src"],
-            "@libs/common/*": ["libs/common/src/*"]
-        }
-    },
-    "exclude": ["node_modules", "dist", "data"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@libs/logger": [
+        "libs/logger/src"
+      ],
+      "@libs/logger/*": [
+        "libs/logger/src/*"
+      ],
+      "@libs/mailer": [
+        "libs/mailer/src"
+      ],
+      "@libs/mailer/*": [
+        "libs/mailer/src/*"
+      ],
+      "@libs/database": [
+        "libs/database/src"
+      ],
+      "@libs/database/*": [
+        "libs/database/src/*"
+      ],
+      "@libs/common": [
+        "libs/common/src"
+      ],
+      "@libs/common/*": [
+        "libs/common/src/*"
+      ],
+      "@libs/testing": [
+        "libs/testing/src"
+      ],
+      "@libs/testing/*": [
+        "libs/testing/src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "data"
+  ]
 }

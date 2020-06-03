@@ -68,9 +68,7 @@ export class RolesService {
 
         // There should not exist another role with the given name
         const { name, permissions } = body;
-        const otherRole = name
-            ? await this.roleRepository.findOne({ name })
-            : null;
+        const otherRole = await this.roleRepository.findOne({ name });
         if (otherRole && otherRole.id !== roleId) {
             this.logger.warn('Failed to update: role name already in use', {
                 context,

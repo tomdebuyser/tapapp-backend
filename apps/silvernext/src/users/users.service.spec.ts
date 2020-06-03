@@ -22,11 +22,9 @@ import {
     UserNotFound,
     AccountAlreadyActive,
 } from './errors';
-import {
-    createTestUser,
-    createTestRole,
-    createTestUserSession,
-} from '../_util/testing';
+import { createTestUser, createTestRole } from '@libs/testing';
+import { createTestUserSession } from '../_util/create-user-session.helper';
+import { CreateUserRequest, UpdateUserRequest } from './dto';
 
 describe('UsersService', () => {
     let usersService: UsersService;
@@ -64,6 +62,10 @@ describe('UsersService', () => {
         }).compile();
 
         usersService = module.get(UsersService);
+
+        when(
+            mailerService.sendRegisterMail(anything(), anything(), anything()),
+        ).thenResolve();
     });
 
     afterEach(() => {
@@ -74,10 +76,12 @@ describe('UsersService', () => {
 
     describe('createUser', () => {
         it('should create a user with email and reset token #1', async () => {
-            const email = faker.internet.email();
-            const firstName = faker.name.firstName();
-            const lastName = faker.name.lastName();
-            const roleIds = [faker.random.uuid()];
+            const request: CreateUserRequest = {
+                email: faker.internet.email(),
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                roleIds: [faker.random.uuid()],
+            };
             const resetToken = faker.random.alphaNumeric(10);
             const roles = [createTestRole()];
             const session = createTestUserSession();
@@ -92,20 +96,16 @@ describe('UsersService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await usersService.createUser(
-                { email, firstName, lastName, roleIds },
-                session,
-                'origin',
-            );
+            await usersService.createUser(request, session);
 
             verify(
                 userRepository.save(
                     objectContaining({
-                        email,
+                        email: request.email,
                         resetToken,
                         state: UserState.Registering,
-                        firstName,
-                        lastName,
+                        firstName: request.firstName,
+                        lastName: request.lastName,
                         roles,
                         createdBy: session.email,
                         updatedBy: session.email,
@@ -115,8 +115,10 @@ describe('UsersService', () => {
         });
 
         it('should create a user with email and reset token #2', async () => {
-            const email = faker.internet.email();
-            const roleIds = [faker.random.uuid()];
+            const request: CreateUserRequest = {
+                email: faker.internet.email(),
+                roleIds: [faker.random.uuid()],
+            };
             const resetToken = faker.random.alphaNumeric(10);
             const roles = [createTestRole()];
             const session = createTestUserSession();
@@ -131,16 +133,12 @@ describe('UsersService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await usersService.createUser(
-                { email, roleIds },
-                session,
-                'origin',
-            );
+            await usersService.createUser(request, session);
 
             verify(
                 userRepository.save(
                     objectContaining({
-                        email,
+                        email: request.email,
                         resetToken,
                         roles,
                         createdBy: session.email,
@@ -162,7 +160,6 @@ describe('UsersService', () => {
                         roleIds: [faker.random.uuid()],
                     },
                     createTestUserSession(),
-                    'origin',
                 ),
             ).rejects.toThrowError(EmailAlreadyInUse);
         });
@@ -178,7 +175,6 @@ describe('UsersService', () => {
                         roleIds: [faker.random.uuid()],
                     },
                     createTestUserSession(),
-                    'origin',
                 ),
             ).rejects.toThrowError(RoleNotFound);
         });
@@ -186,15 +182,14 @@ describe('UsersService', () => {
 
     describe('updateUser', () => {
         it('should update the user correctly #1', async () => {
-            const firstName = faker.name.firstName();
-            const lastName = faker.name.lastName();
+            const request: UpdateUserRequest = {
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
+                roleIds: [faker.random.uuid(), faker.random.uuid()],
+            };
             const user = createTestUser({ id: faker.random.uuid() });
             const session = createTestUserSession();
-            const roleIds = [faker.random.uuid(), faker.random.uuid()];
-            const roles = [
-                createTestRole({ id: roleIds[0] }),
-                createTestRole({ id: roleIds[1] }),
-            ];
+            const roles = request.roleIds.map(id => createTestRole({ id }));
 
             when(userRepository.findOne(anything())).thenResolve(user);
             when(roleRepository.find(anything())).thenResolve(roles);
@@ -203,18 +198,14 @@ describe('UsersService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await usersService.updateUser(
-                { firstName, lastName, roleIds },
-                user.id,
-                session,
-            );
+            await usersService.updateUser(request, user.id, session);
 
             verify(
                 userRepository.save(
                     objectContaining({
                         roles,
-                        firstName,
-                        lastName,
+                        firstName: request.firstName,
+                        lastName: request.lastName,
                         updatedBy: session.email,
                     }),
                 ),
@@ -222,7 +213,9 @@ describe('UsersService', () => {
         });
 
         it('should update the user correctly #2', async () => {
-            const roleIds = [faker.random.uuid()];
+            const request: UpdateUserRequest = {
+                roleIds: [faker.random.uuid()],
+            };
             const user = createTestUser({ id: faker.random.uuid() });
             const roles = [createTestRole()];
             const session = createTestUserSession();
@@ -234,7 +227,7 @@ describe('UsersService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await usersService.updateUser({ roleIds }, user.id, session);
+            await usersService.updateUser(request, user.id, session);
 
             verify(
                 userRepository.save(
@@ -293,7 +286,7 @@ describe('UsersService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await usersService.resendRegisterMail(user.id, session, 'origin');
+            await usersService.resendRegisterMail(user.id, session);
 
             verify(
                 userRepository.save(
@@ -317,7 +310,6 @@ describe('UsersService', () => {
                 usersService.resendRegisterMail(
                     userId,
                     createTestUserSession(),
-                    'origin',
                 ),
             ).rejects.toThrowError(UserNotFound);
         });
@@ -331,7 +323,6 @@ describe('UsersService', () => {
                 usersService.resendRegisterMail(
                     user.id,
                     createTestUserSession(),
-                    'origin',
                 ),
             ).rejects.toThrowError(AccountAlreadyActive);
         });

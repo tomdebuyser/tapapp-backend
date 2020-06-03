@@ -1,59 +1,73 @@
 {
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/silvernext/src",
-    "compilerOptions": {
-        "plugins": ["@nestjs/swagger/plugin"],
-        "webpack": true,
-        "tsConfigPath": "apps/silvernext/tsconfig.app.json",
-        "assets": ["**/.env.*"]
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/silvernext/src",
+  "compilerOptions": {
+    "plugins": [
+      "@nestjs/swagger/plugin"
+    ],
+    "webpack": true,
+    "tsConfigPath": "apps/silvernext/tsconfig.app.json",
+    "assets": [
+      "**/.env.*",
+      "../../../libs/mailer/**/compiled/*.template.html"
+    ]
+  },
+  "monorepo": true,
+  "root": "apps/silvernext",
+  "projects": {
+    "silvernext": {
+      "type": "application",
+      "root": "apps/silvernext",
+      "entryFile": "main",
+      "sourceRoot": "apps/silvernext/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/silvernext/tsconfig.app.json"
+      }
     },
-    "monorepo": true,
-    "root": "apps/silvernext",
-    "projects": {
-        "silvernext": {
-            "type": "application",
-            "root": "apps/silvernext",
-            "entryFile": "main",
-            "sourceRoot": "apps/silvernext/src",
-            "compilerOptions": {
-                "tsConfigPath": "apps/silvernext/tsconfig.app.json"
-            }
-        },
-        "logger": {
-            "type": "library",
-            "root": "libs/logger",
-            "entryFile": "index",
-            "sourceRoot": "libs/logger/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/logger/tsconfig.lib.json"
-            }
-        },
-        "mailer": {
-            "type": "library",
-            "root": "libs/mailer",
-            "entryFile": "index",
-            "sourceRoot": "libs/mailer/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/mailer/tsconfig.lib.json"
-            }
-        },
-        "database": {
-            "type": "library",
-            "root": "libs/database",
-            "entryFile": "index",
-            "sourceRoot": "libs/database/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/database/tsconfig.lib.json"
-            }
-        },
-        "common": {
-            "type": "library",
-            "root": "libs/common",
-            "entryFile": "index",
-            "sourceRoot": "libs/common/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/common/tsconfig.lib.json"
-            }
-        }
+    "logger": {
+      "type": "library",
+      "root": "libs/logger",
+      "entryFile": "index",
+      "sourceRoot": "libs/logger/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/logger/tsconfig.lib.json"
+      }
+    },
+    "mailer": {
+      "type": "library",
+      "root": "libs/mailer",
+      "entryFile": "index",
+      "sourceRoot": "libs/mailer/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/mailer/tsconfig.lib.json"
+      }
+    },
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "testing": {
+      "type": "library",
+      "root": "libs/testing",
+      "entryFile": "index",
+      "sourceRoot": "libs/testing/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/testing/tsconfig.lib.json"
+      }
     }
+  }
 }

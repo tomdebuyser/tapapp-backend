@@ -61,6 +61,10 @@ class Config {
         return process.env.BRAND_NAME as string;
     }
 
+    static get frontendUrl(): string {
+        return process.env.FRONTEND_URL;
+    }
+
     static get api(): IApiOptions {
         const DEFAULT_PORT = '3001';
         return {
@@ -96,6 +100,8 @@ class Config {
             environment: process.env.NODE_ENV as Environment,
             mandrillApiKey: process.env.MANDRILL_API_KEY as string,
             mailFrom: process.env.MAIL_FROM as string,
+            brandName: Config.brandName,
+            frontendUrl: Config.frontendUrl,
         };
     }
 

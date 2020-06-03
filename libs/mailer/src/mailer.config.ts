@@ -6,5 +6,7 @@ export class MailerConfig {
         readonly environment: string,
         readonly mandrillApiKey: string,
         readonly mailFrom: string,
+        readonly brandName: string,
+        readonly frontendUrl: string,
     ) {}
 }

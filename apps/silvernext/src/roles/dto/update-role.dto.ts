@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { PermissionsDto } from './permissions.dto';
-import { IsName } from '../../_shared/validators';
+import { IsName } from '@libs/common/validators';
 
 export class UpdateRoleRequest {
     @IsName()

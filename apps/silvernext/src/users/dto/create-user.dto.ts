@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, ArrayNotEmpty, IsUUID } from 'class-validator';
 
-import { IsName } from '../../_shared/validators';
+import { IsName } from '@libs/common/validators';
 
 export class CreateUserRequest {
     @IsEmail()

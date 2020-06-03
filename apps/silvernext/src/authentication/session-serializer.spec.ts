@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 
 import { SessionSerializer } from './session-serializer.middleware';
 import { AuthenticationQueries } from './authentication.queries';
-import { createTestUserSession } from '../_util/testing';
+import { createTestUserSession } from '../_util/create-user-session.helper';
 
 describe('SessionSerializer', () => {
     const authQueries = mock(AuthenticationQueries);

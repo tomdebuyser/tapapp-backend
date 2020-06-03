@@ -26,11 +26,7 @@ import {
     AuthenticatedGuard,
     RequiredPermissionsGuard,
 } from '../_shared/guards';
-import {
-    Origin,
-    UserSession,
-    RequiredPermissions,
-} from '../_shared/decorators';
+import { UserSession, RequiredPermissions } from '../_shared/decorators';
 import { IUserSession } from '../_shared/constants';
 
 @ApiBearerAuth()
@@ -62,9 +58,8 @@ export class UsersController {
     async createUser(
         @Body() body: CreateUserRequest,
         @UserSession() session: IUserSession,
-        @Origin() origin: string,
     ): Promise<void> {
-        await this.usersService.createUser(body, session, origin);
+        await this.usersService.createUser(body, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -85,13 +80,8 @@ export class UsersController {
     async resendRegisterMail(
         @Param() params: UserIdParam,
         @UserSession() session: IUserSession,
-        @Origin() origin: string,
     ): Promise<void> {
-        await this.usersService.resendRegisterMail(
-            params.userId,
-            session,
-            origin,
-        );
+        await this.usersService.resendRegisterMail(params.userId, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })

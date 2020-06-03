@@ -17,12 +17,12 @@ import { RolesService } from './roles.service';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
 import {
     createTestRole,
-    createTestUserSession,
     createTestUser,
-} from '../_util/testing';
-import { PermissionsDto } from './dto';
-import { QueryBuilderMock } from '../_util/mocks';
+    QueryBuilderMock,
+} from '@libs/testing';
+import { CreateRoleRequest, UpdateRoleRequest } from './dto';
 import { createDefaultPermissions } from '../_util/permissions.helper';
+import { createTestUserSession } from '../_util/create-user-session.helper';
 
 describe('RolesService', () => {
     let rolesService: RolesService;
@@ -59,15 +59,17 @@ describe('RolesService', () => {
 
     describe('createRole', () => {
         it('should create a role with name and permissions #1', async () => {
-            const name = faker.name.jobTitle();
-            const permissions: PermissionsDto = {
-                roles: {
-                    view: true,
-                    edit: true,
-                },
-                users: {
-                    view: true,
-                    edit: true,
+            const request: CreateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: {
+                    roles: {
+                        view: true,
+                        edit: true,
+                    },
+                    users: {
+                        view: true,
+                        edit: true,
+                    },
                 },
             };
             const session = createTestUserSession();
@@ -78,13 +80,15 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.createRole({ name, permissions }, session);
+            await rolesService.createRole(request, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
-                        name,
-                        permissions: createDefaultPermissions(permissions),
+                        name: request.name,
+                        permissions: createDefaultPermissions(
+                            request.permissions,
+                        ),
                         createdBy: session.email,
                         updatedBy: session.email,
                     }),
@@ -93,7 +97,10 @@ describe('RolesService', () => {
         });
 
         it('should create a role with name and permissions #2', async () => {
-            const name = faker.name.jobTitle();
+            const request: CreateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: {},
+            };
             const session = createTestUserSession();
 
             when(roleRepository.findOne(anything())).thenResolve(null);
@@ -102,12 +109,12 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.createRole({ name, permissions: {} }, session);
+            await rolesService.createRole(request, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
-                        name,
+                        name: request.name,
                         permissions: createDefaultPermissions(),
                         createdBy: session.email,
                         updatedBy: session.email,
@@ -117,28 +124,34 @@ describe('RolesService', () => {
         });
 
         it('should throw an error when a role with name already exists', async () => {
+            const request: CreateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: {},
+            };
             const role = createTestRole();
             when(roleRepository.findOne(anything())).thenResolve(role);
 
             await expect(
-                rolesService.createRole(role, createTestUserSession()),
+                rolesService.createRole(request, createTestUserSession()),
             ).rejects.toThrowError(RoleNameAlreadyInUse);
         });
     });
 
     describe('updateRole', () => {
         it('should update the role correctly #1', async () => {
-            const permissions: PermissionsDto = {
-                roles: {
-                    edit: true,
-                },
-                users: {
-                    view: true,
+            const request: UpdateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: {
+                    roles: {
+                        edit: true,
+                    },
+                    users: {
+                        view: true,
+                    },
                 },
             };
             const role = createTestRole();
             const session = createTestUserSession();
-            const name = faker.name.jobTitle();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(roleRepository.save(anything())).thenCall(role => ({
@@ -146,16 +159,12 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.updateRole(
-                { permissions, name },
-                role.id,
-                session,
-            );
+            await rolesService.updateRole(request, role.id, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
-                        name,
+                        name: request.name,
                         permissions: {
                             roles: {
                                 view: role.permissions.roles.view,
@@ -173,10 +182,12 @@ describe('RolesService', () => {
         });
 
         it('should update the role correctly #2', async () => {
-            const name = faker.name.jobTitle();
+            const request: UpdateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: createDefaultPermissions(),
+            };
             const role = createTestRole();
             const session = createTestUserSession();
-            const permissions = createDefaultPermissions();
 
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(roleRepository.save(anything())).thenCall(role => ({
@@ -184,17 +195,13 @@ describe('RolesService', () => {
                 id: faker.random.uuid(),
             }));
 
-            await rolesService.updateRole(
-                { name, permissions },
-                role.id,
-                session,
-            );
+            await rolesService.updateRole(request, role.id, session);
 
             verify(
                 roleRepository.save(
                     objectContaining({
-                        name,
-                        permissions,
+                        name: request.name,
+                        permissions: request.permissions,
                         updatedBy: session.email,
                     }),
                 ),
@@ -202,11 +209,16 @@ describe('RolesService', () => {
         });
 
         it('should throw an error when the role does not exist', async () => {
+            const request: UpdateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: createDefaultPermissions(),
+            };
+
             when(roleRepository.findOne(anything())).thenResolve(null);
 
             await expect(
                 rolesService.updateRole(
-                    { name: 'test', permissions: createDefaultPermissions() },
+                    request,
                     faker.random.uuid(),
                     createTestUserSession(),
                 ),
@@ -214,19 +226,25 @@ describe('RolesService', () => {
         });
 
         it('should throw an error when another role with the name already exists', async () => {
-            const name = faker.name.jobTitle();
+            const request: UpdateRoleRequest = {
+                name: faker.name.jobTitle(),
+                permissions: createDefaultPermissions(),
+            };
             const roleId = faker.random.uuid();
             const role = createTestRole({ id: roleId });
+
             when(
                 roleRepository.findOne(objectContaining({ id: roleId })),
             ).thenResolve(role);
             when(
-                roleRepository.findOne(objectContaining({ name })),
+                roleRepository.findOne(
+                    objectContaining({ name: request.name }),
+                ),
             ).thenResolve(createTestRole({ id: faker.random.uuid() }));
 
             await expect(
                 rolesService.updateRole(
-                    { name, permissions: createDefaultPermissions() },
+                    request,
                     roleId,
                     createTestUserSession(),
                 ),
@@ -237,6 +255,7 @@ describe('RolesService', () => {
     describe('deleteRole', () => {
         it('should delete the role correctly', async () => {
             const role = createTestRole({ id: faker.random.uuid() });
+
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(userRepository.createQueryBuilder(anything())).thenReturn(
                 QueryBuilderMock.instance<User>(null),
@@ -263,6 +282,7 @@ describe('RolesService', () => {
 
         it('should throw an error when the role is still in use', async () => {
             const role = createTestRole({ id: faker.random.uuid() });
+
             when(roleRepository.findOne(anything())).thenResolve(role);
             when(userRepository.createQueryBuilder(anything())).thenReturn(
                 QueryBuilderMock.instance<User>(createTestUser()),

@@ -20,13 +20,18 @@ import { LoggerService } from '@libs/logger';
 import { UserRepository, UserState } from '@libs/database';
 import { MailerService } from '@libs/mailer';
 import { AuthenticationService } from './authentication.service';
-import { createTestUser } from '../_util/testing';
+import { createTestUser } from '@libs/testing';
 import {
     ResetTokenInvalid,
     ResetTokenExpired,
     InvalidOldPassword,
 } from './errors';
 import { UserStateNotAllowed } from '../_shared/guards';
+import {
+    RequestPasswordResetRequest,
+    ResetPasswordRequest,
+    ChangePasswordRequest,
+} from './dto';
 
 describe('AuthenticationService', () => {
     let authService: AuthenticationService;
@@ -59,6 +64,10 @@ describe('AuthenticationService', () => {
         }).compile();
 
         authService = module.get(AuthenticationService);
+
+        when(
+            mailerService.sendRequestPasswordResetMail(anything(), anything()),
+        ).thenResolve();
     });
 
     afterEach(() => {
@@ -122,22 +131,24 @@ describe('AuthenticationService', () => {
 
     describe('requestPasswordReset', () => {
         it('should handle the request for password reset correctly', async () => {
-            const email = faker.internet.email();
+            const request: RequestPasswordResetRequest = {
+                email: faker.internet.email(),
+            };
             const resetToken = faker.random.alphaNumeric(10);
 
             when(userRepository.findOne(anything())).thenResolve(
-                createTestUser({ email }),
+                createTestUser({ email: request.email }),
             );
             when(jwtService.signAsync(anything(), anything())).thenResolve(
                 resetToken,
             );
 
-            await authService.requestPasswordReset({ email }, 'origin');
+            await authService.requestPasswordReset(request);
 
             verify(
                 userRepository.save(
                     objectContaining({
-                        email,
+                        email: request.email,
                         resetToken,
                     }),
                 ),
@@ -145,11 +156,13 @@ describe('AuthenticationService', () => {
         });
 
         it('should do nothing when no user was found for the given email', async () => {
-            const email = faker.internet.email();
+            const request: RequestPasswordResetRequest = {
+                email: faker.internet.email(),
+            };
 
             when(userRepository.findOne(anything())).thenResolve(null);
 
-            await authService.requestPasswordReset({ email }, 'origin');
+            await authService.requestPasswordReset(request);
 
             verify(userRepository.save(anything())).never();
         });
@@ -157,20 +170,19 @@ describe('AuthenticationService', () => {
 
     describe('resetPassword', () => {
         it('should reset the password of a user correctly', async () => {
-            const newPassword = 'Password1%';
-            const resetToken = faker.random.alphaNumeric(10);
-            const user = createTestUser({ resetToken });
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
+            const user = createTestUser({ resetToken: request.resetToken });
 
             when(userRepository.findOne(anything())).thenResolve(user);
-            when(jwtService.verifyAsync(resetToken)).thenResolve(null);
-            when(jwtService.decode(resetToken)).thenReturn({
+            when(jwtService.verifyAsync(request.resetToken)).thenResolve(null);
+            when(jwtService.decode(request.resetToken)).thenReturn({
                 email: user.email,
             });
 
-            await authService.resetPassword({
-                newPassword,
-                resetToken,
-            });
+            await authService.resetPassword(request);
 
             verify(
                 userRepository.save(
@@ -184,109 +196,126 @@ describe('AuthenticationService', () => {
         });
 
         it('should throw an error when resetToken is expired', async () => {
-            const newPassword = 'Password1%';
-            const resetToken = faker.random.alphaNumeric(10);
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
 
-            when(jwtService.verifyAsync(resetToken)).thenThrow(
+            when(jwtService.verifyAsync(request.resetToken)).thenThrow(
                 new TokenExpiredError('', new Date()),
             );
 
             await expect(
-                authService.resetPassword({
-                    newPassword,
-                    resetToken,
-                }),
+                authService.resetPassword(request),
             ).rejects.toThrowError(ResetTokenExpired);
         });
 
         it('should throw an error when resetToken could not be verified', async () => {
-            const newPassword = 'Password1%';
-            const resetToken = faker.random.alphaNumeric(10);
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
 
-            when(jwtService.verifyAsync(resetToken)).thenThrow(new Error());
+            when(jwtService.verifyAsync(request.resetToken)).thenThrow(
+                new Error(),
+            );
 
             await expect(
-                authService.resetPassword({
-                    newPassword,
-                    resetToken,
-                }),
+                authService.resetPassword(request),
             ).rejects.toThrowError(ResetTokenInvalid);
         });
 
         it('should throw an error when resetToken is not linked to a user', async () => {
-            const newPassword = 'Password1%';
-            const resetToken = faker.random.alphaNumeric(10);
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
 
             when(userRepository.findOne(anything())).thenResolve(null);
-            when(jwtService.verifyAsync(resetToken)).thenResolve(null);
-            when(jwtService.decode(resetToken)).thenReturn(null);
+            when(jwtService.verifyAsync(request.resetToken)).thenResolve(null);
+            when(jwtService.decode(request.resetToken)).thenReturn(null);
 
             await expect(
-                authService.resetPassword({
-                    newPassword,
-                    resetToken,
-                }),
+                authService.resetPassword(request),
             ).rejects.toThrowError(ResetTokenInvalid);
         });
 
         it('should throw an error when resetToken is linked to another user', async () => {
-            const newPassword = 'Password1%';
-            const resetToken = faker.random.alphaNumeric(10);
-            const user = createTestUser({ resetToken });
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
+            const user = createTestUser({ resetToken: request.resetToken });
 
             when(userRepository.findOne(anything())).thenResolve({
                 ...user,
                 email: 'email1@test.com',
             });
-            when(jwtService.verifyAsync(resetToken)).thenResolve(null);
-            when(jwtService.decode(resetToken)).thenReturn({
+            when(jwtService.verifyAsync(request.resetToken)).thenResolve(null);
+            when(jwtService.decode(request.resetToken)).thenReturn({
                 email: 'email2@test.com',
             });
 
             await expect(
-                authService.resetPassword({
-                    newPassword,
-                    resetToken,
-                }),
+                authService.resetPassword(request),
             ).rejects.toThrowError(ResetTokenInvalid);
+        });
+
+        it('should throw an error when the user is inactive', async () => {
+            const request: ResetPasswordRequest = {
+                newPassword: 'Password1%',
+                resetToken: faker.random.alphaNumeric(10),
+            };
+            const user = createTestUser({
+                resetToken: request.resetToken,
+                state: UserState.Inactive,
+            });
+
+            when(userRepository.findOne(anything())).thenResolve(user);
+            when(jwtService.verifyAsync(request.resetToken)).thenResolve(null);
+            when(jwtService.decode(request.resetToken)).thenReturn({
+                email: user.email,
+            });
+
+            await expect(
+                authService.resetPassword(request),
+            ).rejects.toThrowError(UserStateNotAllowed);
         });
     });
 
     describe('changePassword', () => {
         it('should successfully change password', async () => {
-            const oldPassword = 'my_old_password';
+            const request: ChangePasswordRequest = {
+                oldPassword: 'my_old_password',
+                newPassword: 'my_new_password',
+            };
+
             when(userRepository.findOne(anything())).thenResolve(
-                createTestUser({ password: bcrypt.hashSync(oldPassword, 10) }),
+                createTestUser({
+                    password: bcrypt.hashSync(request.oldPassword, 10),
+                }),
             );
 
-            const newPassword = 'my_new_password';
-            await authService.changePassword(
-                {
-                    oldPassword,
-                    newPassword: 'my_new_password',
-                },
-                faker.random.uuid(),
-            );
+            await authService.changePassword(request, faker.random.uuid());
 
             const [savedUser] = capture(userRepository.save).last();
-            expect(bcrypt.compareSync(newPassword, savedUser.password)).toBe(
-                true,
-            );
+            expect(
+                bcrypt.compareSync(request.newPassword, savedUser.password),
+            ).toBe(true);
         });
 
         it('should fail when the old password is wrong', async () => {
+            const request: ChangePasswordRequest = {
+                oldPassword: 'my_invalid_old_password',
+                newPassword: 'my_new_password',
+            };
+
             when(userRepository.findOne(anything())).thenResolve(
                 createTestUser({ password: 'my_old_password' }),
             );
 
             await expect(
-                authService.changePassword(
-                    {
-                        oldPassword: 'my_invalid_old_password',
-                        newPassword: 'my_new_password',
-                    },
-                    faker.random.uuid(),
-                ),
+                authService.changePassword(request, faker.random.uuid()),
             ).rejects.toThrowError(InvalidOldPassword);
         });
     });
