@@ -64,11 +64,11 @@ pipelines:
       - <<: *lint
       - <<: *runTests
       - step:
-          name: Deploy to development
-          deployment: development
+          name: Deploy to develop
+          deployment: develop
           script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_DEVELOP.git HEAD:master
-    release/**:
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
+    staging:
       - <<: *installDependencies
       - <<: *build
       - <<: *lint
@@ -78,4 +78,15 @@ pipelines:
           deployment: staging
           trigger: manual
           script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_STAGING.git HEAD:master
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
+    master:
+      - <<: *installDependencies
+      - <<: *build
+      - <<: *lint
+      - <<: *runTests
+      - step:
+          name: Deploy to production
+          deployment: production
+          trigger: manual
+          script:
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
