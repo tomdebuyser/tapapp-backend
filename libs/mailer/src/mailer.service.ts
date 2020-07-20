@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Mandrill } from 'mandrill-api';
-import { readFile, readFileSync } from 'fs';
+import { readFile } from 'fs';
 
 import { LoggerService } from '@libs/logger';
 import { MandrillMessage, MailTemplate } from './mailer.types';
@@ -23,7 +23,7 @@ export class MailerService {
     ) {}
 
     private readHtmlTemplate(file: MailTemplate): Promise<string> {
-        const path = `${__dirname}/templates/compiled/${file}.template.html`;
+        const path = `${__dirname}/templates/_compiled/${file}.template.html`;
         return new Promise((resolve, reject) => {
             readFile(path, (error, data) => {
                 if (error) reject(error);

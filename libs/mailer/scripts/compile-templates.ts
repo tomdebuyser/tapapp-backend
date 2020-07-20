@@ -4,7 +4,7 @@ import * as InlineCss from 'inline-css';
 import { MailTemplate } from '../src/mailer.types';
 
 const TEMPLATES_PATH = `${__dirname}/../src/templates`;
-const COMPILED_TEMPLATES_PATH = `${TEMPLATES_PATH}/compiled`;
+const COMPILED_TEMPLATES_PATH = `${TEMPLATES_PATH}/_compiled`;
 
 const brandStyles = {
     primaryColor: '#002548',
@@ -14,7 +14,7 @@ const brandStyles = {
         'https://icapps.com/profiles/vb_profile/themes/icapps/images/icapps-wit-new.svg',
 };
 
-// Create a 'compiled' folder
+// Create a '_compiled' folder
 try {
     mkdirSync(COMPILED_TEMPLATES_PATH);
 } catch (e) {
@@ -45,8 +45,9 @@ const promises = Object.values(MailTemplate).map(async name => {
     // Inline the styles
     result = await InlineCss(result, { removeStyleTags: false, url: ' ' });
 
-    // Add the resultinh html file to the 'compiled' folder
+    // Add the resultinh html file to the compiled folder
     writeFileSync(`${COMPILED_TEMPLATES_PATH}/${name}.template.html`, result);
+    console.log(`[ADDED] _compiled/${name}.template.html`);
 
     return true;
 });
