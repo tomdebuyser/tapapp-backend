@@ -19,12 +19,11 @@ export function addSessionMiddleware(app: INestApplication): void {
             saveUninitialized: false,
             cookie: {
                 maxAge: Config.session.expiresIn,
-                secure:
-                    Config.environment === Environment.Development || 'auto',
+                secure: 'auto',
                 httpOnly: true,
                 sameSite:
                     Config.environment === Environment.Development
-                        ? 'none'
+                        ? 'lax'
                         : 'strict',
             },
             store: new RedisStore({ client }),
