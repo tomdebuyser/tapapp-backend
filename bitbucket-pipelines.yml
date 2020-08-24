@@ -78,7 +78,7 @@ pipelines:
           deployment: staging
           trigger: manual
           script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:staging
     master:
       - <<: *installDependencies
       - <<: *build
@@ -89,4 +89,4 @@ pipelines:
           deployment: production
           trigger: manual
           script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:production
