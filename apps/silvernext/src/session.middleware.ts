@@ -5,7 +5,6 @@ import * as connectRedis from 'connect-redis';
 
 import { LoggerService } from '@libs/logger';
 import { Config } from './config';
-import { Environment } from '@libs/common';
 
 const RedisStore = connectRedis(session);
 // Due to conflicting types in connect-redis and redis, we have to type as any here to compile
@@ -21,10 +20,6 @@ export function addSessionMiddleware(app: INestApplication): void {
                 maxAge: Config.session.expiresIn,
                 secure: 'auto',
                 httpOnly: true,
-                sameSite:
-                    Config.environment === Environment.Development
-                        ? 'lax'
-                        : 'strict',
             },
             store: new RedisStore({ client }),
         }),
