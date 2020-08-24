@@ -19,7 +19,8 @@ export function addSessionMiddleware(app: INestApplication): void {
             saveUninitialized: false,
             cookie: {
                 maxAge: Config.session.expiresIn,
-                secure: 'auto',
+                secure:
+                    Config.environment === Environment.Development || 'auto',
                 httpOnly: true,
                 sameSite:
                     Config.environment === Environment.Development
