@@ -37,10 +37,10 @@ We use a Postgres instance for our database.
 
 ```bash
 # Run the existing migrations
-$ yarn migrate
+$ yarn db:migrate
 
 # Seed the database with initial values
-$ yarn seed
+$ yarn db:seed
 ```
 
 ### Running the applications
@@ -71,7 +71,7 @@ all applications in the monorepo are deployed simultaneously.
 # Removes previous build and create new one
 $ yarn build
 
-# For all start commands: append name of project you want to start, defaults to my-gateway.
+# For all start commands: append name of project you want to start, defaults to the main app defined in nest-cli.json
 
 # Start application (builds if needed)
 $ yarn start
@@ -99,32 +99,32 @@ $ yarn db:rollup
 
 # Migrations
 # Generate a migration based on current models
-$ yarn migration:generate -n <NameOfMigration>
+$ yarn db:migrate:generate -n <NameOfMigration>
 
 # Apply all migrations
-$ yarn migrate
+$ yarn db:migrate
 
 # Revert the latest migration
-$ yarn migrate:revert
+$ yarn db:migrate:revert
 
 
 # Seeds
 # Create a new empty dev seed
-$ yarn seed:generate -n <NameOfSeed>
+$ yarn db:seed:generate -n <NameOfSeed>
 
 # Apply dev seeds
-$ yarn seed
+$ yarn db:seed
 
 # Revert the latest dev seed
-$ yarn seed:revert
+$ yarn db:seed:revert
 
 # Commands exist for production seeds aswell
-$ yarn seed:prod:generate -n <NameOfSeed>
-$ yarn seed:prod
-$ yarn seed:prod:revert
+$ yarn db:seed:prod:generate -n <NameOfSeed>
+$ yarn db:seed:prod
+$ yarn db:seed:prod:revert
 
 # Convenience command to execute all seeds
-$ yarn seed:all
+$ yarn db:seed:all
 ```
 
 See [TypeORM CLI](https://typeorm.io/#/using-cli) docs for more possible commands:
@@ -162,4 +162,15 @@ $ yarn test
 $ yarn test silvernext
 $ yarn test whatever
 $ ...
+```
+
+### Adding apps or libraries
+
+```bash
+# Adds a new library (will add necessary code to nest-cli.json, package.json & tsconfig.json)
+$ nest g lib <NameOfLibrary>
+# Example for logger: nest g lib logger
+
+# Adds a new application (will add necessary code to nest-cli.json, package.json & tsconfig.json)
+$ nest g app <NameOfApplication>
 ```
