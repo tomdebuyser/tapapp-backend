@@ -1,5 +1,5 @@
 import { UserState } from '@libs/database';
-import { BaseEntityResponse } from '../../_shared/dto';
+import { BaseEntityResponse } from '../../shared/dto';
 import { PermissionsDto } from '../../roles/dto';
 
 export class AuthenticationUserResponse extends BaseEntityResponse {

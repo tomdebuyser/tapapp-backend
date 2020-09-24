@@ -7,14 +7,14 @@ import {
 import { Response, Request } from 'express';
 
 import { UserState } from '@libs/database';
-import { IUserSession } from '../constants';
+import { UserSession } from '../constants';
 
 @Injectable()
 export class AuthenticatedGuard implements CanActivate {
     public async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse<Response>();
-        const session: IUserSession = request.user;
+        const session: UserSession = request.user;
 
         if (!session || session?.state !== UserState.Active) {
             await destroyExpressSession(request, response);

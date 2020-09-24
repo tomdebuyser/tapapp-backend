@@ -20,10 +20,10 @@ import {
     ChangePasswordRequest,
 } from './dto';
 import { AuthenticationService } from './authentication.service';
-import { IUserSession } from '../_shared/constants';
+import { UserSession } from '../shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
-import { AuthenticatedGuard, destroyExpressSession } from '../_shared/guards';
-import { UserSession } from '../_shared/decorators';
+import { AuthenticatedGuard, destroyExpressSession } from '../shared/guards';
+import { GetUserSession } from '../shared/decorators';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -51,7 +51,7 @@ export class AuthenticationController {
     @UseGuards(AuthenticatedGuard)
     @Get('me')
     authenticate(
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<AuthenticationUserResponse> {
         return this.authQueries.getAuthenticatedUser(session.userId);
     }
@@ -85,7 +85,7 @@ export class AuthenticationController {
     @Post('change-password')
     async changePassword(
         @Body() body: ChangePasswordRequest,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.authService.changePassword(body, session.userId);
     }

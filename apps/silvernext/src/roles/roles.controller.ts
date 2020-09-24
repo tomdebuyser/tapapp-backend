@@ -23,12 +23,9 @@ import {
 } from './dto';
 import { RolesService } from './roles.service';
 import { RolesQueries } from './roles.queries';
-import {
-    AuthenticatedGuard,
-    RequiredPermissionsGuard,
-} from '../_shared/guards';
-import { UserSession, RequiredPermissions } from '../_shared/decorators';
-import { IUserSession } from '../_shared/constants';
+import { AuthenticatedGuard, RequiredPermissionsGuard } from '../shared/guards';
+import { GetUserSession, RequiredPermissions } from '../shared/decorators';
+import { UserSession } from '../shared/constants';
 
 @ApiBearerAuth()
 @UseGuards(AuthenticatedGuard)
@@ -59,7 +56,7 @@ export class RolesController {
     @Post()
     async createRole(
         @Body() body: CreateRoleRequest,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.rolesService.createRole(body, session);
     }
@@ -70,7 +67,7 @@ export class RolesController {
     async updateRole(
         @Body() body: UpdateRoleRequest,
         @Param() params: RoleIdParam,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.rolesService.updateRole(body, params.roleId, session);
     }

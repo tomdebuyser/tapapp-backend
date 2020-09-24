@@ -1,16 +1,14 @@
 import { DynamicModule } from '@nestjs/common';
 import { Mandrill } from 'mandrill-api';
 
-import { LoggerModule, LoggerConfig } from '@libs/logger';
 import { MailerService } from './mailer.service';
 import { MailerConfig } from './mailer.config';
 import { Environment } from '@libs/common';
 
 export class MailerModule {
-    static register(config: MailerConfig & LoggerConfig): DynamicModule {
+    static register(config: MailerConfig): DynamicModule {
         return {
             module: MailerModule,
-            imports: [LoggerModule.register(config)],
             providers: [
                 {
                     provide: MailerConfig,

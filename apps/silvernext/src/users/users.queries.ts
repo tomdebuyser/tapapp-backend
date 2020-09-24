@@ -9,7 +9,7 @@ import {
     UsersSortColumns,
     UserResponse,
 } from './dto';
-import { SortDirection } from '../_shared/constants';
+import { SortDirection } from '../shared/constants';
 
 @Injectable()
 export class UsersQueries {

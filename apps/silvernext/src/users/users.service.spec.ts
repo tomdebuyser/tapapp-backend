@@ -23,10 +23,11 @@ import {
     AccountAlreadyActive,
 } from './errors';
 import { createTestUser, createTestRole } from '@libs/testing';
-import { createTestUserSession } from '../_util/create-user-session.helper';
+import { createTestUserSession } from '../shared/testing';
 import { CreateUserRequest, UpdateUserRequest } from './dto';
 
 describe('UsersService', () => {
+    let module: TestingModule;
     let usersService: UsersService;
 
     const userRepository = mock(UserRepository);
@@ -35,7 +36,7 @@ describe('UsersService', () => {
     const mailerService = mock(MailerService);
 
     beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 UsersService,
                 {
@@ -66,6 +67,10 @@ describe('UsersService', () => {
         when(
             mailerService.sendRegisterMail(anything(), anything(), anything()),
         ).thenResolve();
+    });
+
+    afterAll(async () => {
+        await module.close();
     });
 
     afterEach(() => {

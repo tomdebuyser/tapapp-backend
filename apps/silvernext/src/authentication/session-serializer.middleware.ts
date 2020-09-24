@@ -1,13 +1,15 @@
 import { NestMiddleware, Injectable } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
+import { UserSession } from '../shared/constants';
 import { AuthenticationQueries } from './authentication.queries';
+
 
 @Injectable()
 export class SessionSerializer implements NestMiddleware {
     constructor(private readonly authQueries: AuthenticationQueries) {}
 
-    async use(req: any, _res: Response, next: () => void): Promise<void> {
+    async use(req: { user: UserSession } & Request, _res: Response, next: () => void): Promise<void> {
         const userId = req.session.userId;
         if (!userId) {
             return next();

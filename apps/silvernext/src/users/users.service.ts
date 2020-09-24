@@ -17,7 +17,7 @@ import {
     UserNotFound,
     AccountAlreadyActive,
 } from './errors';
-import { IUserSession } from '../_shared/constants';
+import { UserSession } from '../shared/constants';
 
 const context = 'UsersService';
 
@@ -33,7 +33,7 @@ export class UsersService {
 
     async createUser(
         body: CreateUserRequest,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         const { email, firstName, lastName } = body;
         const roleIds = Array.from(new Set(body.roleIds));
@@ -74,7 +74,7 @@ export class UsersService {
     async updateUser(
         body: UpdateUserRequest,
         userId: string,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         // The user should already exist
         const existingUser = await this.userRepository.findOne({
@@ -113,7 +113,7 @@ export class UsersService {
 
     async resendRegisterMail(
         userId: string,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         // The user should exist and be not active yet
         const existingUser = await this.userRepository.findOne({
@@ -143,7 +143,7 @@ export class UsersService {
      */
     private async addResetTokenAndSendMail(
         user: User,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         const { email } = user;
 
@@ -173,7 +173,7 @@ export class UsersService {
 
     async deactivateUser(
         userId: string,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         // The user should already exist
         const existingUser = await this.userRepository.findOne(userId);

@@ -5,11 +5,11 @@ export enum SortDirection {
     Descending = 'DESC',
 }
 
-export interface IUserSession {
+export type UserSession = {
     userId: string;
     email: string;
     state: UserState;
     firstName?: string;
     lastName?: string;
     permissions: Permissions;
-}
+};

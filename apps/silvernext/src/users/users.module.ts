@@ -6,7 +6,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { Config } from '../config';
 import { UsersQueries } from './users.queries';
-import { SharedModule } from '../_shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
     imports: [
@@ -14,7 +14,7 @@ import { SharedModule } from '../_shared/shared.module';
         JwtModule.register({
             secret: Config.jwt.secret,
         }),
-        MailerModule.register({ ...Config.mailing, ...Config.logging }),
+        MailerModule.register(Config.mailing),
     ],
     controllers: [UsersController],
     providers: [UsersService, UsersQueries],

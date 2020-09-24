@@ -21,17 +21,18 @@ import {
     QueryBuilderMock,
 } from '@libs/testing';
 import { CreateRoleRequest, UpdateRoleRequest } from './dto';
-import { createDefaultPermissions } from '../_util/permissions.helper';
-import { createTestUserSession } from '../_util/create-user-session.helper';
+import { createDefaultPermissions } from '../shared/util';
+import { createTestUserSession } from '../shared/testing';
 
 describe('RolesService', () => {
+    let module: TestingModule;
     let rolesService: RolesService;
 
     const roleRepository = mock(RoleRepository);
     const userRepository = mock(UserRepository);
 
     beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 RolesService,
                 {
@@ -50,6 +51,10 @@ describe('RolesService', () => {
         }).compile();
 
         rolesService = module.get(RolesService);
+    });
+
+    afterAll(async () => {
+        await module.close();
     });
 
     afterEach(() => {

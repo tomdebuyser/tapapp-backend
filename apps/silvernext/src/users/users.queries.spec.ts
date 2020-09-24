@@ -1,19 +1,20 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
 
 import { DatabaseModule, UserRepository } from '@libs/database';
 import { UsersQueries } from './users.queries';
 import { GetUsersRequestQuery, UsersSortColumns } from './dto';
-import { SortDirection } from '../_shared/constants';
+import { SortDirection } from '../shared/constants';
 import { Config } from '../config';
 
 describe('UsersQueries', () => {
+    let module: TestingModule;
     let userRepository: UserRepository;
     let usersQueries: UsersQueries;
 
     beforeAll(async () => {
-        const module = await Test.createTestingModule({
-            imports: [DatabaseModule.register(Config.database)],
+        module = await Test.createTestingModule({
+            imports: [DatabaseModule.registerTest(Config.database)],
             providers: [UsersQueries],
         }).compile();
 
@@ -21,8 +22,9 @@ describe('UsersQueries', () => {
         userRepository = module.get(UserRepository);
     });
 
-    afterAll(() => {
-        userRepository.manager.connection.close();
+    afterAll(async () => {
+        await userRepository.manager.connection.close();
+        await module.close();
     });
 
     describe('getUser', () => {

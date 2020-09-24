@@ -7,7 +7,7 @@ import { AuthenticationService } from './authentication.service';
 import { Config } from '../config';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationQueries } from './authentication.queries';
-import { SharedModule } from '../_shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { SessionSerializer } from './session-serializer.middleware';
 
 @Module({
@@ -16,7 +16,7 @@ import { SessionSerializer } from './session-serializer.middleware';
         JwtModule.register({
             secret: Config.jwt.secret,
         }),
-        MailerModule.register({ ...Config.mailing, ...Config.logging }),
+        MailerModule.register(Config.mailing),
         UsersModule,
     ],
     controllers: [AuthenticationController],

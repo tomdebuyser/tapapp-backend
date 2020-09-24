@@ -1,10 +1,9 @@
 import { config } from 'dotenv-safe';
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { LogLevel } from '@nestjs/common';
 import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
-import { LoggerConfig } from '@libs/logger';
+import { LoggerConfig, LogLevel } from '@libs/logger';
 import { MailerConfig } from '@libs/mailer';
 import { Environment } from '@libs/common';
 
@@ -31,26 +30,32 @@ if (environmentsWithEnvFiles.includes(environment)) {
     });
 }
 
-interface IJwtOptions {
+type JwtOptions = {
     secret: string;
-    expiresIn: string;
-}
+};
 
-interface ISessionOptions {
+type SessionOptions = {
     secret: string;
     expiresIn: number;
-}
+};
 
-interface IApiOptions {
+type ApiOptions = {
     rateLimit: number;
     swaggerPath: string;
     port: string;
     allowedOrigins: string[];
-}
+};
+
+type ClusteringConfig = {
+    // Specifies the number of cluster (worker) processes.
+    workers?: number;
+    // Specifies memory requirement per worker process, default is 512 MB.
+    memory?: number;
+};
 
 class Config {
     static get sentryDsn(): string {
-        return process.env.SENTRY_DSN as string;
+        return process.env.SENTRY_DSN;
     }
 
     static get environment(): Environment {
@@ -58,18 +63,18 @@ class Config {
     }
 
     static get brandName(): string {
-        return process.env.BRAND_NAME as string;
+        return process.env.BRAND_NAME;
     }
 
     static get frontendUrl(): string {
         return process.env.FRONTEND_URL;
     }
 
-    static get api(): IApiOptions {
+    static get api(): ApiOptions {
         const DEFAULT_PORT = '3001';
         return {
-            rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE as string, 10),
-            swaggerPath: process.env.SWAGGER_PATH as string,
+            rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE, 10),
+            swaggerPath: process.env.SWAGGER_PATH,
             port: process.env.PORT || DEFAULT_PORT,
             allowedOrigins: process.env.ALLOWED_ORIGINS.split(',').filter(
                 origin => !!origin,
@@ -88,31 +93,30 @@ class Config {
         };
     }
 
-    static get jwt(): IJwtOptions {
+    static get jwt(): JwtOptions {
         return {
-            secret: process.env.JWT_SECRET as string,
-            expiresIn: process.env.JWT_EXPIRATION_TIME as string,
+            secret: process.env.JWT_SECRET,
         };
     }
 
     static get mailing(): MailerConfig {
         return {
             environment: process.env.NODE_ENV as Environment,
-            mandrillApiKey: process.env.MANDRILL_API_KEY as string,
-            mailFrom: process.env.MAIL_FROM as string,
+            mandrillApiKey: process.env.MANDRILL_API_KEY,
+            mailFrom: process.env.MAIL_FROM,
             brandName: Config.brandName,
             frontendUrl: Config.frontendUrl,
         };
     }
 
     static get redisUrl(): string {
-        return process.env.REDIS_URL as string;
+        return process.env.REDIS_URL;
     }
 
-    static get session(): ISessionOptions {
+    static get session(): SessionOptions {
         return {
-            secret: process.env.SESSION_SECRET as string,
-            expiresIn: parseInt(process.env.SESSION_TTL as string),
+            secret: process.env.SESSION_SECRET,
+            expiresIn: parseInt(process.env.SESSION_TTL, 10),
         };
     }
 
@@ -120,6 +124,14 @@ class Config {
         return {
             environment: process.env.NODE_ENV as Environment,
             logLevel: process.env.LOG_LEVEL as LogLevel,
+            enableTraceId: true,
+        };
+    }
+
+    static get clustering(): ClusteringConfig {
+        return {
+            workers: parseInt(process.env.WEB_CONCURRENCY, 10),
+            memory: parseInt(process.env.WEB_MEMORY, 10),
         };
     }
 }

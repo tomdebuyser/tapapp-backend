@@ -1,4 +1,4 @@
-export interface MandrillMessage {
+export type MandrillMessage = {
     html: {
         file: MailTemplate;
         variables?: Record<string, string>;
@@ -11,7 +11,7 @@ export interface MandrillMessage {
         name?: string;
         type?: 'to';
     }[];
-}
+};
 
 export enum MailTemplate {
     Register = 'register',

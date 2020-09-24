@@ -1,5 +1,5 @@
 import { UserState } from '@libs/database';
-import { AuditedEntityResponse } from '../../_shared/dto';
+import { AuditedEntityResponse } from '../../shared/dto';
 
 export class UserResponse extends AuditedEntityResponse {
     readonly email: string;

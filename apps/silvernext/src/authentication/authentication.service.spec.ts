@@ -25,8 +25,8 @@ import {
     ResetTokenInvalid,
     ResetTokenExpired,
     InvalidOldPassword,
+    UserStateNotAllowed,
 } from './errors';
-import { UserStateNotAllowed } from '../_shared/guards';
 import {
     RequestPasswordResetRequest,
     ResetPasswordRequest,
@@ -34,6 +34,7 @@ import {
 } from './dto';
 
 describe('AuthenticationService', () => {
+    let module: TestingModule;
     let authService: AuthenticationService;
 
     const userRepository = mock(UserRepository);
@@ -41,7 +42,7 @@ describe('AuthenticationService', () => {
     const mailerService = mock(MailerService);
 
     beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 AuthenticationService,
                 {
@@ -68,6 +69,10 @@ describe('AuthenticationService', () => {
         when(
             mailerService.sendRequestPasswordResetMail(anything(), anything()),
         ).thenResolve();
+    });
+
+    afterAll(async () => {
+        await module.close();
     });
 
     afterEach(() => {

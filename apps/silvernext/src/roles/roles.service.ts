@@ -5,7 +5,7 @@ import { RoleRepository, Role, UserRepository } from '@libs/database';
 import { LoggerService } from '@libs/logger';
 import { CreateRoleRequest, UpdateRoleRequest } from './dto';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';
-import { IUserSession } from '../_shared/constants';
+import { UserSession } from '../shared/constants';
 
 const context = 'RolesService';
 
@@ -19,7 +19,7 @@ export class RolesService {
 
     async createRole(
         body: CreateRoleRequest,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         const { name, permissions } = body;
         const existingRole = await this.roleRepository.findOne({ name });
@@ -54,7 +54,7 @@ export class RolesService {
     async updateRole(
         body: UpdateRoleRequest,
         roleId: string,
-        session: IUserSession,
+        session: UserSession,
     ): Promise<string> {
         // The role should already exist
         const existingRole = await this.roleRepository.findOne({ id: roleId });

@@ -69,7 +69,6 @@ export class MailerService {
                 {
                     message: {
                         ...message,
-                        // eslint-disable-next-line @typescript-eslint/camelcase
                         from_email: this.config.mailFrom,
                         html,
                     },

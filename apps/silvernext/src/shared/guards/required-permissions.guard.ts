@@ -8,9 +8,9 @@ import { Reflector } from '@nestjs/core';
 import { DeepPartial } from 'typeorm';
 
 import { Permissions } from '@libs/database';
-import { IUserSession } from '../constants';
-import { hasPermissions } from '../../_util/permissions.helper';
 import { LoggerService } from '@libs/logger';
+import { UserSession } from '../constants';
+import { hasPermissions } from '../util';
 
 const loggerContext = 'RequiredPermissionsGuard';
 
@@ -35,7 +35,7 @@ export class RequiredPermissionsGuard implements CanActivate {
 
     public canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
-        const session: IUserSession = request.user;
+        const session: UserSession = request.user;
         const requiredPermissions = this.reflector.get<
             DeepPartial<Permissions>
         >('permissions', context.getHandler());

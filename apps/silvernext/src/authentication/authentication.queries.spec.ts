@@ -5,12 +5,13 @@ import { AuthenticationQueries } from './authentication.queries';
 import { Config } from '../config';
 
 describe('AuthenticationQueries', () => {
+    let module: TestingModule;
     let userRepository: UserRepository;
     let authQueries: AuthenticationQueries;
 
     beforeAll(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            imports: [DatabaseModule.register(Config.database)],
+        module = await Test.createTestingModule({
+            imports: [DatabaseModule.registerTest(Config.database)],
             providers: [AuthenticationQueries],
         }).compile();
 
@@ -18,8 +19,9 @@ describe('AuthenticationQueries', () => {
         userRepository = module.get(UserRepository);
     });
 
-    afterAll(() => {
-        userRepository.manager.connection.close();
+    afterAll(async () => {
+        await userRepository.manager.connection.close();
+        await module.close();
     });
 
     describe('composeUserSession', () => {

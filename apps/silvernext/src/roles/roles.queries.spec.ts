@@ -1,19 +1,20 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
 
 import { DatabaseModule, RoleRepository } from '@libs/database';
 import { RolesQueries } from './roles.queries';
 import { GetRolesRequestQuery, RolesSortColumns } from './dto';
-import { SortDirection } from '../_shared/constants';
+import { SortDirection } from '../shared/constants';
 import { Config } from '../config';
 
 describe('RolesQueries', () => {
+    let module: TestingModule;
     let roleRepository: RoleRepository;
     let rolesQueries: RolesQueries;
 
     beforeAll(async () => {
-        const module = await Test.createTestingModule({
-            imports: [DatabaseModule.register(Config.database)],
+        module = await Test.createTestingModule({
+            imports: [DatabaseModule.registerTest(Config.database)],
             providers: [RolesQueries],
         }).compile();
 
@@ -21,8 +22,9 @@ describe('RolesQueries', () => {
         roleRepository = module.get(RoleRepository);
     });
 
-    afterAll(() => {
-        roleRepository.manager.connection.close();
+    afterAll(async () => {
+        await roleRepository.manager.connection.close();
+        await module.close();
     });
 
     describe('getRole', () => {

@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserRepository } from '@libs/database';
-import { IUserSession } from '../_shared/constants';
+import { UserSession } from '../shared/constants';
 import { AuthenticationUserResponse } from './dto';
-import {
-    permissionsFromRoles,
-    createDefaultPermissions,
-} from '../_util/permissions.helper';
+import { permissionsFromRoles, createDefaultPermissions } from '../shared/util';
 
 @Injectable()
 export class AuthenticationQueries {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async composeUserSession(userId: string): Promise<IUserSession> {
+    async composeUserSession(userId: string): Promise<UserSession> {
         const user = await this.userRepository.findOne(userId, {
             relations: ['roles'],
         });

@@ -1,16 +1,18 @@
 import { mock, instance, reset, anything, when } from 'ts-mockito';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 
 import { SessionSerializer } from './session-serializer.middleware';
 import { AuthenticationQueries } from './authentication.queries';
-import { createTestUserSession } from '../_util/create-user-session.helper';
+import { createTestUserSession } from '../shared/testing';
 
 describe('SessionSerializer', () => {
-    const authQueries = mock(AuthenticationQueries);
+    let module: TestingModule;
     let serializer: SessionSerializer;
 
+    const authQueries = mock(AuthenticationQueries);
+
     beforeAll(async () => {
-        const module = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 SessionSerializer,
                 {
@@ -23,6 +25,10 @@ describe('SessionSerializer', () => {
         serializer = module.get(SessionSerializer);
     });
 
+    afterAll(async () => {
+        await module.close();
+    });
+
     afterEach(() => {
         reset(authQueries);
     });
@@ -32,7 +38,7 @@ describe('SessionSerializer', () => {
         when(authQueries.composeUserSession(anything())).thenResolve(session);
 
         const mockNext = jest.fn();
-        const req = {
+        const req: any = {
             session: {
                 userId: '1234',
             },
@@ -48,7 +54,7 @@ describe('SessionSerializer', () => {
 
     it('should continue if no cookie is present', async () => {
         const mockNext = jest.fn();
-        const req = {
+        const req: any = {
             session: {},
             user: undefined,
         };

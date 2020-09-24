@@ -15,8 +15,8 @@ import {
     ResetTokenInvalid,
     ResetTokenExpired,
     InvalidOldPassword,
+    UserStateNotAllowed,
 } from './errors';
-import { UserStateNotAllowed } from '../_shared/guards';
 
 const context = 'Authentication';
 

@@ -3,13 +3,13 @@ import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
 import { UserState } from '@libs/database';
-import { IUserSession } from '../_shared/constants';
-import { createDefaultPermissions } from './permissions.helper';
+import { UserSession } from '../constants';
+import { createDefaultPermissions } from '../util/permissions.helper';
 
 export function createTestUserSession(
-    overrides?: DeepPartial<IUserSession>,
-): IUserSession {
-    const session: IUserSession = {
+    overrides?: DeepPartial<UserSession>,
+): UserSession {
+    const session: UserSession = {
         userId: faker.random.uuid(),
         email: faker.internet.email(),
         state: UserState.Active,
@@ -18,5 +18,5 @@ export function createTestUserSession(
         permissions: createDefaultPermissions(),
     };
 
-    return mergeDeepLeft(overrides, session) as IUserSession;
+    return mergeDeepLeft(overrides, session) as UserSession;
 }

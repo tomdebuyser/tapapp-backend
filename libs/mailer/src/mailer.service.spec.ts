@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { mock, instance, when, anything, spy, capture } from 'ts-mockito';
 import * as faker from 'faker';
 import { Mandrill } from 'mandrill-api';
@@ -10,11 +10,12 @@ import { MailerConfig } from './mailer.config';
 import { createTestUser } from '@libs/testing';
 
 describe('MailerService', () => {
+    let module: TestingModule;
     let mailerService: MailerService;
     const messages = spy(mockMandrill.messages as any);
 
     beforeAll(async () => {
-        const module = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 {
                     provide: LoggerService,
@@ -33,6 +34,10 @@ describe('MailerService', () => {
         }).compile();
 
         mailerService = module.get(MailerService);
+    });
+
+    afterAll(async () => {
+        await module.close();
     });
 
     describe('sendRegisterMail', () => {

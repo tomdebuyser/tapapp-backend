@@ -22,12 +22,9 @@ import {
 } from './dto';
 import { UsersService } from './users.service';
 import { UsersQueries } from './users.queries';
-import {
-    AuthenticatedGuard,
-    RequiredPermissionsGuard,
-} from '../_shared/guards';
-import { UserSession, RequiredPermissions } from '../_shared/decorators';
-import { IUserSession } from '../_shared/constants';
+import { AuthenticatedGuard, RequiredPermissionsGuard } from '../shared/guards';
+import { GetUserSession, RequiredPermissions } from '../shared/decorators';
+import { UserSession } from '../shared/constants';
 
 @ApiBearerAuth()
 @UseGuards(AuthenticatedGuard)
@@ -57,7 +54,7 @@ export class UsersController {
     @Post()
     async createUser(
         @Body() body: CreateUserRequest,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.usersService.createUser(body, session);
     }
@@ -68,7 +65,7 @@ export class UsersController {
     async updateUser(
         @Body() body: UpdateUserRequest,
         @Param() params: UserIdParam,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.usersService.updateUser(body, params.userId, session);
     }
@@ -79,7 +76,7 @@ export class UsersController {
     @Post(':userId/resend-register-mail')
     async resendRegisterMail(
         @Param() params: UserIdParam,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.usersService.resendRegisterMail(params.userId, session);
     }
@@ -90,7 +87,7 @@ export class UsersController {
     @Post(':userId/deactivate')
     async deactivateUser(
         @Param() params: UserIdParam,
-        @UserSession() session: IUserSession,
+        @GetUserSession() session: UserSession,
     ): Promise<void> {
         await this.usersService.deactivateUser(params.userId, session);
     }

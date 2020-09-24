@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import {
     INestApplication,
     ValidationPipe,
-    NestApplicationOptions,
     BadRequestException,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -11,12 +10,13 @@ import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
 import * as redisStore from 'rate-limit-redis';
+import * as throng from 'throng';
 
 import { Environment } from '@libs/common';
+import { LoggerService, NestLoggerProxy } from '@libs/logger';
 import { AppModule } from './app.module';
 import { Config } from './config';
 import { addSessionMiddleware } from './session.middleware';
-import { LoggerService } from '@libs/logger';
 
 const productionLikeEnvironments = [
     Environment.Production,
@@ -31,16 +31,24 @@ const context = 'Bootstrap';
 const API_PREFIX = 'api';
 
 async function bootstrap(): Promise<void> {
-    const app = await NestFactory.create(AppModule, getAppOptions());
+    const app = await NestFactory.create(AppModule, { logger: false });
     const logger = app.get(LoggerService);
+    logger.info('Successfully created nest app', { context });
 
+    app.useLogger(new NestLoggerProxy(logger));
     app.setGlobalPrefix(API_PREFIX);
 
     if (needsErrorLogging) {
+        logger.info('Initializing sentry', { context });
         addSentryInit(app);
     }
 
-    addSwaggerDocs(app, logger);
+    if (!isProductionLikeEnvironment) {
+        logger.info('Initializing swagger', { context });
+        addSwaggerDocs(app, logger);
+    }
+
+    logger.info('Initializing middleware', { context });
     addGlobalMiddleware(app);
     addSessionMiddleware(app);
 
@@ -49,7 +57,7 @@ async function bootstrap(): Promise<void> {
     }
 
     await app.listen(Config.api.port);
-    logger.log(`App running on port [${Config.api.port}]`, {
+    logger.info(`App running on port [${Config.api.port}]`, {
         context,
     });
 }
@@ -65,7 +73,7 @@ function addSwaggerDocs(app: INestApplication, logger: LoggerService): void {
     const fullSwaggerPath = `${API_PREFIX}/${Config.api.swaggerPath}`;
     SwaggerModule.setup(fullSwaggerPath, app, document);
 
-    logger.log(`Swagger running at [${fullSwaggerPath}]`, { context });
+    logger.info(`Swagger running at [${fullSwaggerPath}]`, { context });
 }
 
 function addGlobalMiddleware(app: INestApplication): void {
@@ -111,11 +119,16 @@ function addSentryErrorHandler(app: INestApplication): void {
     app.use(Handlers.errorHandler());
 }
 
-function getAppOptions(): NestApplicationOptions {
-    // On remote prod-like environments, we want to limit the default logger, so we don't pollute our own logs
-    return isProductionLikeEnvironment
-        ? { logger: ['warn', 'error', 'log'] }
-        : {};
+function run(): void {
+    if (isProductionLikeEnvironment) {
+        throng({
+            workers: Config.clustering.workers,
+            start: bootstrap,
+            lifetime: Infinity,
+        });
+    } else {
+        bootstrap();
+    }
 }
 
-bootstrap();
+run();

@@ -1,4 +1,4 @@
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { mock, when, instance, reset, anything } from 'ts-mockito';
 import { ExecutionContext } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
@@ -13,13 +13,14 @@ import {
 } from './required-permissions.guard';
 
 describe('RequiredPermissionsGuard', () => {
+    let module: TestingModule;
     let guard: RequiredPermissionsGuard;
     const context = mock<ExecutionContext>();
     const argumentsHost = mock<HttpArgumentsHost>();
     const reflector = mock(Reflector);
 
     beforeAll(async () => {
-        const module = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [
                 { provide: Reflector, useValue: instance(reflector) },
                 {
@@ -31,6 +32,10 @@ describe('RequiredPermissionsGuard', () => {
         }).compile();
 
         guard = module.get(RequiredPermissionsGuard);
+    });
+
+    afterAll(async () => {
+        await module.close();
     });
 
     afterEach(() => {

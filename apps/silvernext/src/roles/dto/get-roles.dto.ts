@@ -1,6 +1,6 @@
 import { IsOptional, IsEnum } from 'class-validator';
 
-import { PagingQuery, PagingMeta } from '../../_shared/dto';
+import { PagingQuery, PagingMeta } from '../../shared/dto';
 import { RoleResponse } from './get-role.dto';
 
 export enum RolesSortColumns {

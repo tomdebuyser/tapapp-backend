@@ -30,6 +30,7 @@ module.exports = [
     {
         ...base,
         migrations: ['./data/migrations/*.ts'],
+        migrationsTableName: 'migrations',
         cli: {
             migrationsDir: `./data/migrations`,
         },
@@ -38,6 +39,7 @@ module.exports = [
         ...base,
         name: 'seeds',
         migrations: ['./data/seeds-dev/*.ts'],
+        migrationsTableName: 'seeds-dev',
         cli: {
             migrationsDir: `./data/seeds-dev`,
         },
@@ -46,6 +48,7 @@ module.exports = [
         ...base,
         name: 'seeds-prod',
         migrations: ['./data/seeds-prod/*.ts'],
+        migrationsTableName: 'seeds-prod',
         cli: {
             migrationsDir: `./data/seeds-prod`,
         },

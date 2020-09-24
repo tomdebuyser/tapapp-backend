@@ -36,7 +36,8 @@ module.exports = {
             'warn',
             { argsIgnorePattern: '^_' },
         ],
-        "@typescript-eslint/no-empty-function": 'warn'
+        "@typescript-eslint/no-empty-function": 'warn',
+        "@typescript-eslint/ban-types": "warn"
     },
     env: {
         node: true,
