@@ -1,4 +1,4 @@
-import { UserState } from '@libs/database';
+import { UserState } from '@libs/models';
 import { BaseEntityResponse } from '../../shared/dto';
 import { PermissionsDto } from '../../roles/dto';
 

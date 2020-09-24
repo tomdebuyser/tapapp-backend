@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
 import { SelectQueryBuilder } from 'typeorm';
 
-import { RoleRepository, Role } from '@libs/database';
+import { RoleRepository, Role } from '@libs/models';
 import {
     GetRolesRequestQuery,
     GetRolesResponse,

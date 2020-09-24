@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
 
-import { DatabaseModule, UserRepository } from '@libs/database';
+import { ModelsModule, UserRepository } from '@libs/models';
 import { UsersQueries } from './users.queries';
 import { GetUsersRequestQuery, UsersSortColumns } from './dto';
 import { SortDirection } from '../shared/constants';
@@ -14,7 +14,7 @@ describe('UsersQueries', () => {
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
-            imports: [DatabaseModule.registerTest(Config.database)],
+            imports: [ModelsModule.registerTest(Config.models)],
             providers: [UsersQueries],
         }).compile();
 

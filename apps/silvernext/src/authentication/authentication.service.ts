@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository, User, UserState } from '@libs/database';
+import { UserRepository, User, UserState } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { LoggerService } from '@libs/logger';
 import {

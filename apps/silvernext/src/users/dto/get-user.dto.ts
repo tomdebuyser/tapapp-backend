@@ -1,4 +1,4 @@
-import { UserState } from '@libs/database';
+import { UserState } from '@libs/models';
 import { AuditedEntityResponse } from '../../shared/dto';
 
 export class UserResponse extends AuditedEntityResponse {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
 
-import { RoleRepository, Role, UserRepository } from '@libs/database';
+import { RoleRepository, Role, UserRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { CreateRoleRequest, UpdateRoleRequest } from './dto';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';

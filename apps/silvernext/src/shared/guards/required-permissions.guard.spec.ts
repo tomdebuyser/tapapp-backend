@@ -6,7 +6,7 @@ import { Reflector } from '@nestjs/core';
 import { DeepPartial } from 'typeorm';
 
 import { LoggerService } from '@libs/logger';
-import { Permissions } from '@libs/database';
+import { Permissions } from '@libs/models';
 import {
     RequiredPermissionsGuard,
     PermissionDenied,

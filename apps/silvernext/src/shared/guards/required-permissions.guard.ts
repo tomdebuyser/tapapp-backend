@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { DeepPartial } from 'typeorm';
 
-import { Permissions } from '@libs/database';
+import { Permissions } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { UserSession } from '../constants';
 import { hasPermissions } from '../util';

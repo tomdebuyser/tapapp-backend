@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 
-import { UserState } from '@libs/database';
+import { UserState } from '@libs/models';
 import { UserSession } from '../constants';
 
 @Injectable()

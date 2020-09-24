@@ -11,7 +11,7 @@ import {
 } from 'ts-mockito';
 import * as faker from 'faker';
 
-import { RoleRepository, UserRepository, User } from '@libs/database';
+import { RoleRepository, UserRepository, User } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { RolesService } from './roles.service';
 import { RoleNameAlreadyInUse, RoleNotFound, RoleInUse } from './errors';

@@ -3,7 +3,7 @@ import { mock, when, instance, reset } from 'ts-mockito';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 
-import { UserState } from '@libs/database';
+import { UserState } from '@libs/models';
 import { AuthenticatedGuard } from './authenticated.guard';
 
 describe('AuthenticationGuard', () => {

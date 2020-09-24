@@ -5,10 +5,10 @@ import { LoggerService, TypeormLoggerProxy } from '@libs/logger';
 import { UserRepository, RoleRepository } from './repositories';
 import { User, Role } from './entities';
 
-export class DatabaseModule {
+export class ModelsModule {
     static register(config: TypeOrmModuleOptions): DynamicModule {
         return {
-            module: DatabaseModule,
+            module: ModelsModule,
             imports: [
                 TypeOrmModule.forRootAsync({
                     inject: [LoggerService],
@@ -32,7 +32,7 @@ export class DatabaseModule {
      */
     static registerTest(config: TypeOrmModuleOptions): DynamicModule {
         return {
-            module: DatabaseModule,
+            module: ModelsModule,
             imports: [
                 TypeOrmModule.forRoot({
                     ...config,

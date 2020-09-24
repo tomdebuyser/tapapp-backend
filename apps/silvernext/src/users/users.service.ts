@@ -2,12 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { In } from 'typeorm';
 
-import {
-    UserRepository,
-    User,
-    RoleRepository,
-    UserState,
-} from '@libs/database';
+import { UserRepository, User, RoleRepository, UserState } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { LoggerService } from '@libs/logger';
 import { CreateUserRequest, UpdateUserRequest } from './dto';

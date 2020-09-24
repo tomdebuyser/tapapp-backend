@@ -17,7 +17,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { LoggerService } from '@libs/logger';
-import { UserRepository, UserState } from '@libs/database';
+import { UserRepository, UserState } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { AuthenticationService } from './authentication.service';
 import { createTestUser } from '@libs/testing';

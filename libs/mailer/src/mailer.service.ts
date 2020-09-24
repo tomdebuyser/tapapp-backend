@@ -5,7 +5,7 @@ import { readFile } from 'fs';
 import { LoggerService } from '@libs/logger';
 import { MandrillMessage, MailTemplate } from './mailer.types';
 import { MailerConfig } from './mailer.config';
-import { User } from '@libs/database';
+import { User } from '@libs/models';
 import {
     createRegisterMessage,
     createRequestPasswordResetMessage,

@@ -82,7 +82,7 @@ class Config {
         };
     }
 
-    static get database(): TypeOrmModuleOptions {
+    static get models(): TypeOrmModuleOptions {
         return {
             type: 'postgres',
             url: process.env.DATABASE_URL,

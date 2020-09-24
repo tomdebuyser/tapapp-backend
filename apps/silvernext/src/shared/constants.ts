@@ -1,4 +1,4 @@
-import { Permissions, UserState } from '@libs/database';
+import { Permissions, UserState } from '@libs/models';
 
 export enum SortDirection {
     Ascending = 'ASC',

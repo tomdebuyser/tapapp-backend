@@ -1,5 +1,5 @@
 import { MandrillMessage } from '@libs/mailer';
-import { User } from '@libs/database';
+import { User } from '@libs/models';
 import { MailTemplate } from '../mailer.types';
 
 export function createRegisterMessage(

@@ -22,7 +22,7 @@ config({
 const base = {
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    entities: ['./libs/database/**/*.entity.ts'],
+    entities: ['./libs/models/**/*.entity.ts'],
     ssl: process.env.DATABASE_SSL === 'true',
 };
 

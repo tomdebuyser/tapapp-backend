@@ -2,7 +2,7 @@ import { DeepPartial } from 'typeorm';
 import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
-import { UserState } from '@libs/database';
+import { UserState } from '@libs/models';
 import { UserSession } from '../constants';
 import { createDefaultPermissions } from '../util/permissions.helper';
 

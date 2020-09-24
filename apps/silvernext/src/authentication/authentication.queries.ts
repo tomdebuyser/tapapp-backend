@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserRepository } from '@libs/database';
+import { UserRepository } from '@libs/models';
 import { UserSession } from '../shared/constants';
 import { AuthenticationUserResponse } from './dto';
 import { permissionsFromRoles, createDefaultPermissions } from '../shared/util';

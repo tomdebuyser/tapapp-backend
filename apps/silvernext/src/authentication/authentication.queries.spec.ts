@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { DatabaseModule, UserRepository } from '@libs/database';
+import { ModelsModule, UserRepository } from '@libs/models';
 import { AuthenticationQueries } from './authentication.queries';
 import { Config } from '../config';
 
@@ -11,7 +11,7 @@ describe('AuthenticationQueries', () => {
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
-            imports: [DatabaseModule.registerTest(Config.database)],
+            imports: [ModelsModule.registerTest(Config.models)],
             providers: [AuthenticationQueries],
         }).compile();
 

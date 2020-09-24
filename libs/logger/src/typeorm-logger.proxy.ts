@@ -12,10 +12,10 @@ const context = 'TypeOrm';
  *
  * This should be passed to TypeORM when the module is being configured.
  *
- * Example database.module.ts:
+ * Example models.module.ts:
  * ```
  * return {
- *     module: DatabaseModule,
+ *     module: ModelsModule,
  *     imports: [
  *         TypeOrmModule.forRootAsync({
  *             inject: [LoggerService],

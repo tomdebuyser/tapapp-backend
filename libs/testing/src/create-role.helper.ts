@@ -2,7 +2,7 @@ import { DeepPartial } from 'typeorm';
 import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
-import { Role } from '@libs/database';
+import { Role } from '@libs/models';
 
 export function createTestRole(overrides?: DeepPartial<Role>): Role {
     const role: DeepPartial<Role> = {

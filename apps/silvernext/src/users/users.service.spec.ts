@@ -12,7 +12,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as faker from 'faker';
 
-import { UserRepository, RoleRepository, UserState } from '@libs/database';
+import { UserRepository, RoleRepository, UserState } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { LoggerService } from '@libs/logger';
 import { UsersService } from './users.service';

@@ -40,13 +40,13 @@
                 "tsConfigPath": "libs/mailer/tsconfig.lib.json"
             }
         },
-        "database": {
+        "models": {
             "type": "library",
-            "root": "libs/database",
+            "root": "libs/models",
             "entryFile": "index",
-            "sourceRoot": "libs/database/src",
+            "sourceRoot": "libs/models/src",
             "compilerOptions": {
-                "tsConfigPath": "libs/database/tsconfig.lib.json"
+                "tsConfigPath": "libs/models/tsconfig.lib.json"
             }
         },
         "common": {

@@ -2,7 +2,7 @@ import { DeepPartial } from 'typeorm';
 import { mergeDeepLeft } from 'ramda';
 import * as faker from 'faker';
 
-import { User, UserState } from '@libs/database';
+import { User, UserState } from '@libs/models';
 import { createTestRole } from './create-role.helper';
 
 export function createTestUser(overrides?: DeepPartial<User>): User {

@@ -1,7 +1,7 @@
 import { DeepPartial } from 'typeorm';
 import { mergeDeepWith, isNil, mergeDeepLeft } from 'ramda';
 
-import { Permissions, Role } from '@libs/database';
+import { Permissions, Role } from '@libs/models';
 
 export function permissionsFromRoles(roles: Role[]): DeepPartial<Permissions> {
     return (roles || []).reduce<DeepPartial<Permissions>>(
