@@ -2,8 +2,8 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Namespace } from 'cls-hooked';
 import * as pino from 'pino';
 
-import { LoggerConfig } from './logger.config';
 import { Environment } from '@libs/common';
+import { LoggerConfig } from './logger.config';
 import { namespaceToken, traceIdKey } from './logger.constants';
 
 type LogMeta = Record<string, unknown> & {
@@ -83,6 +83,12 @@ export class LoggerService {
             level: this.config.logLevel,
             messageKey: 'message',
             mixin: this.metaMixin.bind(this),
+            formatters: {
+                // This will include the level in string rather than in number in each log.
+                level(level: string) {
+                    return { level };
+                },
+            },
         });
     }
 
