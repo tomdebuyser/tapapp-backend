@@ -32,7 +32,7 @@ export class LoggerModule {
                 },
                 LoggerService,
             ],
-            exports: [LoggerService, namespaceToken],
+            exports: [LoggerService, namespaceToken, LoggerConfig],
         };
     }
 

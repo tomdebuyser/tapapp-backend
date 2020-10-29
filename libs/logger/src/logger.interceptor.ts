@@ -38,7 +38,7 @@ export class LoggerInterceptor implements NestInterceptor {
                 });
             }),
             catchError(error => {
-                this.logger.error(formatLogMessage, {
+                this.logger.warn(formatLogMessage, {
                     context,
                     status:
                         error?.response?.statusCode ||

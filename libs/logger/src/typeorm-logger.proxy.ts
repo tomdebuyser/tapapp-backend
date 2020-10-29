@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Logger, QueryRunner } from 'typeorm';
 
 import { LoggerService } from './logger.service';
+import { LoggerConfig } from './logger.config';
+import { LogLevel } from './logger.types';
+import { logLevelNumeric } from './logger.constants';
 
 const context = 'TypeOrm';
 
@@ -31,17 +34,42 @@ const context = 'TypeOrm';
  *     exports: [TypeOrmModule],
  * };
  * ```
+ *
+ * Due to the fact database debug logs tend to drown out application debug logs, this logger can be configured with a separate log level.
+ * However the main log level will ALWAYS be respected - this basically means that it always has to be equal or higher than the main log level.
  */
 @Injectable()
 export class TypeormLoggerProxy implements Logger {
-    constructor(private readonly logger: LoggerService) {}
+    /**
+     * A map of the log level to a flag indicating whether or not the level is active.
+     */
+    private readonly levelAvailability: Record<LogLevel, boolean>;
+
+    constructor(
+        private readonly logger: LoggerService,
+        private readonly config: LoggerConfig,
+    ) {
+        const activeNumericLogLevel =
+            logLevelNumeric[this.config.databaseLogLevel];
+        this.levelAvailability = {
+            silent: activeNumericLogLevel <= logLevelNumeric.silent,
+            trace: activeNumericLogLevel <= logLevelNumeric.trace,
+            debug: activeNumericLogLevel <= logLevelNumeric.debug,
+            info: activeNumericLogLevel <= logLevelNumeric.info,
+            warn: activeNumericLogLevel <= logLevelNumeric.warn,
+            error: activeNumericLogLevel <= logLevelNumeric.error,
+            fatal: activeNumericLogLevel <= logLevelNumeric.fatal,
+        };
+    }
 
     logQuery(
         query: string,
         parameters?: unknown[],
         _queryRunner?: QueryRunner,
     ): void {
-        this.logger.debug('Query', { context, query, parameters });
+        if (this.levelAvailability.debug) {
+            this.logger.debug('Query', { context, query, parameters });
+        }
     }
 
     logQueryError(
@@ -50,12 +78,14 @@ export class TypeormLoggerProxy implements Logger {
         parameters?: unknown[],
         _queryRunner?: QueryRunner,
     ): void {
-        this.logger.error('Failed Query', {
-            context,
-            query,
-            parameters,
-            error,
-        });
+        if (this.levelAvailability.error) {
+            this.logger.error('Failed Query', {
+                context,
+                query,
+                parameters,
+                error,
+            });
+        }
     }
 
     logQuerySlow(
@@ -64,20 +94,26 @@ export class TypeormLoggerProxy implements Logger {
         parameters?: unknown[],
         _queryRunner?: QueryRunner,
     ): void {
-        this.logger.warn('Slow Query', {
-            context,
-            query,
-            parameters,
-            duration: time,
-        });
+        if (this.levelAvailability.warn) {
+            this.logger.warn('Slow Query', {
+                context,
+                query,
+                parameters,
+                duration: time,
+            });
+        }
     }
 
     logSchemaBuild(message: string, _queryRunner?: QueryRunner): void {
-        this.logger.info(message, { context });
+        if (this.levelAvailability.info) {
+            this.logger.info(message, { context });
+        }
     }
 
     logMigration(message: string, _queryRunner?: QueryRunner): void {
-        this.logger.info(message, { context });
+        if (this.levelAvailability.info) {
+            this.logger.info(message, { context });
+        }
     }
 
     log(
@@ -85,7 +121,9 @@ export class TypeormLoggerProxy implements Logger {
         message: string,
         _queryRunner?: QueryRunner,
     ): void {
-        const method = level === 'log' ? 'info' : level;
-        this.logger[method](message, { context });
+        const standardisedLevel = level === 'log' ? 'info' : level;
+        if (this.levelAvailability[standardisedLevel]) {
+            this.logger[standardisedLevel](message, { context });
+        }
     }
 }

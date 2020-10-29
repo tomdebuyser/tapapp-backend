@@ -70,7 +70,7 @@ export class LoggerService {
                 ? ({
                       translateTime: 'yyyy-mm-dd HH:MM:ss',
                       messageFormat: '[{context}]: {message}',
-                      ignore: 'pid,hostname',
+                      base: null,
                       // Doing this so DB queries are more readably printed in console
                       customPrettifiers: {
                           query: (value: unknown): string =>
@@ -170,7 +170,7 @@ export class LoggerService {
         this.logger.trace(meta, message);
     }
 
-    metaMixin(): object {
+    metaMixin(): { environment: string; traceId: string } {
         return {
             environment: this.formattedEnvironment,
             traceId: this.namespace.get(traceIdKey),

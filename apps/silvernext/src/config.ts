@@ -1,7 +1,6 @@
 import { config } from 'dotenv-safe';
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
 import { LoggerConfig, LogLevel } from '@libs/logger';
 import { MailerConfig } from '@libs/mailer';
@@ -66,10 +65,6 @@ class Config {
         return process.env.BRAND_NAME;
     }
 
-    static get frontendUrl(): string {
-        return process.env.FRONTEND_URL;
-    }
-
     static get api(): ApiOptions {
         const DEFAULT_PORT = '3001';
         return {
@@ -88,7 +83,6 @@ class Config {
             url: process.env.DATABASE_URL,
             synchronize: false,
             keepConnectionAlive: true,
-            logging: process.env.DATABASE_LOGGING as LoggerOptions,
             ssl: process.env.DATABASE_SSL === 'true',
         };
     }
@@ -101,11 +95,11 @@ class Config {
 
     static get mailing(): MailerConfig {
         return {
-            environment: process.env.NODE_ENV as Environment,
+            environment,
             mandrillApiKey: process.env.MANDRILL_API_KEY,
             mailFrom: process.env.MAIL_FROM,
             brandName: Config.brandName,
-            frontendUrl: Config.frontendUrl,
+            frontendUrl: process.env.FRONTEND_URL,
         };
     }
 
@@ -122,7 +116,8 @@ class Config {
 
     static get logging(): LoggerConfig {
         return {
-            environment: process.env.NODE_ENV as Environment,
+            environment,
+            databaseLogLevel: process.env.DATABASE_LOG_LEVEL as LogLevel,
             logLevel: process.env.LOG_LEVEL as LogLevel,
             enableTraceId: true,
         };

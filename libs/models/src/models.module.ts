@@ -1,21 +1,24 @@
 import { DynamicModule } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { LoggerService, TypeormLoggerProxy } from '@libs/logger';
+import { LoggerConfig, LoggerService, TypeormLoggerProxy } from '@libs/logger';
 import { UserRepository, RoleRepository } from './repositories';
 import { User, Role } from './entities';
 
 export class ModelsModule {
-    static register(config: TypeOrmModuleOptions): DynamicModule {
+    static register(typeOrmConfig: TypeOrmModuleOptions): DynamicModule {
         return {
             module: ModelsModule,
             imports: [
                 TypeOrmModule.forRootAsync({
-                    inject: [LoggerService],
-                    useFactory: async (logger: LoggerService) => ({
-                        ...config,
+                    inject: [LoggerService, LoggerConfig],
+                    useFactory: async (
+                        logger: LoggerService,
+                        loggerConfig: LoggerConfig,
+                    ) => ({
+                        ...typeOrmConfig,
                         entities: [Role, User],
-                        logger: new TypeormLoggerProxy(logger),
+                        logger: new TypeormLoggerProxy(logger, loggerConfig),
                     }),
                 }),
                 TypeOrmModule.forFeature([RoleRepository, UserRepository]),
@@ -30,12 +33,12 @@ export class ModelsModule {
      * The difference between this one and the regular `register` is that there is no
      * custom logger implementation.
      */
-    static registerTest(config: TypeOrmModuleOptions): DynamicModule {
+    static registerTest(typeOrmConfig: TypeOrmModuleOptions): DynamicModule {
         return {
             module: ModelsModule,
             imports: [
                 TypeOrmModule.forRoot({
-                    ...config,
+                    ...typeOrmConfig,
                     entities: [Role, User],
                 }),
                 TypeOrmModule.forFeature([RoleRepository, UserRepository]),
