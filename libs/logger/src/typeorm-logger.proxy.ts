@@ -21,11 +21,11 @@ const context = 'TypeOrm';
  *     module: ModelsModule,
  *     imports: [
  *         TypeOrmModule.forRootAsync({
- *             inject: [LoggerService],
- *             useFactory: async (logger: LoggerService) => ({
+ *             inject: [LoggerService, LoggerConfig],
+ *             useFactory: async (logger: LoggerService, loggerConfig: LoggerConfig) => ({
  *                 ...config,
  *                 entities: [Role, User],
- *                 logger: new TypeormLoggerProxy(logger),
+ *                 logger: new TypeormLoggerProxy(logger, loggerConfig),
  *             }),
  *         }),
  *         TypeOrmModule.forFeature([RoleRepository, UserRepository]),
