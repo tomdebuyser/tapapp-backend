@@ -1,29 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
-import { SelectQueryBuilder } from 'typeorm';
 
-import { RoleRepository, Role } from '@libs/models';
+import { RoleRepository } from '@libs/models';
 import {
     GetRolesRequestQuery,
     GetRolesResponse,
     RolesSortColumns,
-    RoleResponse,
-} from './dto';
-import { SortDirection } from '../shared/constants';
+} from '../dto';
+import { SortDirection } from '../../shared/constants';
 
 @Injectable()
-export class RolesQueries {
+export class GetRolesHandler {
     constructor(private readonly roleRepository: RoleRepository) {}
 
-    async getRole(roleId: string): Promise<RoleResponse> {
-        return this.selectRoleColumns(
-            this.roleRepository.createQueryBuilder('role'),
-        )
-            .where('role.id = :roleId', { roleId })
-            .getOne();
-    }
-
-    async getRoles(
+    async execute(
         requestQuery: GetRolesRequestQuery,
     ): Promise<GetRolesResponse> {
         const defaultQuery: GetRolesRequestQuery = {
@@ -35,9 +25,9 @@ export class RolesQueries {
         };
         const query = mergeDeepLeft(requestQuery, defaultQuery);
 
-        const [roles, totalCount] = await this.selectRoleColumns(
-            this.roleRepository.createQueryBuilder('role'),
-        )
+        const [roles, totalCount] = await this.roleRepository
+            .createQueryBuilder('role')
+            .select('role')
             .orderBy(`role.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)
@@ -54,19 +44,5 @@ export class RolesQueries {
             },
             data: roles,
         };
-    }
-
-    private selectRoleColumns(
-        queryBuilder: SelectQueryBuilder<Role>,
-    ): SelectQueryBuilder<Role> {
-        return queryBuilder.select([
-            'role.id',
-            'role.createdAt',
-            'role.updatedAt',
-            'role.createdBy',
-            'role.updatedBy',
-            'role.name',
-            'role.permissions',
-        ]);
     }
 }

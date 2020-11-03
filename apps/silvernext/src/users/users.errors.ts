@@ -22,6 +22,15 @@ export class UserNotFound extends NotFoundException {
     }
 }
 
+export class CannotDeleteCurrentUser extends BadRequestException {
+    constructor() {
+        super(
+            'Cannot delete the current logged in user',
+            'CANNOT_DELETE_CURRENT_USER',
+        );
+    }
+}
+
 export class AccountAlreadyActive extends MethodNotAllowedException {
     constructor() {
         super(

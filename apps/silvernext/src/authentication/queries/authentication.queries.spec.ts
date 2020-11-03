@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { ModelsModule, UserRepository } from '@libs/models';
 import { AuthenticationQueries } from './authentication.queries';
-import { Config } from '../config';
+import { Config } from '../../config';
 
 describe('AuthenticationQueries', () => {
     let module: TestingModule;

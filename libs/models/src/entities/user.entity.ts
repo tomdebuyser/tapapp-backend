@@ -34,7 +34,7 @@ export class User extends AuditedEntity {
     @Column({ nullable: true })
     resetToken?: string;
 
-    @ManyToMany(() => Role)
+    @ManyToMany(() => Role, { onDelete: 'CASCADE' })
     @JoinTable()
     roles: Role[];
 

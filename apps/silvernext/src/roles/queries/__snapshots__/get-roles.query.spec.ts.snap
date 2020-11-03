@@ -1,29 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RolesQueries getRole should return nothing if the requested role does not exist 1`] = `undefined`;
-
-exports[`RolesQueries getRole should return the requested role correctly 1`] = `
-Role {
-  "createdAt": 2019-06-20T08:12:59.730Z,
-  "createdBy": null,
-  "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-  "name": "Admin",
-  "permissions": Object {
-    "roles": Object {
-      "edit": true,
-      "view": true,
-    },
-    "users": Object {
-      "edit": true,
-      "view": true,
-    },
-  },
-  "updatedAt": 2019-06-20T08:12:59.730Z,
-  "updatedBy": null,
-}
-`;
-
-exports[`RolesQueries getRoles should return a paged list of roles: #0 1`] = `
+exports[`GetRolesHandler execute should return a paged list of roles: #0 1`] = `
 Object {
   "data": Array [
     Role {
@@ -89,7 +66,7 @@ Object {
 }
 `;
 
-exports[`RolesQueries getRoles should return a paged list of roles: #1 1`] = `
+exports[`GetRolesHandler execute should return a paged list of roles: #1 1`] = `
 Object {
   "data": Array [
     Role {
@@ -119,7 +96,7 @@ Object {
 }
 `;
 
-exports[`RolesQueries getRoles should return a paged list of roles: #2 1`] = `
+exports[`GetRolesHandler execute should return a paged list of roles: #2 1`] = `
 Object {
   "data": Array [
     Role {
@@ -149,7 +126,7 @@ Object {
 }
 `;
 
-exports[`RolesQueries getRoles should return a paged list of roles: #3 1`] = `
+exports[`GetRolesHandler execute should return a paged list of roles: #3 1`] = `
 Object {
   "data": Array [
     Role {
@@ -179,7 +156,7 @@ Object {
 }
 `;
 
-exports[`RolesQueries getRoles should return a paged list of roles: #4 1`] = `
+exports[`GetRolesHandler execute should return a paged list of roles: #4 1`] = `
 Object {
   "data": Array [
     Role {
@@ -245,7 +222,7 @@ Object {
 }
 `;
 
-exports[`RolesQueries getRoles should return an empty list if no roles found 1`] = `
+exports[`GetRolesHandler execute should return an empty list if no roles found 1`] = `
 Object {
   "data": Array [],
   "meta": Object {

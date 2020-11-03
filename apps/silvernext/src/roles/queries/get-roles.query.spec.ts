@@ -1,24 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as faker from 'faker';
 
 import { ModelsModule, RoleRepository } from '@libs/models';
-import { RolesQueries } from './roles.queries';
-import { GetRolesRequestQuery, RolesSortColumns } from './dto';
-import { SortDirection } from '../shared/constants';
-import { Config } from '../config';
+import { GetRolesHandler } from './get-roles.query';
+import { Config } from '../../config';
+import { SortDirection } from '../../shared/constants';
+import { GetRolesRequestQuery, RolesSortColumns } from '../dto';
 
-describe('RolesQueries', () => {
+describe('GetRolesHandler', () => {
     let module: TestingModule;
     let roleRepository: RoleRepository;
-    let rolesQueries: RolesQueries;
+    let handler: GetRolesHandler;
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
             imports: [ModelsModule.registerTest(Config.models)],
-            providers: [RolesQueries],
+            providers: [GetRolesHandler],
         }).compile();
 
-        rolesQueries = module.get(RolesQueries);
+        handler = module.get(GetRolesHandler);
         roleRepository = module.get(RoleRepository);
     });
 
@@ -27,21 +26,7 @@ describe('RolesQueries', () => {
         await module.close();
     });
 
-    describe('getRole', () => {
-        it('should return the requested role correctly', async () => {
-            const result = await rolesQueries.getRole(
-                '0c1510ab-5dca-41e2-8912-ee165140ae90',
-            );
-            expect(result).toMatchSnapshot();
-        });
-
-        it('should return nothing if the requested role does not exist', async () => {
-            const result = await rolesQueries.getRole(faker.random.uuid());
-            expect(result).toMatchSnapshot();
-        });
-    });
-
-    describe('getRoles', () => {
+    describe('execute', () => {
         const testQueries: GetRolesRequestQuery[] = [
             {},
             { skip: 2, take: 2 },
@@ -55,13 +40,13 @@ describe('RolesQueries', () => {
 
         testQueries.forEach((query, index) => {
             it(`should return a paged list of roles: #${index}`, async () => {
-                const result = await rolesQueries.getRoles(query);
+                const result = await handler.execute(query);
                 expect(result).toMatchSnapshot();
             });
         });
 
         it('should return an empty list if no roles found', async () => {
-            const result = await rolesQueries.getRoles({
+            const result = await handler.execute({
                 search: 'nonsensicaljibberish',
             });
             expect(result).toMatchSnapshot();

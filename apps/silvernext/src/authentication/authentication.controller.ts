@@ -19,17 +19,25 @@ import {
     RequestPasswordResetRequest,
     ChangePasswordRequest,
 } from './dto';
-import { AuthenticationService } from './authentication.service';
 import { UserSession } from '../shared/constants';
-import { AuthenticationQueries } from './authentication.queries';
 import { AuthenticatedGuard, destroyExpressSession } from '../shared/guards';
 import { GetUserSession } from '../shared/decorators';
+import { AuthenticationQueries } from './queries/authentication.queries';
+import {
+    ChangePasswordHandler,
+    LoginHandler,
+    RequestPasswordResetHandler,
+    ResetPasswordHandler,
+} from './commands';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
     constructor(
-        private readonly authService: AuthenticationService,
+        private readonly changePasswordHandler: ChangePasswordHandler,
+        private readonly loginHandler: LoginHandler,
+        private readonly requestPasswordResetHandler: RequestPasswordResetHandler,
+        private readonly resetPasswordHandler: ResetPasswordHandler,
         private readonly authQueries: AuthenticationQueries,
     ) {}
 
@@ -39,7 +47,10 @@ export class AuthenticationController {
         @Body() body: LoginRequest,
         @Req() request: Request,
     ): Promise<AuthenticationUserResponse> {
-        const user = await this.authService.login(body.username, body.password);
+        const user = await this.loginHandler.execute(
+            body.username,
+            body.password,
+        );
 
         // Add authenticated user's id to session cookie
         request.session.userId = user.id;
@@ -73,13 +84,13 @@ export class AuthenticationController {
     async requestPasswordReset(
         @Body() body: RequestPasswordResetRequest,
     ): Promise<void> {
-        await this.authService.requestPasswordReset(body);
+        await this.requestPasswordResetHandler.execute(body);
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('reset-password')
     async resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
-        await this.authService.resetPassword(body);
+        await this.resetPasswordHandler.execute(body);
     }
 
     @Post('change-password')
@@ -87,6 +98,6 @@ export class AuthenticationController {
         @Body() body: ChangePasswordRequest,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.authService.changePassword(body, session.userId);
+        await this.changePasswordHandler.execute(body, session.userId);
     }
 }

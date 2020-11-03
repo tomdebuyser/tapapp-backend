@@ -3,12 +3,17 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { MailerModule } from '@libs/mailer';
 import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
 import { Config } from '../config';
 import { UsersModule } from '../users/users.module';
-import { AuthenticationQueries } from './authentication.queries';
 import { SharedModule } from '../shared/shared.module';
 import { SessionSerializer } from './session-serializer.middleware';
+import { AuthenticationQueries } from './queries/authentication.queries';
+import {
+    ChangePasswordHandler,
+    LoginHandler,
+    RequestPasswordResetHandler,
+    ResetPasswordHandler,
+} from './commands';
 
 @Module({
     imports: [
@@ -21,7 +26,10 @@ import { SessionSerializer } from './session-serializer.middleware';
     ],
     controllers: [AuthenticationController],
     providers: [
-        AuthenticationService,
+        ChangePasswordHandler,
+        LoginHandler,
+        RequestPasswordResetHandler,
+        ResetPasswordHandler,
         AuthenticationQueries,
         SessionSerializer,
     ],

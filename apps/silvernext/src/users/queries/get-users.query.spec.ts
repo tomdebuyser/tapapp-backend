@@ -1,24 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as faker from 'faker';
 
 import { ModelsModule, UserRepository } from '@libs/models';
-import { UsersQueries } from './users.queries';
-import { GetUsersRequestQuery, UsersSortColumns } from './dto';
-import { SortDirection } from '../shared/constants';
-import { Config } from '../config';
+import { GetUsersRequestQuery, UsersSortColumns } from '../dto';
+import { SortDirection } from '../../shared/constants';
+import { Config } from '../../config';
+import { GetUsersHandler } from './get-users.query';
 
-describe('UsersQueries', () => {
+describe('GetUsersHandler', () => {
     let module: TestingModule;
     let userRepository: UserRepository;
-    let usersQueries: UsersQueries;
+    let handler: GetUsersHandler;
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
             imports: [ModelsModule.registerTest(Config.models)],
-            providers: [UsersQueries],
+            providers: [GetUsersHandler],
         }).compile();
 
-        usersQueries = module.get(UsersQueries);
+        handler = module.get(GetUsersHandler);
         userRepository = module.get(UserRepository);
     });
 
@@ -27,21 +26,7 @@ describe('UsersQueries', () => {
         await module.close();
     });
 
-    describe('getUser', () => {
-        it('should return the requested user correctly', async () => {
-            const result = await usersQueries.getUser(
-                'c4cb4582-1e97-4e3e-9d49-c744c8c1a229',
-            );
-            expect(result).toMatchSnapshot();
-        });
-
-        it('should return nothing if the requested user does not exist', async () => {
-            const result = await usersQueries.getUser(faker.random.uuid());
-            expect(result).toMatchSnapshot();
-        });
-    });
-
-    describe('getUsers', () => {
+    describe('execute', () => {
         const testQueries: GetUsersRequestQuery[] = [
             {},
             { skip: 2, take: 2 },
@@ -56,13 +41,13 @@ describe('UsersQueries', () => {
 
         testQueries.forEach((query, index) => {
             it(`should return a paged list of users: #${index}`, async () => {
-                const result = await usersQueries.getUsers(query);
+                const result = await handler.execute(query);
                 expect(result).toMatchSnapshot();
             });
         });
 
         it('should return an empty list if no users found', async () => {
-            const result = await usersQueries.getUsers({
+            const result = await handler.execute({
                 search: 'nonsensicaljibberish',
             });
             expect(result).toMatchSnapshot();

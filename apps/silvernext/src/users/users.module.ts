@@ -3,10 +3,17 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { MailerModule } from '@libs/mailer';
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { Config } from '../config';
-import { UsersQueries } from './users.queries';
 import { SharedModule } from '../shared/shared.module';
+import {
+    CreateUserHandler,
+    DeactivateUserHandler,
+    DeleteUserHandler,
+    ResendRegisterMailHandler,
+    UpdateUserHandler,
+} from './commands';
+import { GetUserHandler, GetUsersHandler } from './queries';
+import { RegisterMailService } from './services/register-mail.service';
 
 @Module({
     imports: [
@@ -17,6 +24,15 @@ import { SharedModule } from '../shared/shared.module';
         MailerModule.register(Config.mailing),
     ],
     controllers: [UsersController],
-    providers: [UsersService, UsersQueries],
+    providers: [
+        CreateUserHandler,
+        DeactivateUserHandler,
+        DeleteUserHandler,
+        ResendRegisterMailHandler,
+        UpdateUserHandler,
+        GetUserHandler,
+        GetUsersHandler,
+        RegisterMailService,
+    ],
 })
 export class UsersModule {}

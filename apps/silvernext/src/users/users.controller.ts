@@ -9,6 +9,7 @@ import {
     HttpCode,
     HttpStatus,
     Put,
+    Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
@@ -20,11 +21,17 @@ import {
     UserIdParam,
     UserResponse,
 } from './dto';
-import { UsersService } from './users.service';
-import { UsersQueries } from './users.queries';
 import { AuthenticatedGuard, RequiredPermissionsGuard } from '../shared/guards';
 import { GetUserSession, RequiredPermissions } from '../shared/decorators';
 import { UserSession } from '../shared/constants';
+import {
+    CreateUserHandler,
+    DeactivateUserHandler,
+    DeleteUserHandler,
+    ResendRegisterMailHandler,
+    UpdateUserHandler,
+} from './commands';
+import { GetUserHandler, GetUsersHandler } from './queries';
 
 @ApiBearerAuth()
 @UseGuards(AuthenticatedGuard)
@@ -32,21 +39,26 @@ import { UserSession } from '../shared/constants';
 @Controller('users')
 export class UsersController {
     constructor(
-        private readonly usersService: UsersService,
-        private readonly usersQueries: UsersQueries,
+        private readonly createUserHandler: CreateUserHandler,
+        private readonly deactivateUserHandler: DeactivateUserHandler,
+        private readonly deleteUserHandler: DeleteUserHandler,
+        private readonly resendRegisterMailHandler: ResendRegisterMailHandler,
+        private readonly updateUserHandler: UpdateUserHandler,
+        private readonly getUserHandler: GetUserHandler,
+        private readonly getUsersHandler: GetUsersHandler,
     ) {}
 
     @RequiredPermissions({ users: { view: true } })
     @UseGuards(RequiredPermissionsGuard)
     @Get()
     getUsers(@Query() query: GetUsersRequestQuery): Promise<GetUsersResponse> {
-        return this.usersQueries.getUsers(query);
+        return this.getUsersHandler.execute(query);
     }
 
     @RequiredPermissions({ users: { view: true } })
     @Get(':userId')
-    getUser(@Param('userId') userId: string): Promise<UserResponse> {
-        return this.usersQueries.getUser(userId);
+    getUser(@Param() params: UserIdParam): Promise<UserResponse> {
+        return this.getUserHandler.execute(params.userId);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -56,7 +68,7 @@ export class UsersController {
         @Body() body: CreateUserRequest,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.usersService.createUser(body, session);
+        await this.createUserHandler.execute(body, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -67,7 +79,17 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.usersService.updateUser(body, params.userId, session);
+        await this.updateUserHandler.execute(body, params.userId, session);
+    }
+
+    @RequiredPermissions({ users: { edit: true } })
+    @UseGuards(RequiredPermissionsGuard)
+    @Delete(':userId')
+    async deleteUser(
+        @Param() params: UserIdParam,
+        @GetUserSession() session: UserSession,
+    ): Promise<void> {
+        await this.deleteUserHandler.execute(params.userId, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -78,7 +100,7 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.usersService.resendRegisterMail(params.userId, session);
+        await this.resendRegisterMailHandler.execute(params.userId, session);
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -89,6 +111,6 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.usersService.deactivateUser(params.userId, session);
+        await this.deactivateUserHandler.execute(params.userId, session);
     }
 }

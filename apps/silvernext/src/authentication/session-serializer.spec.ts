@@ -2,8 +2,8 @@ import { mock, instance, reset, anything, when } from 'ts-mockito';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { SessionSerializer } from './session-serializer.middleware';
-import { AuthenticationQueries } from './authentication.queries';
 import { createTestUserSession } from '../shared/testing';
+import { AuthenticationQueries } from './queries/authentication.queries';
 
 describe('SessionSerializer', () => {
     let module: TestingModule;

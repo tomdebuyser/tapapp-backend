@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetRoleHandler execute should return nothing if the requested role does not exist 1`] = `undefined`;
+
+exports[`GetRoleHandler execute should return the requested role correctly 1`] = `
+Role {
+  "createdAt": 2019-06-20T08:12:59.730Z,
+  "createdBy": null,
+  "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
+  "name": "Admin",
+  "permissions": Object {
+    "roles": Object {
+      "edit": true,
+      "view": true,
+    },
+    "users": Object {
+      "edit": true,
+      "view": true,
+    },
+  },
+  "updatedAt": 2019-06-20T08:12:59.730Z,
+  "updatedBy": null,
+}
+`;
