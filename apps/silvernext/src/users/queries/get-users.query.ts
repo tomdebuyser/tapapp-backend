@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
 
 import { UserRepository } from '@libs/models';
+import { IHandler } from '@libs/common';
 import {
     GetUsersRequestQuery,
     GetUsersResponse,
@@ -9,13 +10,15 @@ import {
 } from '../dto';
 import { SortDirection } from '../../shared/constants';
 
+export type GetUsersQuery = {
+    data: GetUsersRequestQuery;
+};
+
 @Injectable()
-export class GetUsersHandler {
+export class GetUsersHandler implements IHandler<GetUsersQuery> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async execute(
-        requestQuery: GetUsersRequestQuery,
-    ): Promise<GetUsersResponse> {
+    async execute({ data }: GetUsersQuery): Promise<GetUsersResponse> {
         const defaultQuery: GetUsersRequestQuery = {
             skip: 0,
             take: 20,
@@ -23,7 +26,7 @@ export class GetUsersHandler {
             sortDirection: SortDirection.Descending,
             search: '',
         };
-        const query = mergeDeepLeft(requestQuery, defaultQuery);
+        const query = mergeDeepLeft(data, defaultQuery);
 
         const [users, totalCount] = await this.userRepository
             .createQueryBuilder('user')

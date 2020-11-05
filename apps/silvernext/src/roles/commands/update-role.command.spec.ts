@@ -76,7 +76,10 @@ describe('UpdateRoleHandler', () => {
                 }),
             );
 
-            await handler.execute(request, role.id, session);
+            await handler.execute({
+                data: { roleId: role.id, ...request },
+                session,
+            });
 
             verify(
                 roleRepository.update(
@@ -115,7 +118,10 @@ describe('UpdateRoleHandler', () => {
                 }),
             );
 
-            await handler.execute(request, role.id, session);
+            await handler.execute({
+                data: { roleId: role.id, ...request },
+                session,
+            });
 
             verify(
                 roleRepository.update(
@@ -138,11 +144,10 @@ describe('UpdateRoleHandler', () => {
             when(roleRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(
-                    request,
-                    faker.random.uuid(),
-                    createTestUserSession(),
-                ),
+                handler.execute({
+                    data: { roleId: faker.random.uuid(), ...request },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(RoleNotFound);
         });
 
@@ -154,9 +159,7 @@ describe('UpdateRoleHandler', () => {
             const roleId = faker.random.uuid();
             const role = createTestRole({ id: roleId });
 
-            when(
-                roleRepository.findOne(objectContaining({ id: roleId })),
-            ).thenResolve(role);
+            when(roleRepository.findOne(roleId)).thenResolve(role);
             when(
                 roleRepository.findOne(
                     objectContaining({ name: request.name }),
@@ -164,7 +167,10 @@ describe('UpdateRoleHandler', () => {
             ).thenResolve(createTestRole({ id: faker.random.uuid() }));
 
             await expect(
-                handler.execute(request, roleId, createTestUserSession()),
+                handler.execute({
+                    data: { roleId, ...request },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(RoleNameAlreadyInUse);
         });
     });

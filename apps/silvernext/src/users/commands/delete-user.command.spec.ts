@@ -45,32 +45,37 @@ describe('DeleteUserHandler', () => {
     describe('execute', () => {
         it('should delete a user correctly', async () => {
             const user = createTestUser();
-            const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            await handler.execute(user.id, session);
+            await handler.execute({
+                data: { userId: user.id },
+                session: createTestUserSession(),
+            });
 
             verify(userRepository.delete(user.id)).once();
         });
 
-        it('should throw an error when the user does nog exist', async () => {
+        it('should throw an error when the user does not exist', async () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(faker.random.uuid(), createTestUserSession()),
+                handler.execute({
+                    data: { userId: faker.random.uuid() },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(UserNotFound);
         });
 
         it('should throw an error when a user with email already exists', async () => {
             const userId = faker.random.uuid();
             const user = createTestUser({ id: userId });
-            const session = createTestUserSession({ userId });
+            const session = createTestUserSession(user);
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
             await expect(
-                handler.execute(user.id, session),
+                handler.execute({ data: { userId }, session }),
             ).rejects.toThrowError(CannotDeleteCurrentUser);
         });
     });

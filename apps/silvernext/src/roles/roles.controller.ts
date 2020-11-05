@@ -48,14 +48,14 @@ export class RolesController {
     @UseGuards(RequiredPermissionsGuard)
     @Get()
     getRoles(@Query() query: GetRolesRequestQuery): Promise<GetRolesResponse> {
-        return this.getRolesHandler.execute(query);
+        return this.getRolesHandler.execute({ data: query });
     }
 
     @RequiredPermissions({ roles: { view: true } })
     @UseGuards(RequiredPermissionsGuard)
     @Get(':roleId')
     getRole(@Param() params: RoleIdParam): Promise<RoleResponse> {
-        return this.getRoleHandler.execute(params.roleId);
+        return this.getRoleHandler.execute({ data: params });
     }
 
     @RequiredPermissions({ roles: { edit: true } })
@@ -65,7 +65,7 @@ export class RolesController {
         @Body() body: CreateRoleRequest,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.createRoleHandler.execute(body, session);
+        await this.createRoleHandler.execute({ data: body, session });
     }
 
     @RequiredPermissions({ roles: { edit: true } })
@@ -76,7 +76,10 @@ export class RolesController {
         @Param() params: RoleIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.updateRoleHandler.execute(body, params.roleId, session);
+        await this.updateRoleHandler.execute({
+            data: { ...body, ...params },
+            session,
+        });
     }
 
     @RequiredPermissions({ roles: { edit: true } })
@@ -84,6 +87,6 @@ export class RolesController {
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':roleId')
     async deleteRole(@Param() params: RoleIdParam): Promise<void> {
-        await this.deleteRoleHandler.execute(params.roleId);
+        await this.deleteRoleHandler.execute({ data: params });
     }
 }

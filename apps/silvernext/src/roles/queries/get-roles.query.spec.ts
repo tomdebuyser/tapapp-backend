@@ -40,14 +40,14 @@ describe('GetRolesHandler', () => {
 
         testQueries.forEach((query, index) => {
             it(`should return a paged list of roles: #${index}`, async () => {
-                const result = await handler.execute(query);
+                const result = await handler.execute({ data: query });
                 expect(result).toMatchSnapshot();
             });
         });
 
         it('should return an empty list if no roles found', async () => {
             const result = await handler.execute({
-                search: 'nonsensicaljibberish',
+                data: { search: 'nonsensicaljibberish' },
             });
             expect(result).toMatchSnapshot();
         });

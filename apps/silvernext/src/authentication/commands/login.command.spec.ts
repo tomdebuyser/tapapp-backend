@@ -52,7 +52,11 @@ describe('LoginHandler', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            expect(await handler.execute(email, password)).toBeTruthy();
+            expect(
+                await handler.execute({
+                    data: { username: email, password },
+                }),
+            ).toBeTruthy();
         });
 
         it('should throw an error when the linked user is not found', async () => {
@@ -60,9 +64,11 @@ describe('LoginHandler', () => {
             const password = 'Password1%';
             when(userRepository.findOne(anything())).thenResolve(null);
 
-            await expect(handler.execute(email, password)).rejects.toThrowError(
-                UnauthorizedException,
-            );
+            await expect(
+                handler.execute({
+                    data: { username: email, password },
+                }),
+            ).rejects.toThrowError(UnauthorizedException);
         });
 
         it('should throw an error when the user is not active', async () => {
@@ -76,9 +82,11 @@ describe('LoginHandler', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            await expect(handler.execute(email, password)).rejects.toThrowError(
-                UserStateNotAllowed,
-            );
+            await expect(
+                handler.execute({
+                    data: { username: email, password },
+                }),
+            ).rejects.toThrowError(UserStateNotAllowed);
         });
 
         it('should throw an error when the passwords do not match', async () => {
@@ -89,9 +97,11 @@ describe('LoginHandler', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            await expect(handler.execute(email, password)).rejects.toThrowError(
-                UnauthorizedException,
-            );
+            await expect(
+                handler.execute({
+                    data: { username: email, password },
+                }),
+            ).rejects.toThrowError(UnauthorizedException);
         });
     });
 });

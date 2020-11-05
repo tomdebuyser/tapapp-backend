@@ -61,6 +61,7 @@ describe('CreateUserHandler', () => {
     afterEach(() => {
         reset(userRepository);
         reset(roleRepository);
+        reset(registerMailService);
     });
 
     describe('execute', () => {
@@ -80,7 +81,7 @@ describe('CreateUserHandler', () => {
             ).thenResolve(null);
             when(roleRepository.find(anything())).thenResolve(roles);
 
-            await handler.execute(request, session);
+            await handler.execute({ data: request, session });
 
             verify(
                 userRepository.save(
@@ -110,7 +111,7 @@ describe('CreateUserHandler', () => {
             ).thenResolve(null);
             when(roleRepository.find(anything())).thenResolve(roles);
 
-            await handler.execute(request, session);
+            await handler.execute({ data: request, session });
 
             verify(
                 userRepository.save(
@@ -130,13 +131,13 @@ describe('CreateUserHandler', () => {
             );
 
             await expect(
-                handler.execute(
-                    {
+                handler.execute({
+                    data: {
                         email: faker.internet.email(),
                         roleIds: [faker.random.uuid()],
                     },
-                    createTestUserSession(),
-                ),
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(EmailAlreadyInUse);
         });
 
@@ -145,13 +146,13 @@ describe('CreateUserHandler', () => {
             when(roleRepository.find(anything())).thenResolve([]);
 
             await expect(
-                handler.execute(
-                    {
+                handler.execute({
+                    data: {
                         email: faker.internet.email(),
                         roleIds: [faker.random.uuid()],
                     },
-                    createTestUserSession(),
-                ),
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(RoleNotFound);
         });
     });

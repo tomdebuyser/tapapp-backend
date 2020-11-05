@@ -6,14 +6,14 @@ import { AuthenticationController } from './authentication.controller';
 import { Config } from '../config';
 import { UsersModule } from '../users/users.module';
 import { SharedModule } from '../shared/shared.module';
-import { SessionSerializer } from './session-serializer.middleware';
-import { AuthenticationQueries } from './queries/authentication.queries';
+import { SessionSerializer } from './middleware/session-serializer.middleware';
 import {
     ChangePasswordHandler,
     LoginHandler,
     RequestPasswordResetHandler,
     ResetPasswordHandler,
 } from './commands';
+import { GetAuthenticatedUserHandler } from './queries';
 
 @Module({
     imports: [
@@ -30,7 +30,7 @@ import {
         LoginHandler,
         RequestPasswordResetHandler,
         ResetPasswordHandler,
-        AuthenticationQueries,
+        GetAuthenticatedUserHandler,
         SessionSerializer,
     ],
 })

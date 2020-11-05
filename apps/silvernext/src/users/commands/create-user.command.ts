@@ -3,6 +3,7 @@ import { In } from 'typeorm';
 
 import { UserRepository, User, RoleRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
+import { IHandler } from '@libs/common';
 import { CreateUserRequest } from '../dto';
 import { EmailAlreadyInUse, RoleNotFound } from '../users.errors';
 import { UserSession } from '../../shared/constants';
@@ -10,8 +11,13 @@ import { RegisterMailService } from '../services/register-mail.service';
 
 const context = 'CreateUserHandler';
 
+export type CreateUserCommand = {
+    data: CreateUserRequest;
+    session: UserSession;
+};
+
 @Injectable()
-export class CreateUserHandler {
+export class CreateUserHandler implements IHandler<CreateUserCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly roleRepository: RoleRepository,
@@ -19,12 +25,9 @@ export class CreateUserHandler {
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(
-        body: CreateUserRequest,
-        session: UserSession,
-    ): Promise<string> {
-        const { email, firstName, lastName } = body;
-        const roleIds = Array.from(new Set(body.roleIds));
+    async execute({ data, session }: CreateUserCommand): Promise<string> {
+        const { email, firstName, lastName } = data;
+        const roleIds = Array.from(new Set(data.roleIds));
 
         // The user should not exist yet
         const existingUser = await this.userRepository.findOne({

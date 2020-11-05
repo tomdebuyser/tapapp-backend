@@ -1,7 +1,6 @@
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { mock, instance, when, anything, reset, capture } from 'ts-mockito';
-import * as faker from 'faker';
 import * as bcrypt from 'bcrypt';
 
 import { LoggerService } from '@libs/logger';
@@ -10,6 +9,7 @@ import { createTestUser } from '@libs/testing';
 import { InvalidOldPassword } from '../authentication.errors';
 import { ChangePasswordRequest } from '../dto';
 import { ChangePasswordHandler } from './change-password.command';
+import { createTestUserSession } from '../../shared/testing';
 
 describe('ChangePasswordHandler', () => {
     let module: TestingModule;
@@ -56,7 +56,10 @@ describe('ChangePasswordHandler', () => {
                 }),
             );
 
-            await handler.execute(request, faker.random.uuid());
+            await handler.execute({
+                data: request,
+                session: createTestUserSession(),
+            });
 
             const [savedUser] = capture(userRepository.save).last();
             expect(
@@ -75,7 +78,10 @@ describe('ChangePasswordHandler', () => {
             );
 
             await expect(
-                handler.execute(request, faker.random.uuid()),
+                handler.execute({
+                    data: request,
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(InvalidOldPassword);
         });
     });

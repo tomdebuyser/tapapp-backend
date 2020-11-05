@@ -1,23 +1,26 @@
-import { mock, instance, reset, anything, when } from 'ts-mockito';
+import { anything, instance, mock, reset, when } from 'ts-mockito';
+import * as faker from 'faker';
 import { Test, TestingModule } from '@nestjs/testing';
+import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
 import { SessionSerializer } from './session-serializer.middleware';
-import { createTestUserSession } from '../shared/testing';
-import { AuthenticationQueries } from './queries/authentication.queries';
+import { createTestUserSession } from '../../shared/testing';
+import { UserRepository, UserState } from '@libs/models';
+import { createTestUser } from '@libs/testing';
 
 describe('SessionSerializer', () => {
     let module: TestingModule;
     let serializer: SessionSerializer;
 
-    const authQueries = mock(AuthenticationQueries);
+    const userRepository = mock(UserRepository);
 
     beforeAll(async () => {
         module = await Test.createTestingModule({
             providers: [
                 SessionSerializer,
                 {
-                    provide: AuthenticationQueries,
-                    useValue: instance(authQueries),
+                    provide: getCustomRepositoryToken(UserRepository),
+                    useValue: instance(userRepository),
                 },
             ],
         }).compile();
@@ -30,17 +33,22 @@ describe('SessionSerializer', () => {
     });
 
     afterEach(() => {
-        reset(authQueries);
+        reset(userRepository);
     });
 
     it('should deserialize into a session from the cookie', async () => {
-        const session = createTestUserSession();
-        when(authQueries.composeUserSession(anything())).thenResolve(session);
+        const user = createTestUser({
+            state: UserState.Active,
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+        });
+        const session = createTestUserSession(user);
+        when(userRepository.findOne(anything(), anything())).thenResolve(user);
 
         const mockNext = jest.fn();
         const req: any = {
             session: {
-                userId: '1234',
+                userId: user.id,
             },
             // Defining here to avoid type errors below
             user: undefined,

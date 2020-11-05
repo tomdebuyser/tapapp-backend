@@ -57,7 +57,7 @@ describe('DeactivateUserHandler', () => {
 
             when(userRepository.findOne(anything())).thenResolve(user);
 
-            await handler.execute(user.id, session);
+            await handler.execute({ data: { userId: user.id }, session });
 
             verify(
                 userRepository.update(
@@ -75,7 +75,10 @@ describe('DeactivateUserHandler', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(faker.random.uuid(), createTestUserSession()),
+                handler.execute({
+                    data: { userId: faker.random.uuid() },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(UserNotFound);
         });
     });

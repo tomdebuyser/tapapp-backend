@@ -3,18 +3,26 @@ import * as bcrypt from 'bcrypt';
 
 import { UserRepository, User, UserState } from '@libs/models';
 import { LoggerService } from '@libs/logger';
+import { IHandler } from '@libs/common';
 import { UserStateNotAllowed } from '../authentication.errors';
+import { LoginRequest } from '../dto';
 
 const context = 'LoginHandler';
 
+export type LoginCommand = {
+    data: LoginRequest;
+};
+
 @Injectable()
-export class LoginHandler {
+export class LoginHandler implements IHandler<LoginCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(email: string, password: string): Promise<User> {
+    async execute({ data }: LoginCommand): Promise<User> {
+        const { username: email, password } = data;
+
         // Try to find the user
         const user = await this.userRepository.findOne({ email });
         if (!user) {

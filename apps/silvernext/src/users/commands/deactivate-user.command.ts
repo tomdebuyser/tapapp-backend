@@ -2,19 +2,28 @@ import { Injectable } from '@nestjs/common';
 
 import { UserRepository, UserState } from '@libs/models';
 import { LoggerService } from '@libs/logger';
+import { IHandler } from '@libs/common';
 import { UserNotFound } from '../users.errors';
 import { UserSession } from '../../shared/constants';
+import { UserIdParam } from '../dto';
 
 const context = 'DeactivateUserHandler';
 
+export type DeactivateUserCommand = {
+    data: UserIdParam;
+    session: UserSession;
+};
+
 @Injectable()
-export class DeactivateUserHandler {
+export class DeactivateUserHandler implements IHandler<DeactivateUserCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(userId: string, session: UserSession): Promise<string> {
+    async execute({ data, session }: DeactivateUserCommand): Promise<string> {
+        const { userId } = data;
+
         // The user should already exist
         const existingUser = await this.userRepository.findOne(userId);
         if (!existingUser) {

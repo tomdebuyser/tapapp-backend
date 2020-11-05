@@ -3,26 +3,30 @@ import { mergeDeepLeft } from 'ramda';
 
 import { LoggerService } from '@libs/logger';
 import { RoleRepository } from '@libs/models';
+import { IHandler } from '@libs/common';
 import { UserSession } from '../../shared/constants';
-import { UpdateRoleRequest } from '../dto';
+import { RoleIdParam, UpdateRoleRequest } from '../dto';
 import { RoleNameAlreadyInUse, RoleNotFound } from '../roles.errors';
 
 const context = 'UpdateRoleHandler';
 
+export type UpdateRoleCommand = {
+    data: UpdateRoleRequest & RoleIdParam;
+    session: UserSession;
+};
+
 @Injectable()
-export class UpdateRoleHandler {
+export class UpdateRoleHandler implements IHandler<UpdateRoleCommand> {
     constructor(
         private readonly roleRepository: RoleRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(
-        body: UpdateRoleRequest,
-        roleId: string,
-        session: UserSession,
-    ): Promise<string> {
+    async execute({ session, data }: UpdateRoleCommand): Promise<string> {
+        const { roleId } = data;
+
         // The role should already exist
-        const existingRole = await this.roleRepository.findOne({ id: roleId });
+        const existingRole = await this.roleRepository.findOne(roleId);
         if (!existingRole) {
             this.logger.warn('Failed to update: role with id not found', {
                 context,
@@ -32,7 +36,7 @@ export class UpdateRoleHandler {
         }
 
         // There should not exist another role with the given name
-        const { name, permissions } = body;
+        const { name, permissions } = data;
         const otherRole = await this.roleRepository.findOne({ name });
         if (otherRole && otherRole.id !== roleId) {
             this.logger.warn('Failed to update: role name already in use', {

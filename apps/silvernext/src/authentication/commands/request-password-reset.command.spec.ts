@@ -16,8 +16,10 @@ import { LoggerService } from '@libs/logger';
 import { UserRepository } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { createTestUser } from '@libs/testing';
-import { RequestPasswordResetRequest } from '../dto';
-import { RequestPasswordResetHandler } from './request-password-reset.command';
+import {
+    RequestPasswordResetCommand,
+    RequestPasswordResetHandler,
+} from './request-password-reset.command';
 
 describe('RequestPasswordResetHandler', () => {
     let module: TestingModule;
@@ -68,10 +70,10 @@ describe('RequestPasswordResetHandler', () => {
 
     describe('execute', () => {
         it('should handle the request for password reset correctly', async () => {
-            const request: RequestPasswordResetRequest = {
-                email: faker.internet.email(),
+            const command: RequestPasswordResetCommand = {
+                data: { email: faker.internet.email() },
             };
-            const user = createTestUser({ email: request.email });
+            const user = createTestUser({ email: command.data.email });
             const resetToken = faker.random.alphaNumeric(10);
 
             when(userRepository.findOne(anything())).thenResolve(user);
@@ -79,13 +81,13 @@ describe('RequestPasswordResetHandler', () => {
                 resetToken,
             );
 
-            await handler.execute(request);
+            await handler.execute(command);
 
             verify(
                 userRepository.update(
                     user.id,
                     objectContaining({
-                        updatedBy: request.email,
+                        updatedBy: command.data.email,
                         resetToken,
                     }),
                 ),
@@ -93,13 +95,13 @@ describe('RequestPasswordResetHandler', () => {
         });
 
         it('should do nothing when no user was found for the given email', async () => {
-            const request: RequestPasswordResetRequest = {
-                email: faker.internet.email(),
+            const command: RequestPasswordResetCommand = {
+                data: { email: faker.internet.email() },
             };
 
             when(userRepository.findOne(anything())).thenResolve(null);
 
-            await handler.execute(request);
+            await handler.execute(command);
 
             verify(userRepository.update(anything(), anything())).never();
         });

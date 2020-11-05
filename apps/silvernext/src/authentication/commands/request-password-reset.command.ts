@@ -4,12 +4,18 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '@libs/models';
 import { MailerService } from '@libs/mailer';
 import { LoggerService } from '@libs/logger';
+import { IHandler } from '@libs/common';
 import { RequestPasswordResetRequest } from '../dto';
 
 const context = 'RequestPasswordResetHandler';
 
+export type RequestPasswordResetCommand = {
+    data: RequestPasswordResetRequest;
+};
+
 @Injectable()
-export class RequestPasswordResetHandler {
+export class RequestPasswordResetHandler
+    implements IHandler<RequestPasswordResetCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
@@ -17,8 +23,8 @@ export class RequestPasswordResetHandler {
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(body: RequestPasswordResetRequest): Promise<void> {
-        const { email } = body;
+    async execute({ data }: RequestPasswordResetCommand): Promise<void> {
+        const { email } = data;
 
         // If the user is not found, just do nothing
         const user = await this.userRepository.findOne({ email });

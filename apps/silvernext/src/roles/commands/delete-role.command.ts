@@ -3,20 +3,28 @@ import { Injectable } from '@nestjs/common';
 import { LoggerService } from '@libs/logger';
 import { RoleRepository, UserRepository } from '@libs/models';
 import { RoleInUse, RoleNotFound } from '../roles.errors';
+import { RoleIdParam } from '../dto';
+import { IHandler } from '@libs/common';
 
 const context = 'DeleteRoleHandler';
 
+export type DeleteRoleCommand = {
+    data: RoleIdParam;
+};
+
 @Injectable()
-export class DeleteRoleHandler {
+export class DeleteRoleHandler implements IHandler<DeleteRoleCommand> {
     constructor(
         private readonly roleRepository: RoleRepository,
         private readonly userRepository: UserRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(roleId: string): Promise<void> {
+    async execute({ data }: DeleteRoleCommand): Promise<void> {
+        const { roleId } = data;
+
         // The role should already exist
-        const existingRole = await this.roleRepository.findOne({ id: roleId });
+        const existingRole = await this.roleRepository.findOne(roleId);
         if (!existingRole) {
             this.logger.warn('Failed to delete: role with id found', {
                 context,

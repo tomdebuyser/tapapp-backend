@@ -46,6 +46,7 @@ describe('ResendRegisterMailHandler', () => {
 
     afterEach(() => {
         reset(userRepository);
+        reset(registerMailService);
     });
 
     describe('execute', () => {
@@ -58,7 +59,7 @@ describe('ResendRegisterMailHandler', () => {
                 registerMailService.sendMail(anything(), anything()),
             ).thenResolve(null);
 
-            await handler.execute(user.id, session);
+            await handler.execute({ data: { userId: user.id }, session });
 
             verify(registerMailService.sendMail(anything(), anything())).once();
         });
@@ -69,7 +70,10 @@ describe('ResendRegisterMailHandler', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(userId, createTestUserSession()),
+                handler.execute({
+                    data: { userId },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(UserNotFound);
         });
 
@@ -79,7 +83,10 @@ describe('ResendRegisterMailHandler', () => {
             when(userRepository.findOne(anything())).thenResolve(user);
 
             await expect(
-                handler.execute(user.id, createTestUserSession()),
+                handler.execute({
+                    data: { userId: user.id },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(AccountAlreadyActive);
         });
     });

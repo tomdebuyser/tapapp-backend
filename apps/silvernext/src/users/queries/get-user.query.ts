@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserRepository } from '@libs/models';
-import { UserResponse } from '../dto';
+import { IHandler } from '@libs/common';
+import { UserIdParam, UserResponse } from '../dto';
+
+export type GetUserQuery = {
+    data: UserIdParam;
+};
 
 @Injectable()
-export class GetUserHandler {
+export class GetUserHandler implements IHandler<GetUserQuery> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async execute(userId: string): Promise<UserResponse> {
+    async execute({ data }: GetUserQuery): Promise<UserResponse> {
+        const { userId } = data;
+
         return this.userRepository
             .createQueryBuilder('user')
             .select([

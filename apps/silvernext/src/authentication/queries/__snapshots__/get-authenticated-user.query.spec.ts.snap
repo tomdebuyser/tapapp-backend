@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetAuthenticatedUserHandler execute should return no user if not found 1`] = `null`;
+
+exports[`GetAuthenticatedUserHandler execute should return the correct user 1`] = `
+Object {
+  "createdAt": 2020-04-17T12:03:42.124Z,
+  "email": "development@icapps.com",
+  "firstName": null,
+  "id": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
+  "lastName": null,
+  "permissions": Object {
+    "roles": Object {
+      "edit": true,
+      "view": true,
+    },
+    "users": Object {
+      "edit": true,
+      "view": true,
+    },
+  },
+  "state": "ACTIVE",
+  "updatedAt": 2020-04-17T12:03:42.124Z,
+}
+`;

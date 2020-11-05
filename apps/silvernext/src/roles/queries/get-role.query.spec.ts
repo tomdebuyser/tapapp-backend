@@ -27,14 +27,16 @@ describe('GetRoleHandler', () => {
 
     describe('execute', () => {
         it('should return the requested role correctly', async () => {
-            const result = await handler.execute(
-                '0c1510ab-5dca-41e2-8912-ee165140ae90',
-            );
+            const result = await handler.execute({
+                data: { roleId: '0c1510ab-5dca-41e2-8912-ee165140ae90' },
+            });
             expect(result).toMatchSnapshot();
         });
 
         it('should return nothing if the requested role does not exist', async () => {
-            const result = await handler.execute(faker.random.uuid());
+            const result = await handler.execute({
+                data: { roleId: faker.random.uuid() },
+            });
             expect(result).toMatchSnapshot();
         });
     });

@@ -22,13 +22,13 @@ import {
 import { UserSession } from '../shared/constants';
 import { AuthenticatedGuard, destroyExpressSession } from '../shared/guards';
 import { GetUserSession } from '../shared/decorators';
-import { AuthenticationQueries } from './queries/authentication.queries';
 import {
     ChangePasswordHandler,
     LoginHandler,
     RequestPasswordResetHandler,
     ResetPasswordHandler,
 } from './commands';
+import { GetAuthenticatedUserHandler } from './queries';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -38,7 +38,7 @@ export class AuthenticationController {
         private readonly loginHandler: LoginHandler,
         private readonly requestPasswordResetHandler: RequestPasswordResetHandler,
         private readonly resetPasswordHandler: ResetPasswordHandler,
-        private readonly authQueries: AuthenticationQueries,
+        private readonly getAuthenticatedUserHandler: GetAuthenticatedUserHandler,
     ) {}
 
     @HttpCode(HttpStatus.OK)
@@ -47,15 +47,14 @@ export class AuthenticationController {
         @Body() body: LoginRequest,
         @Req() request: Request,
     ): Promise<AuthenticationUserResponse> {
-        const user = await this.loginHandler.execute(
-            body.username,
-            body.password,
-        );
+        const user = await this.loginHandler.execute({ data: body });
 
         // Add authenticated user's id to session cookie
         request.session.userId = user.id;
 
-        return this.authQueries.getAuthenticatedUser(user.id);
+        return this.getAuthenticatedUserHandler.execute({
+            data: { userId: user.id },
+        });
     }
 
     @ApiBearerAuth()
@@ -64,7 +63,9 @@ export class AuthenticationController {
     authenticate(
         @GetUserSession() session: UserSession,
     ): Promise<AuthenticationUserResponse> {
-        return this.authQueries.getAuthenticatedUser(session.userId);
+        return this.getAuthenticatedUserHandler.execute({
+            data: { userId: session.userId },
+        });
     }
 
     @ApiBearerAuth()
@@ -84,13 +85,13 @@ export class AuthenticationController {
     async requestPasswordReset(
         @Body() body: RequestPasswordResetRequest,
     ): Promise<void> {
-        await this.requestPasswordResetHandler.execute(body);
+        await this.requestPasswordResetHandler.execute({ data: body });
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Post('reset-password')
     async resetPassword(@Body() body: ResetPasswordRequest): Promise<void> {
-        await this.resetPasswordHandler.execute(body);
+        await this.resetPasswordHandler.execute({ data: body });
     }
 
     @Post('change-password')
@@ -98,6 +99,6 @@ export class AuthenticationController {
         @Body() body: ChangePasswordRequest,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.changePasswordHandler.execute(body, session.userId);
+        await this.changePasswordHandler.execute({ data: body, session });
     }
 }

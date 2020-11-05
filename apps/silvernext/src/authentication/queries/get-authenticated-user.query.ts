@@ -1,37 +1,22 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserRepository } from '@libs/models';
-import { UserSession } from '../../shared/constants';
 import { AuthenticationUserResponse } from '../dto';
-import {
-    permissionsFromRoles,
-    createDefaultPermissions,
-} from '../../shared/util';
+import { permissionsFromRoles } from '../../shared/util';
+import { IHandler } from '@libs/common';
+
+export type GetAuthenticatedUserQuery = {
+    data: { userId: string };
+};
 
 @Injectable()
-export class AuthenticationQueries {
+export class GetAuthenticatedUserHandler
+    implements IHandler<GetAuthenticatedUserQuery> {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async composeUserSession(userId: string): Promise<UserSession> {
-        const user = await this.userRepository.findOne(userId, {
-            relations: ['roles'],
-        });
-        if (!user) return null;
-        return {
-            userId: user.id,
-            email: user.email,
-            state: user.state,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            permissions: createDefaultPermissions(
-                permissionsFromRoles(user.roles),
-            ),
-        };
-    }
-
-    async getAuthenticatedUser(
-        userId: string,
-    ): Promise<AuthenticationUserResponse> {
+    async execute({
+        data,
+    }: GetAuthenticatedUserQuery): Promise<AuthenticationUserResponse> {
         const user = await this.userRepository
             .createQueryBuilder('user')
             .select([
@@ -45,7 +30,7 @@ export class AuthenticationQueries {
                 'role.permissions',
             ])
             .innerJoin('user.roles', 'role')
-            .where('user.id = :userId', { userId })
+            .where('user.id = :userId', { userId: data.userId })
             .getOne();
         if (!user) return null;
         const { roles, ...otherProps } = user;

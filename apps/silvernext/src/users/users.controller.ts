@@ -52,13 +52,13 @@ export class UsersController {
     @UseGuards(RequiredPermissionsGuard)
     @Get()
     getUsers(@Query() query: GetUsersRequestQuery): Promise<GetUsersResponse> {
-        return this.getUsersHandler.execute(query);
+        return this.getUsersHandler.execute({ data: query });
     }
 
     @RequiredPermissions({ users: { view: true } })
     @Get(':userId')
     getUser(@Param() params: UserIdParam): Promise<UserResponse> {
-        return this.getUserHandler.execute(params.userId);
+        return this.getUserHandler.execute({ data: params });
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -68,7 +68,7 @@ export class UsersController {
         @Body() body: CreateUserRequest,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.createUserHandler.execute(body, session);
+        await this.createUserHandler.execute({ data: body, session });
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -79,7 +79,10 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.updateUserHandler.execute(body, params.userId, session);
+        await this.updateUserHandler.execute({
+            data: { ...body, ...params },
+            session,
+        });
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -89,7 +92,7 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.deleteUserHandler.execute(params.userId, session);
+        await this.deleteUserHandler.execute({ data: params, session });
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -100,7 +103,10 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.resendRegisterMailHandler.execute(params.userId, session);
+        await this.resendRegisterMailHandler.execute({
+            data: params,
+            session,
+        });
     }
 
     @RequiredPermissions({ users: { edit: true } })
@@ -111,6 +117,6 @@ export class UsersController {
         @Param() params: UserIdParam,
         @GetUserSession() session: UserSession,
     ): Promise<void> {
-        await this.deactivateUserHandler.execute(params.userId, session);
+        await this.deactivateUserHandler.execute({ data: params, session });
     }
 }

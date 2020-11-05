@@ -68,7 +68,7 @@ describe('DeleteRoleHandler', () => {
                 QueryBuilderMock.instance<User>(null),
             );
 
-            await handler.execute(role.id);
+            await handler.execute({ data: { roleId: role.id } });
 
             verify(
                 roleRepository.delete(
@@ -83,7 +83,7 @@ describe('DeleteRoleHandler', () => {
             when(roleRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(faker.random.uuid()),
+                handler.execute({ data: { roleId: faker.random.uuid() } }),
             ).rejects.toThrowError(RoleNotFound);
         });
 
@@ -95,9 +95,9 @@ describe('DeleteRoleHandler', () => {
                 QueryBuilderMock.instance<User>(createTestUser()),
             );
 
-            await expect(handler.execute(role.id)).rejects.toThrowError(
-                RoleInUse,
-            );
+            await expect(
+                handler.execute({ data: { roleId: faker.random.uuid() } }),
+            ).rejects.toThrowError(RoleInUse);
         });
     });
 });

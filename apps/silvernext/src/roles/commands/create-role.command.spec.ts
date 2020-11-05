@@ -75,7 +75,7 @@ describe('CreateRoleHandler', () => {
                 id: faker.random.uuid(),
             }));
 
-            await handler.execute(request, session);
+            await handler.execute({ data: request, session });
 
             verify(
                 roleRepository.insert(
@@ -104,7 +104,7 @@ describe('CreateRoleHandler', () => {
                 id: faker.random.uuid(),
             }));
 
-            await handler.execute(request, session);
+            await handler.execute({ data: request, session });
 
             verify(
                 roleRepository.insert(
@@ -127,7 +127,10 @@ describe('CreateRoleHandler', () => {
             when(roleRepository.findOne(anything())).thenResolve(role);
 
             await expect(
-                handler.execute(request, createTestUserSession()),
+                handler.execute({
+                    data: request,
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(RoleNameAlreadyInUse);
         });
     });

@@ -5,21 +5,24 @@ import { LoggerService } from '@libs/logger';
 import { CreateRoleRequest } from '../dto';
 import { UserSession } from '../../shared/constants';
 import { RoleNameAlreadyInUse } from '../roles.errors';
+import { IHandler } from '@libs/common';
 
 const context = 'CreateRoleHandler';
 
+export type CreateRoleCommand = {
+    data: CreateRoleRequest;
+    session: UserSession;
+};
+
 @Injectable()
-export class CreateRoleHandler {
+export class CreateRoleHandler implements IHandler<CreateRoleCommand> {
     constructor(
         private readonly roleRepository: RoleRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(
-        body: CreateRoleRequest,
-        session: UserSession,
-    ): Promise<string> {
-        const { name, permissions } = body;
+    async execute({ data, session }: CreateRoleCommand): Promise<string> {
+        const { name, permissions } = data;
         const existingRole = await this.roleRepository.findOne({ name });
         if (existingRole) {
             this.logger.warn('Failed to create: role name already in use', {

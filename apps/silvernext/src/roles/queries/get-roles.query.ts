@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { mergeDeepLeft } from 'ramda';
 
 import { RoleRepository } from '@libs/models';
+import { IHandler } from '@libs/common';
 import {
     GetRolesRequestQuery,
     GetRolesResponse,
@@ -9,13 +10,15 @@ import {
 } from '../dto';
 import { SortDirection } from '../../shared/constants';
 
+export type GetRolesQuery = {
+    data: GetRolesRequestQuery;
+};
+
 @Injectable()
-export class GetRolesHandler {
+export class GetRolesHandler implements IHandler<GetRolesQuery> {
     constructor(private readonly roleRepository: RoleRepository) {}
 
-    async execute(
-        requestQuery: GetRolesRequestQuery,
-    ): Promise<GetRolesResponse> {
+    async execute({ data }: GetRolesQuery): Promise<GetRolesResponse> {
         const defaultQuery: GetRolesRequestQuery = {
             skip: 0,
             take: 20,
@@ -23,7 +26,7 @@ export class GetRolesHandler {
             sortDirection: SortDirection.Descending,
             search: '',
         };
-        const query = mergeDeepLeft(requestQuery, defaultQuery);
+        const query = mergeDeepLeft(data, defaultQuery);
 
         const [roles, totalCount] = await this.roleRepository
             .createQueryBuilder('role')

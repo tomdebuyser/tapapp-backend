@@ -39,16 +39,16 @@ describe('GetUsersHandler', () => {
             },
         ];
 
-        testQueries.forEach((query, index) => {
+        testQueries.forEach((request, index) => {
             it(`should return a paged list of users: #${index}`, async () => {
-                const result = await handler.execute(query);
+                const result = await handler.execute({ data: request });
                 expect(result).toMatchSnapshot();
             });
         });
 
         it('should return an empty list if no users found', async () => {
             const result = await handler.execute({
-                search: 'nonsensicaljibberish',
+                data: { search: 'nonsensicaljibberish' },
             });
             expect(result).toMatchSnapshot();
         });

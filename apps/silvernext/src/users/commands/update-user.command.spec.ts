@@ -75,7 +75,10 @@ describe('UpdateUserHandler', () => {
                 id: faker.random.uuid(),
             }));
 
-            await handler.execute(request, user.id, session);
+            await handler.execute({
+                data: { ...request, userId: user.id },
+                session,
+            });
 
             verify(
                 userRepository.save(
@@ -104,7 +107,10 @@ describe('UpdateUserHandler', () => {
                 id: faker.random.uuid(),
             }));
 
-            await handler.execute(request, user.id, session);
+            await handler.execute({
+                data: { ...request, userId: user.id },
+                session,
+            });
 
             verify(
                 userRepository.save(
@@ -120,15 +126,15 @@ describe('UpdateUserHandler', () => {
             when(userRepository.findOne(anything())).thenResolve(null);
 
             await expect(
-                handler.execute(
-                    {
+                handler.execute({
+                    data: {
                         firstName: faker.name.firstName(),
                         lastName: faker.name.lastName(),
                         roleIds: [faker.random.uuid()],
+                        userId: faker.random.uuid(),
                     },
-                    faker.random.uuid(),
-                    createTestUserSession(),
-                ),
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(UserNotFound);
         });
 
@@ -139,11 +145,13 @@ describe('UpdateUserHandler', () => {
             when(roleRepository.find(anything())).thenResolve([]);
 
             await expect(
-                handler.execute(
-                    { roleIds: [faker.random.uuid()] },
-                    user.id,
-                    createTestUserSession(),
-                ),
+                handler.execute({
+                    data: {
+                        roleIds: [faker.random.uuid()],
+                        userId: user.id,
+                    },
+                    session: createTestUserSession(),
+                }),
             ).rejects.toThrowError(RoleNotFound);
         });
     });

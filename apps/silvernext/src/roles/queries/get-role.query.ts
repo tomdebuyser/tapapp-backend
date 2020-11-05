@@ -1,17 +1,22 @@
 import { Injectable } from '@nestjs/common';
 
 import { RoleRepository } from '@libs/models';
-import { RoleResponse } from '../dto';
+import { RoleIdParam, RoleResponse } from '../dto';
+import { IHandler } from '@libs/common';
+
+export type GetRoleQuery = {
+    data: RoleIdParam;
+};
 
 @Injectable()
-export class GetRoleHandler {
+export class GetRoleHandler implements IHandler<GetRoleQuery> {
     constructor(private readonly roleRepository: RoleRepository) {}
 
-    execute(roleId: string): Promise<RoleResponse> {
+    execute({ data }: GetRoleQuery): Promise<RoleResponse> {
         return this.roleRepository
             .createQueryBuilder('role')
             .select('role')
-            .where('role.id = :roleId', { roleId })
+            .where('role.id = :roleId', { roleId: data.roleId })
             .getOne();
     }
 }

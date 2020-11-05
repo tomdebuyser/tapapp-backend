@@ -3,29 +3,31 @@ import { In } from 'typeorm';
 
 import { UserRepository, RoleRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
-import { UpdateUserRequest } from '../dto';
+import { IHandler } from '@libs/common';
+import { UpdateUserRequest, UserIdParam } from '../dto';
 import { RoleNotFound, UserNotFound } from '../users.errors';
 import { UserSession } from '../../shared/constants';
 
 const context = 'UpdateUserHandler';
 
+export type UpdateUserCommand = {
+    data: UpdateUserRequest & UserIdParam;
+    session: UserSession;
+};
+
 @Injectable()
-export class UpdateUserHandler {
+export class UpdateUserHandler implements IHandler<UpdateUserCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly roleRepository: RoleRepository,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(
-        body: UpdateUserRequest,
-        userId: string,
-        session: UserSession,
-    ): Promise<string> {
+    async execute({ data, session }: UpdateUserCommand): Promise<string> {
+        const { userId } = data;
+
         // The user should already exist
-        const existingUser = await this.userRepository.findOne({
-            id: userId,
-        });
+        const existingUser = await this.userRepository.findOne(userId);
         if (!existingUser) {
             this.logger.warn('Failed to update: user with id not found', {
                 context,
@@ -35,7 +37,7 @@ export class UpdateUserHandler {
         }
 
         // Checks if each given role id matches an existing role
-        const roleIds = Array.from(new Set(body.roleIds || []));
+        const roleIds = Array.from(new Set(data.roleIds || []));
         const roles = roleIds.length
             ? await this.roleRepository.find({ id: In(roleIds) })
             : [];
@@ -47,7 +49,7 @@ export class UpdateUserHandler {
             throw new RoleNotFound();
         }
 
-        const { firstName, lastName } = body;
+        const { firstName, lastName } = data;
         existingUser.roles = roles;
         existingUser.firstName = firstName || null;
         existingUser.lastName = lastName || null;

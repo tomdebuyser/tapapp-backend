@@ -11,19 +11,24 @@ import {
     ResetTokenExpired,
     UserStateNotAllowed,
 } from '../authentication.errors';
+import { IHandler } from '@libs/common';
 
 const context = 'ResetPasswordHandler';
 
+export type ResetPasswordCommand = {
+    data: ResetPasswordRequest;
+};
+
 @Injectable()
-export class ResetPasswordHandler {
+export class ResetPasswordHandler implements IHandler<ResetPasswordCommand> {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
         private readonly logger: LoggerService,
     ) {}
 
-    async execute(body: ResetPasswordRequest): Promise<void> {
-        const { newPassword, resetToken } = body;
+    async execute({ data }: ResetPasswordCommand): Promise<void> {
+        const { newPassword, resetToken } = data;
 
         // Check if token is still valid
         try {
