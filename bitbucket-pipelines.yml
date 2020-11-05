@@ -1,92 +1,107 @@
 image: node:15
 
 clone:
-  depth: full
+    depth: full
 
 definitions:
-  services:
-    postgres:
-      image: sameersbn/postgresql:latest
-      environment:
-        DB_USER: developer
-        DB_PASS: developer
-        DB_NAME: silvernext_api_test
-        DB_EXTENSION: '"uuid-ossp"'
+    services:
+        postgres:
+            image: sameersbn/postgresql:latest
+            environment:
+                DB_USER: developer
+                DB_PASS: developer
+                DB_NAME: silvernext_api_test
+                DB_EXTENSION: '"uuid-ossp"'
 
 installDependencies: &installDependencies
-  step:
-    name: Install node modules
-    script:
-      - npm install
-    caches:
-      - node
+    step:
+        name: 🛠 Install node modules
+        script:
+            - npm install
+        caches:
+            - node
 
 build: &build
-  - step:
-      name: Build project
-      caches:
-        - node
-      script:
-        - yarn build
+    step:
+        name: 🛠 Build
+        caches:
+            - node
+        script:
+            - yarn build
 
 lint: &lint
-  step:
-    name: Check linting issues
-    caches:
-      - node
-    script:
-      - yarn lint
+    step:
+        name: 🧹 Linting
+        caches:
+            - node
+        script:
+            - yarn lint
+
+format: &format
+    step:
+        name: 🧹 Formatting
+        caches:
+            - node
+        script:
+            - yarn format:check
 
 runTests: &runTests
-  - parallel:
-    - step:
-        name: Run unit tests
+    step:
+        name: 🔬 Tests
         caches:
-          - node
+            - node
         script:
-          - yarn db:migrate
-          - yarn db:seed:all
-          - yarn test
+            - yarn db:migrate
+            - yarn db:seed:all
+            - yarn test
         services:
-          - postgres
+            - postgres
 
 pipelines:
- pull-requests:
-  '**': #this runs as default for any branch not elsewhere defined
-      - <<: *installDependencies
-      - <<: *build
-      - <<: *lint
-      - <<: *runTests
- branches:
-    master:
-      - <<: *installDependencies
-      - <<: *build
-      - <<: *lint
-      - <<: *runTests
-      - step:
-          name: Deploy to demo
-          deployment: develop
-          script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
-    staging:
-      - <<: *installDependencies
-      - <<: *build
-      - <<: *lint
-      - <<: *runTests
-      - step:
-          name: Deploy to staging
-          deployment: staging
-          trigger: manual
-          script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:staging
-    production:
-      - <<: *installDependencies
-      - <<: *build
-      - <<: *lint
-      - <<: *runTests
-      - step:
-          name: Deploy to production
-          deployment: production
-          trigger: manual
-          script:
-            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:production
+    pull-requests:
+        '**': #this runs as default for any branch not elsewhere defined
+            - <<: *installDependencies
+            - parallel:
+                  - <<: *build
+                  - <<: *format
+                  - <<: *lint
+                  - <<: *runTests
+    branches:
+        develop:
+            - <<: *installDependencies
+            - parallel:
+                  - <<: *build
+                  - <<: *format
+                  - <<: *lint
+                  - <<: *runTests
+            - step:
+                  name: 🚀 Deploy to develop
+                  deployment: develop
+                  script:
+                      - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:develop
+        staging:
+            - <<: *installDependencies
+            - parallel:
+                  - <<: *build
+                  - <<: *format
+                  - <<: *lint
+                  - <<: *runTests
+            - step:
+                  name: 🚀 Deploy to staging
+                  deployment: staging
+                  trigger: manual
+                  script:
+                      - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:staging
+        master:
+            - <<: *installDependencies
+            - parallel:
+                  - <<: *build
+                  - <<: *format
+                  - <<: *lint
+                  - <<: *runTests
+            - step:
+                  name: 🚀 Deploy to production
+                  deployment: production
+                  trigger: manual
+                  script:
+                      - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git HEAD:master
