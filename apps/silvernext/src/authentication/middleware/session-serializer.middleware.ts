@@ -12,8 +12,9 @@ import {
 export class SessionSerializer implements NestMiddleware {
     constructor(private readonly userRepository: UserRepository) {}
 
+    // Overwriting session because the merged interfaces are broken in our CI/CD.
     async use(
-        req: { user: UserSession } & Request,
+        req: { user: UserSession; session: { userId: string } } & Request,
         _res: Response,
         next: () => void,
     ): Promise<void> {

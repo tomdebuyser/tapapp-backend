@@ -45,7 +45,8 @@ export class AuthenticationController {
     @Post('login')
     async login(
         @Body() body: LoginRequest,
-        @Req() request: Request,
+        // Overwriting session because the merged interfaces are broken in our CI/CD.
+        @Req() request: Request & { session: { userId: string } },
     ): Promise<AuthenticationUserResponse> {
         const user = await this.loginHandler.execute({ data: body });
 
