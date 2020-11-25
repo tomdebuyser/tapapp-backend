@@ -64,7 +64,7 @@ export class MailerService {
 
     private async sendMail(message: MandrillMessage): Promise<void> {
         const html = await this.fillHtmlTemplate(message);
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             this.mandrill.messages.send(
                 {
                     message: {
