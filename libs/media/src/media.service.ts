@@ -3,16 +3,16 @@ import { config as AwsConfig, S3 } from 'aws-sdk';
 import { Body, ObjectCannedACL } from 'aws-sdk/clients/s3';
 
 import { LoggerService } from '@libs/logger';
-import { UploaderConfig } from './uploader.config';
+import { MediaConfig } from './media.config';
 
-const context = 'UploaderService';
+const context = 'MediaService';
 
 @Injectable()
-export class UploaderService {
+export class MediaService {
     private readonly s3: S3;
 
     constructor(
-        private readonly config: UploaderConfig,
+        private readonly config: MediaConfig,
         private readonly logger: LoggerService,
     ) {
         AwsConfig.update({

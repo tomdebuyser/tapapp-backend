@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class UploaderConfig {
+export class MediaConfig {
     constructor(
         readonly accessKeyId: string,
         readonly accessKeySecret: string,

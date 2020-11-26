@@ -137,7 +137,9 @@
             "@libs/common/(.*)": "<rootDir>/libs/common/src/$1",
             "@libs/common": "<rootDir>/libs/common/src",
             "@libs/testing/(.*)": "<rootDir>/libs/testing/src/$1",
-            "@libs/testing": "<rootDir>/libs/testing/src"
+            "@libs/testing": "<rootDir>/libs/testing/src",
+            "@libs/media/(.*)": "<rootDir>/libs/media/src/$1",
+            "@libs/media": "<rootDir>/libs/media/src"
         }
     }
 }
