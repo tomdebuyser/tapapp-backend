@@ -24,6 +24,20 @@ $ npm i @nestjs/cli -g
 $ yarn
 ```
 
+### NVM
+
+After installing NVM, make sure you are running the proper version of node using the following instructions.
+
+```bash
+# This will switch active node versions to the one defined in the .nvmrc file, in the root.
+$ nvm use
+
+# If that version is not installed, NVM will instruct you to install the correct version.
+$ nvm install 12.18.3 # example
+
+# After this, you can use `nvm use` again, and it will work properly.
+```
+
 ### Docker setup
 
 ```bash
