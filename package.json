@@ -4,6 +4,9 @@
     "description": "",
     "author": "",
     "license": "MIT",
+    "engines": {
+        "node": "14.15.4"
+    },
     "scripts": {
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "format:check": "prettier -c \"**/*.ts\"",
