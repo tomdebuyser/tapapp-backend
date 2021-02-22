@@ -32,7 +32,7 @@ class IsNameConstraint implements ValidatorConstraintInterface {
             trimmedValue.length > 1 && trimmedValue.length < 255;
 
         // Only allow alphanumeric characters, dashes, and spaces
-        const nameRegex = /^[\w'\-,.][^(0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\])]{2,}$/;
+        const nameRegex = /^[\w'\-,.][^(0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\])]{1,}$/;
         return isCorrectLength && nameRegex.test(value);
     }
 

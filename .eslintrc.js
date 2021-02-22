@@ -34,7 +34,7 @@ module.exports = {
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-unused-vars': [
             'warn',
-            { argsIgnorePattern: '^_' },
+            { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
         ],
         "@typescript-eslint/no-empty-function": 'warn',
         "@typescript-eslint/ban-types": "warn"

@@ -24,6 +24,12 @@ const base = {
     url: process.env.DATABASE_URL,
     entities: ['./libs/models/**/*.entity.ts'],
     ssl: process.env.DATABASE_SSL === 'true',
+    extra: {
+        ssl:
+            process.env.DATABASE_SSL === 'true'
+                ? { rejectUnauthorized: false }
+                : false,
+    },
 };
 
 module.exports = [

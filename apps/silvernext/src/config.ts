@@ -84,6 +84,12 @@ class Config {
             synchronize: false,
             keepConnectionAlive: true,
             ssl: process.env.DATABASE_SSL === 'true',
+            extra: {
+                ssl:
+                    process.env.DATABASE_SSL === 'true'
+                        ? { rejectUnauthorized: false }
+                        : false,
+            },
         };
     }
 

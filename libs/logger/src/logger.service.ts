@@ -90,17 +90,14 @@ export class LoggerService {
                 },
             },
             serializers: {
-                error: value => {
-                    if (value instanceof Error) {
-                        return {
-                            name: value.name,
-                            message: value.message,
-                            stack: isLocalEnvironment ? value.stack : null,
-                        };
-                    }
-
-                    return value;
-                },
+                error: value =>
+                    value instanceof Error
+                        ? {
+                              name: value.name,
+                              message: value.message,
+                              stack: isLocalEnvironment ? value.stack : null,
+                          }
+                        : value,
             },
         });
     }
