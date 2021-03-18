@@ -33,7 +33,6 @@ config({
      },
  };
 
-
 module.exports = [
     {
         ...base,
