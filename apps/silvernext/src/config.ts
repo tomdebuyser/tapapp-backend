@@ -87,10 +87,6 @@ class Config {
             synchronize: false,
             keepConnectionAlive: true,
             ssl: sslRequired,
-            cache: {
-                type: 'redis',
-                options: process.env.REDIS_URL,
-            },
             extra: {
                 ssl: sslRequired ? { rejectUnauthorized: false } : false,
             },
