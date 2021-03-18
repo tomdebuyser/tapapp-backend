@@ -78,17 +78,21 @@ class Config {
     }
 
     static get models(): TypeOrmModuleOptions {
+        const sslRequired = ![Environment.Local, Environment.Test].includes(
+            environment,
+        );
         return {
             type: 'postgres',
             url: process.env.DATABASE_URL,
             synchronize: false,
             keepConnectionAlive: true,
-            ssl: process.env.DATABASE_SSL === 'true',
+            ssl: sslRequired,
+            cache: {
+                type: 'redis',
+                options: process.env.REDIS_URL,
+            },
             extra: {
-                ssl:
-                    process.env.DATABASE_SSL === 'true'
-                        ? { rejectUnauthorized: false }
-                        : false,
+                ssl: sslRequired ? { rejectUnauthorized: false } : false,
             },
         };
     }

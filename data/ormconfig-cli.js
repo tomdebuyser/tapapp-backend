@@ -19,18 +19,20 @@ config({
 /**
  * Base DB config applicable to migrations and seeds
  */
-const base = {
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-    entities: ['./libs/models/**/*.entity.ts'],
-    ssl: process.env.DATABASE_SSL === 'true',
-    extra: {
-        ssl:
-            process.env.DATABASE_SSL === 'true'
-                ? { rejectUnauthorized: false }
-                : false,
-    },
-};
+ const sslRequired = !["local", "test"].includes(process.env.NODE_ENV);
+ const base = {
+     type: 'postgres',
+     url: process.env.DATABASE_URL,
+     entities: ['./libs/models/**/*.entity.ts'],
+     ssl: sslRequired,
+     extra: {
+         ssl:
+             sslRequired
+                 ? { rejectUnauthorized: false }
+                 : false,
+     },
+ };
+
 
 module.exports = [
     {
