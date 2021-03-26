@@ -7,9 +7,9 @@ Find confluence [here](https://icapps.atlassian.net/wiki/spaces/SIL/overview)
 
 ### Prerequisites
 
-* [Node](https://nodejs.org/en/)
-* [NVM](https://github.com/nvm-sh/nvm)
-* [Docker](https://www.docker.com/products/docker-desktop)
+-   [Node](https://nodejs.org/en/)
+-   [NVM](https://github.com/nvm-sh/nvm)
+-   [Docker](https://www.docker.com/products/docker-desktop)
 
 ### Project dependencies
 
@@ -40,6 +40,17 @@ $ nvm install 12.18.3 # example
 
 ### Docker setup
 
+First things, we need to change we use for the docker-compose project, to something that fits the new repository.
+
+```json
+"docker:start": "docker-compose -p silvernext -f ./docker/docker-compose.yml up -d",
+"docker:stop": "docker-compose -p silvernext -f ./docker/docker-compose.yml stop",
+
+// Change -p option, for example:
+"docker:start": "docker-compose -p lighthouse -f ./docker/docker-compose.yml up -d",
+"docker:stop": "docker-compose -p lighthouse -f ./docker/docker-compose.yml stop",
+```
+
 ```bash
 # Create and run the container - this will also create our database
 $ yarn docker:start
@@ -48,6 +59,9 @@ $ yarn docker:start
 ### Database setup
 
 We use a Postgres instance for our database.
+
+Before being able to migrate or seed the database, we'll need to fill in the `.env.example` file inside the data folder.
+Create a new `.env.local` file next to it, and fill in the values. The example file will contain correct values for our local environment.
 
 ```bash
 # Run the existing migrations
@@ -71,11 +85,17 @@ $ yarn start:dev
 
 ## CI/CD
 
-Every commit for every checked in branch triggers a bitbucket pipelines build.
-Builds triggered by non-master / non-develop branches will attempt to build the applications and run all tests.
+For git, we use a simplified version of Git Flow. The `master` branch is the one that will always contain the latest version of our code.
+To build new features, or to fix bugs, create `feature/**` or `bugfix/**` branches. Write your code here, and merge these back into `master` via a pull request.
+Direct commits to `master` should be avoided, although under certain circumstances might be necessary.
 
-Commits to develop will trigger a deployment to our development environment on Heroku,
-all applications in the monorepo are deployed simultaneously.
+Every commit to a branch with an open pull request will trigger a BitBucket pipeline that will build the code, lint it, check the formatting, and run all tests.
+Every commit or merge to `master` will go through the same steps as a pull request commit, but it will also trigger an automatic deploy to our Heroku environment.
+
+In order to create staging or production builds, create a new `release/YYYY-MM-DD` branch and push it.
+Every `release/**` branch will trigger a pipeline that will one again, go through all the same steps as a pull request pipeline.
+When these steps are complete, there is a manual trigger to deploy to staging, and when this staging deployment is complete, and verified working,
+there is a subsequent manual trigger to a production deployment.
 
 ## Scripts
 

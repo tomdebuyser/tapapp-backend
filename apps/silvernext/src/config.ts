@@ -96,12 +96,15 @@ class Config {
         );
         return {
             type: 'postgres',
-            url: process.env.DATABASE_URL,
             synchronize: false,
             keepConnectionAlive: true,
             ssl: sslRequired,
             extra: {
                 ssl: sslRequired ? { rejectUnauthorized: false } : false,
+            },
+            replication: {
+                master: { url: process.env.DATABASE_URL, ssl: sslRequired },
+                slaves: this.getDatabaseFollowers(sslRequired),
             },
         };
     }
@@ -147,6 +150,30 @@ class Config {
             workers: parseInt(process.env.WEB_CONCURRENCY, 10),
             memory: parseInt(process.env.WEB_MEMORY, 10),
         };
+    }
+
+    /**
+     * Get the configuration for database read followers, this implementation is Heroku specific.
+     * To support a different hosting environment, this function will need to be changed.
+     * @param sslRequired Flag to indicate if SSL is enabled.
+     */
+    private static getDatabaseFollowers(
+        sslRequired: boolean,
+    ): Array<{ url: string; ssl: boolean }> {
+        const followerRegex = /HEROKU_POSTGRESQL_([A-z]+)_URL/;
+        const followerUrls = Object.entries(process.env)
+            .filter(
+                ([key, value]) =>
+                    followerRegex.test(key) &&
+                    // We check here to avoid having the main database also be listed as a follower.
+                    value !== process.env.DATABASE_URL,
+            )
+            .map(([_, value]) => value);
+
+        return followerUrls.map(url => ({
+            url,
+            ssl: sslRequired,
+        }));
     }
 }
 
