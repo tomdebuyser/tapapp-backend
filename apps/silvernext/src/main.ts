@@ -11,6 +11,7 @@ import * as compression from 'compression';
 import * as rateLimit from 'express-rate-limit';
 import * as redisStore from 'rate-limit-redis';
 import * as throng from 'throng';
+import * as basicAuth from 'express-basic-auth';
 
 import { Environment } from '@libs/common';
 import { LoggerService, NestLoggerProxy } from '@libs/logger';
@@ -63,6 +64,21 @@ async function bootstrap(): Promise<void> {
 }
 
 function addSwaggerDocs(app: INestApplication, logger: LoggerService): void {
+    const fullSwaggerPath = `${API_PREFIX}/${Config.swagger.path}`;
+    const isLocalEnvironment = [Environment.Local, Environment.Test].includes(
+        Config.environment,
+    );
+
+    if (!isLocalEnvironment) {
+        app.use(
+            `/${fullSwaggerPath}`,
+            basicAuth({
+                challenge: true,
+                users: { [Config.swagger.username]: Config.swagger.password },
+            }),
+        );
+    }
+
     const options = new DocumentBuilder()
         .setTitle(Config.brandName)
         .setDescription('Swagger documentation')
@@ -70,7 +86,6 @@ function addSwaggerDocs(app: INestApplication, logger: LoggerService): void {
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, options);
-    const fullSwaggerPath = `${API_PREFIX}/${Config.api.swaggerPath}`;
     SwaggerModule.setup(fullSwaggerPath, app, document);
 
     logger.info(`Swagger running at [${fullSwaggerPath}]`, { context });

@@ -40,16 +40,21 @@ type SessionOptions = {
 
 type ApiOptions = {
     rateLimit: number;
-    swaggerPath: string;
     port: string;
     allowedOrigins: string[];
 };
 
-type ClusteringConfig = {
+type ClusteringOptions = {
     // Specifies the number of cluster (worker) processes.
     workers?: number;
     // Specifies memory requirement per worker process, default is 512 MB.
     memory?: number;
+};
+
+type SwaggerOptions = {
+    path: string;
+    username: string;
+    password: string;
 };
 
 class Config {
@@ -69,11 +74,19 @@ class Config {
         const DEFAULT_PORT = '3001';
         return {
             rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE, 10),
-            swaggerPath: process.env.SWAGGER_PATH,
+
             port: process.env.PORT || DEFAULT_PORT,
             allowedOrigins: process.env.ALLOWED_ORIGINS.split(',').filter(
                 origin => !!origin,
             ),
+        };
+    }
+
+    static get swagger(): SwaggerOptions {
+        return {
+            path: process.env.SWAGGER_PATH,
+            username: process.env.SWAGGER_USERNAME,
+            password: process.env.SWAGGER_PASSWORD,
         };
     }
 
@@ -129,7 +142,7 @@ class Config {
         };
     }
 
-    static get clustering(): ClusteringConfig {
+    static get clustering(): ClusteringOptions {
         return {
             workers: parseInt(process.env.WEB_CONCURRENCY, 10),
             memory: parseInt(process.env.WEB_MEMORY, 10),
