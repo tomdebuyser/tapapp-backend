@@ -1,15 +1,8 @@
-import { Entity, Column, DeepPartial, OneToMany } from 'typeorm';
+import { Entity, Column, DeepPartial } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
 import { AuditedEntity } from './audited.entity';
-import { User } from './user.entity';
-
-export enum OrganisationType {
-    SuperAdmin = 'SUPER_ADMIN',
-    Admin = 'ADMIN',
-    Organisation = 'USER',
-}
 
 @Entity()
 export class Organisation extends AuditedEntity {
