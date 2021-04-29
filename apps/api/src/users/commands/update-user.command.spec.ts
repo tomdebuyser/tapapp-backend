@@ -57,13 +57,13 @@ describe('UpdateUserHandler', () => {
                 firstName: faker.name.firstName(),
                 lastName: faker.name.lastName(),
             };
-            const user = createTestUser({ id: faker.random.uuid() });
+            const user = createTestUser({ id: faker.datatype.uuid() });
             const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(user);
             when(userRepository.save(anything())).thenCall(user => ({
                 ...user,
-                id: faker.random.uuid(),
+                id: faker.datatype.uuid(),
             }));
 
             await handler.execute({
@@ -90,7 +90,7 @@ describe('UpdateUserHandler', () => {
                     data: {
                         firstName: faker.name.firstName(),
                         lastName: faker.name.lastName(),
-                        userId: faker.random.uuid(),
+                        userId: faker.datatype.uuid(),
                     },
                     session: createTestUserSession(),
                 }),

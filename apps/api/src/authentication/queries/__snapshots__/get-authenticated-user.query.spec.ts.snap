@@ -3,7 +3,7 @@
 exports[`GetAuthenticatedUserHandler execute should return no user if not found 1`] = `null`;
 
 exports[`GetAuthenticatedUserHandler execute should return the correct user 1`] = `
-Object {
+User {
   "createdAt": 2020-04-17T12:03:42.124Z,
   "email": "development@icapps.com",
   "firstName": null,

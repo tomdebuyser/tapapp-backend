@@ -35,7 +35,7 @@ describe('GetUserHandler', () => {
 
         it('should return nothing if the requested user does not exist', async () => {
             const result = await handler.execute({
-                data: { userId: faker.random.uuid() },
+                data: { userId: faker.datatype.uuid() },
             });
             expect(result).toMatchSnapshot();
         });

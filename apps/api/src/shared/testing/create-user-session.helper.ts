@@ -10,7 +10,7 @@ export function createTestUserSession(
     overrides?: DeepPartial<UserSession>,
 ): UserSession {
     const session: UserSession = {
-        userId: user?.id || faker.random.uuid(),
+        userId: user?.id || faker.datatype.uuid(),
         email: user?.email || faker.internet.email(),
         state: user?.state || UserState.Active,
         firstName: user?.firstName || faker.name.firstName(),

@@ -43,7 +43,7 @@ describe('SessionSerializer', () => {
             lastName: faker.name.lastName(),
         });
         const session = createTestUserSession(user);
-        when(userRepository.findOne(anything(), anything())).thenResolve(user);
+        when(userRepository.findOne(anything())).thenResolve(user);
 
         const mockNext = jest.fn();
         const req: any = {

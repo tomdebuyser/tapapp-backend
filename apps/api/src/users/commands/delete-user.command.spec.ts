@@ -61,14 +61,14 @@ describe('DeleteUserHandler', () => {
 
             await expect(
                 handler.execute({
-                    data: { userId: faker.random.uuid() },
+                    data: { userId: faker.datatype.uuid() },
                     session: createTestUserSession(),
                 }),
             ).rejects.toThrowError(UserNotFound);
         });
 
         it('should throw an error when a user with email already exists', async () => {
-            const userId = faker.random.uuid();
+            const userId = faker.datatype.uuid();
             const user = createTestUser({ id: userId });
             const session = createTestUserSession(user);
 

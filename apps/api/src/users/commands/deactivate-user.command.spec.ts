@@ -52,7 +52,7 @@ describe('DeactivateUserHandler', () => {
 
     describe('execute', () => {
         it('should deactivate the user correctly', async () => {
-            const user = createTestUser({ id: faker.random.uuid() });
+            const user = createTestUser({ id: faker.datatype.uuid() });
             const session = createTestUserSession();
 
             when(userRepository.findOne(anything())).thenResolve(user);
@@ -76,7 +76,7 @@ describe('DeactivateUserHandler', () => {
 
             await expect(
                 handler.execute({
-                    data: { userId: faker.random.uuid() },
+                    data: { userId: faker.datatype.uuid() },
                     session: createTestUserSession(),
                 }),
             ).rejects.toThrowError(UserNotFound);
