@@ -37,7 +37,7 @@ export class GetUsersHandler implements IHandler<GetUsersQuery> {
                 'user.createdBy',
                 'user.updatedBy',
                 'user.email',
-                'user.state',
+                'user.isActive',
                 'user.name',
             ])
             .orderBy(`user.${query.sortBy}`, query.sortDirection)

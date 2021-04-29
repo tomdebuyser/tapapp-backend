@@ -67,27 +67,7 @@ describe('CreateUserHandler', () => {
                 userRepository.save(
                     objectContaining({
                         email: request.email,
-                        name: request.firstName,
-                        createdBy: session.email,
-                    }),
-                ),
-            ).once();
-        });
-
-        it('should create a user with email and reset token #2', async () => {
-            const request: CreateUserRequest = {
-                email: faker.internet.email(),
-            };
-            const session = createTestUserSession();
-
-            when(userRepository.findOne(anything())).thenResolve(null);
-
-            await handler.execute({ data: request, session });
-
-            verify(
-                userRepository.save(
-                    objectContaining({
-                        email: request.email,
+                        name: request.name,
                         createdBy: session.email,
                     }),
                 ),
@@ -103,6 +83,7 @@ describe('CreateUserHandler', () => {
                 handler.execute({
                     data: {
                         email: faker.internet.email(),
+                        name: faker.name.firstName(),
                     },
                     session: createTestUserSession(),
                 }),

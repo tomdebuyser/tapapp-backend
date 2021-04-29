@@ -23,7 +23,6 @@ export class GetAuthenticatedUserHandler
                 'user.createdAt',
                 'user.updatedAt',
                 'user.email',
-                'user.state',
                 'user.name',
             ])
             .where('user.id = :userId', { userId: data.userId })

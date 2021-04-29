@@ -24,7 +24,7 @@ export class GetUserHandler implements IHandler<GetUserQuery> {
                 'user.createdBy',
                 'user.updatedBy',
                 'user.email',
-                'user.state',
+                'user.isActive',
                 'user.name',
             ])
             .where('user.id = :userId', { userId })

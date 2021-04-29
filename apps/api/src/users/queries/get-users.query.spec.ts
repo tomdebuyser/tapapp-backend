@@ -30,8 +30,8 @@ describe('GetUsersHandler', () => {
         const testQueries: GetUsersRequestQuery[] = [
             {},
             { skip: 2, take: 2 },
-            { search: 'user1' },
-            { search: 'DEVELOPMENT' },
+            { search: 'wltc1' },
+            { search: 'WLTC2' },
             { search: 'Tom' },
             {
                 sortBy: UsersSortColumns.CreatedAt,
@@ -39,8 +39,10 @@ describe('GetUsersHandler', () => {
             },
         ];
 
-        testQueries.forEach((request, index) => {
-            it(`should return a paged list of users: #${index}`, async () => {
+        testQueries.forEach(request => {
+            it(`should return a paged list of users: ${JSON.stringify(
+                request,
+            )}`, async () => {
                 const result = await handler.execute({ data: request });
                 expect(result).toMatchSnapshot();
             });

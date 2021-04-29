@@ -28,7 +28,7 @@ describe('GetUserHandler', () => {
     describe('execute', () => {
         it('should return the requested user correctly', async () => {
             const result = await handler.execute({
-                data: { userId: 'c4cb4582-1e97-4e3e-9d49-c744c8c1a229' },
+                data: { userId: '49affd08-f461-4e80-899f-7612e971ff12' },
             });
             expect(result).toMatchSnapshot();
         });

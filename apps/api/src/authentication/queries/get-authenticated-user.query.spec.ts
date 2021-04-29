@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import * as faker from 'faker';
 
 import { ModelsModule, UserRepository } from '@libs/models';
 import { Config } from '../../config';
@@ -26,14 +27,16 @@ describe('GetAuthenticatedUserHandler', () => {
 
     describe('execute', () => {
         it(`should return the correct user`, async () => {
-            const userId = 'c4cb4582-1e97-4e3e-9d49-c744c8c1a229';
-            const result = await handler.execute({ data: { userId } });
+            const result = await handler.execute({
+                data: { userId: '49affd08-f461-4e80-899f-7612e971ff12' },
+            });
             expect(result).toMatchSnapshot();
         });
 
         it('should return no user if not found', async () => {
-            const userId = '63440b0f-59b3-473e-bf87-2c05136cc005';
-            const result = await handler.execute({ data: { userId } });
+            const result = await handler.execute({
+                data: { userId: faker.datatype.uuid() },
+            });
             expect(result).toMatchSnapshot();
         });
     });

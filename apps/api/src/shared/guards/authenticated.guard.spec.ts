@@ -60,7 +60,7 @@ describe('AuthenticationGuard', () => {
         );
     });
 
-    it('should destroy session and throw error when not in ACTIVE state', async () => {
+    it('should destroy session and throw error when inactive', async () => {
         when(context.switchToHttp()).thenReturn(instance(argumentsHost));
         when(argumentsHost.getRequest<any>()).thenReturn({
             isAuthenticated: () => false,

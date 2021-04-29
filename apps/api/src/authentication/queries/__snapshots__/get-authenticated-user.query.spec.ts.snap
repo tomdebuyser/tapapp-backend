@@ -4,12 +4,10 @@ exports[`GetAuthenticatedUserHandler execute should return no user if not found 
 
 exports[`GetAuthenticatedUserHandler execute should return the correct user 1`] = `
 User {
-  "createdAt": 2020-04-17T12:03:42.124Z,
-  "email": "development@icapps.com",
-  "firstName": null,
-  "id": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
-  "lastName": null,
-  "state": "ACTIVE",
-  "updatedAt": 2020-04-17T12:03:42.124Z,
+  "createdAt": 2020-03-03T09:30:24.076Z,
+  "email": "wltc1@tapapp.be",
+  "id": "49affd08-f461-4e80-899f-7612e971ff12",
+  "name": "User 1",
+  "updatedAt": 2020-03-03T09:30:27.518Z,
 }
 `;

@@ -34,7 +34,7 @@ export class DeactivateUserHandler implements IHandler<DeactivateUserCommand> {
             throw new UserNotFound();
         }
 
-        // Set the state to inactive
+        // Mark the user inactive
         await this.userRepository.update(userId, {
             isActive: false,
             updatedBy: session.email,
