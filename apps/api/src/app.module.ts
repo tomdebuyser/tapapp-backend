@@ -5,9 +5,10 @@ import { LoggerModule, LoggerInterceptor } from '@libs/logger';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { Config } from './config';
 import { CategoriesModule } from './categories/categories.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
-    imports: [LoggerModule.register(Config.logging), AuthenticationModule, CategoriesModule],
+    imports: [LoggerModule.register(Config.logging), AuthenticationModule, CategoriesModule, OrdersModule],
     providers: [
         {
             provide: APP_INTERCEPTOR,

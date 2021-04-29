@@ -1,12 +1,7 @@
-class CategoryProduct {
-    readonly id: string;
-    readonly logo?: string;
-    readonly name: string;
-    readonly price: number;
-}
+import { ProductRelationResponse } from '../../shared/dto';
 
 export class CategoryResponse {
     readonly id: string;
     readonly name: string;
-    readonly products: CategoryProduct[];
+    readonly products: ProductRelationResponse[];
 }

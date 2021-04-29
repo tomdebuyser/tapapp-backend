@@ -1,12 +1,4 @@
-import {
-    Entity,
-    Column,
-    DeepPartial,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    JoinColumn,
-} from 'typeorm';
+import { Entity, Column, DeepPartial, ManyToOne, OneToMany } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
