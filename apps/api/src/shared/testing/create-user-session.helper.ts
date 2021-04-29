@@ -4,10 +4,6 @@ import * as faker from 'faker';
 
 import { UserState, User } from '@libs/models';
 import { UserSession } from '../constants';
-import {
-    createDefaultPermissions,
-    permissionsFromRoles,
-} from '../util/permissions.helper';
 
 export function createTestUserSession(
     user?: User,
@@ -19,9 +15,6 @@ export function createTestUserSession(
         state: user?.state || UserState.Active,
         firstName: user?.firstName || faker.name.firstName(),
         lastName: user?.lastName || faker.name.lastName(),
-        permissions: createDefaultPermissions(
-            permissionsFromRoles(user?.roles),
-        ),
     };
 
     return mergeDeepLeft(overrides, session) as UserSession;

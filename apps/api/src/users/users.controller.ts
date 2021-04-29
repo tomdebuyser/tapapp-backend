@@ -21,14 +21,13 @@ import {
     UserIdParam,
     UserResponse,
 } from './dto';
-import { AuthenticatedGuard, RequiredPermissionsGuard } from '../shared/guards';
-import { GetUserSession, RequiredPermissions } from '../shared/decorators';
+import { AuthenticatedGuard } from '../shared/guards';
+import { GetUserSession } from '../shared/decorators';
 import { UserSession } from '../shared/constants';
 import {
     CreateUserHandler,
     DeactivateUserHandler,
     DeleteUserHandler,
-    ResendRegisterMailHandler,
     UpdateUserHandler,
 } from './commands';
 import { GetUserHandler, GetUsersHandler } from './queries';
@@ -42,27 +41,21 @@ export class UsersController {
         private readonly createUserHandler: CreateUserHandler,
         private readonly deactivateUserHandler: DeactivateUserHandler,
         private readonly deleteUserHandler: DeleteUserHandler,
-        private readonly resendRegisterMailHandler: ResendRegisterMailHandler,
         private readonly updateUserHandler: UpdateUserHandler,
         private readonly getUserHandler: GetUserHandler,
         private readonly getUsersHandler: GetUsersHandler,
     ) {}
 
-    @RequiredPermissions({ users: { view: true } })
-    @UseGuards(RequiredPermissionsGuard)
     @Get()
     getUsers(@Query() query: GetUsersRequestQuery): Promise<GetUsersResponse> {
         return this.getUsersHandler.execute({ data: query });
     }
 
-    @RequiredPermissions({ users: { view: true } })
     @Get(':userId')
     getUser(@Param() params: UserIdParam): Promise<UserResponse> {
         return this.getUserHandler.execute({ data: params });
     }
 
-    @RequiredPermissions({ users: { edit: true } })
-    @UseGuards(RequiredPermissionsGuard)
     @Post()
     async createUser(
         @Body() body: CreateUserRequest,
@@ -71,8 +64,6 @@ export class UsersController {
         await this.createUserHandler.execute({ data: body, session });
     }
 
-    @RequiredPermissions({ users: { edit: true } })
-    @UseGuards(RequiredPermissionsGuard)
     @Put(':userId')
     async updateUser(
         @Body() body: UpdateUserRequest,
@@ -85,8 +76,6 @@ export class UsersController {
         });
     }
 
-    @RequiredPermissions({ users: { edit: true } })
-    @UseGuards(RequiredPermissionsGuard)
     @Delete(':userId')
     async deleteUser(
         @Param() params: UserIdParam,
@@ -95,22 +84,6 @@ export class UsersController {
         await this.deleteUserHandler.execute({ data: params, session });
     }
 
-    @RequiredPermissions({ users: { edit: true } })
-    @UseGuards(RequiredPermissionsGuard)
-    @HttpCode(HttpStatus.OK)
-    @Post(':userId/resend-register-mail')
-    async resendRegisterMail(
-        @Param() params: UserIdParam,
-        @GetUserSession() session: UserSession,
-    ): Promise<void> {
-        await this.resendRegisterMailHandler.execute({
-            data: params,
-            session,
-        });
-    }
-
-    @RequiredPermissions({ users: { edit: true } })
-    @UseGuards(RequiredPermissionsGuard)
     @HttpCode(HttpStatus.OK)
     @Post(':userId/deactivate')
     async deactivateUser(

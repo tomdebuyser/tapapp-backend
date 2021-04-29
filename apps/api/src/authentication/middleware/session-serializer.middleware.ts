@@ -3,10 +3,6 @@ import { Response, Request } from 'express';
 
 import { UserRepository } from '@libs/models';
 import { UserSession } from '../../shared/constants';
-import {
-    createDefaultPermissions,
-    permissionsFromRoles,
-} from '../../shared/util';
 
 @Injectable()
 export class SessionSerializer implements NestMiddleware {
@@ -28,9 +24,7 @@ export class SessionSerializer implements NestMiddleware {
     }
 
     private async composeUserSession(userId: string): Promise<UserSession> {
-        const user = await this.userRepository.findOne(userId, {
-            relations: ['roles'],
-        });
+        const user = await this.userRepository.findOne(userId);
         if (!user) return null;
         return {
             userId: user.id,
@@ -38,9 +32,6 @@ export class SessionSerializer implements NestMiddleware {
             state: user.state,
             firstName: user.firstName,
             lastName: user.lastName,
-            permissions: createDefaultPermissions(
-                permissionsFromRoles(user.roles),
-            ),
         };
     }
 }

@@ -10,12 +10,6 @@ export class EmailAlreadyInUse extends BadRequestException {
     }
 }
 
-export class RoleNotFound extends BadRequestException {
-    constructor() {
-        super('One of the roles passed was not found', 'ROLE_NOT_FOUND');
-    }
-}
-
 export class UserNotFound extends NotFoundException {
     constructor() {
         super('The given user was not found', 'USER_NOT_FOUND');

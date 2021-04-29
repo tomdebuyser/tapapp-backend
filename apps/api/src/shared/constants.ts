@@ -1,4 +1,4 @@
-import { Permissions, UserState } from '@libs/models';
+import { UserState } from '@libs/models';
 
 export enum SortDirection {
     Ascending = 'ASC',
@@ -11,5 +11,4 @@ export type UserSession = {
     state: UserState;
     firstName?: string;
     lastName?: string;
-    permissions: Permissions;
 };

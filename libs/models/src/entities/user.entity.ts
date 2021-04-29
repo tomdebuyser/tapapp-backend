@@ -2,7 +2,6 @@ import { Entity, Column, ManyToMany, JoinTable, DeepPartial } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
-import { Role } from './role.entity';
 import { AuditedEntity } from './audited.entity';
 
 export enum UserState {
@@ -33,10 +32,6 @@ export class User extends AuditedEntity {
 
     @Column({ nullable: true })
     resetToken?: string;
-
-    @ManyToMany(() => Role, { onDelete: 'CASCADE' })
-    @JoinTable()
-    roles: Role[];
 
     /**
      * Creates a User instance with given fields.

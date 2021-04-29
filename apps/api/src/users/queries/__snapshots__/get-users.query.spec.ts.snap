@@ -10,12 +10,6 @@ Object {
       "firstName": null,
       "id": "53558240-8094-4c3f-9028-e4626be150a9",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:15.275Z,
       "updatedBy": null,
@@ -27,12 +21,6 @@ Object {
       "firstName": null,
       "id": "e8570f65-8e1a-4447-8611-1832e238f64a",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:11.634Z,
       "updatedBy": null,
@@ -44,12 +32,6 @@ Object {
       "firstName": null,
       "id": "5df6c5e4-3d6e-40d5-9401-6d0db7340bc7",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:07.849Z,
       "updatedBy": null,
@@ -61,12 +43,6 @@ Object {
       "firstName": null,
       "id": "2df551b1-f385-4f72-862b-1870e41943c3",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:03.258Z,
       "updatedBy": null,
@@ -78,12 +54,6 @@ Object {
       "firstName": null,
       "id": "f9110938-a03e-49d4-b8bf-8e99dab0531d",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:58.745Z,
       "updatedBy": null,
@@ -95,12 +65,6 @@ Object {
       "firstName": null,
       "id": "417d2d73-41a0-43f2-9eef-800cab59209e",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:55.162Z,
       "updatedBy": null,
@@ -112,12 +76,6 @@ Object {
       "firstName": null,
       "id": "45a16899-d259-4982-9040-3abd3d11b00e",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:51.573Z,
       "updatedBy": null,
@@ -129,12 +87,6 @@ Object {
       "firstName": null,
       "id": "82ac0573-73bc-4da2-919a-fb8094da444c",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:47.795Z,
       "updatedBy": null,
@@ -146,12 +98,6 @@ Object {
       "firstName": null,
       "id": "3cd2ef87-c542-48bd-b763-06ca71bd0b68",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:42.986Z,
       "updatedBy": null,
@@ -163,12 +109,6 @@ Object {
       "firstName": null,
       "id": "043c6044-7302-48e8-ad37-bbd0b6e5ddd1",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:38.908Z,
       "updatedBy": null,
@@ -180,12 +120,6 @@ Object {
       "firstName": null,
       "id": "63965bd7-ea40-47bd-9d5f-9c09ebce3a4f",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:33.779Z,
       "updatedBy": null,
@@ -197,12 +131,6 @@ Object {
       "firstName": null,
       "id": "4264fdef-899a-4861-aec3-0a8816465d07",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:29.141Z,
       "updatedBy": null,
@@ -214,12 +142,6 @@ Object {
       "firstName": null,
       "id": "10c93450-010c-471a-963d-14f67c84df41",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:25.506Z,
       "updatedBy": null,
@@ -231,12 +153,6 @@ Object {
       "firstName": null,
       "id": "0b84e599-61db-4757-8c80-754a41be8451",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:21.385Z,
       "updatedBy": null,
@@ -248,12 +164,6 @@ Object {
       "firstName": null,
       "id": "a30f2f22-bdad-4bbe-b792-2210789a41ac",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:17.305Z,
       "updatedBy": null,
@@ -265,12 +175,6 @@ Object {
       "firstName": null,
       "id": "31e1634e-f92e-4fd2-ad58-f172b94b61d9",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:12.756Z,
       "updatedBy": null,
@@ -282,12 +186,6 @@ Object {
       "firstName": null,
       "id": "9559fb04-cf53-4d95-b89d-74071b878485",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:07.802Z,
       "updatedBy": null,
@@ -299,12 +197,6 @@ Object {
       "firstName": null,
       "id": "85140bf6-214e-40ee-a79f-dc8c4a4b5c3a",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:03.627Z,
       "updatedBy": null,
@@ -316,12 +208,6 @@ Object {
       "firstName": null,
       "id": "e2c1ae7f-cb01-4ffe-88b1-202835e63f85",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:00.066Z,
       "updatedBy": null,
@@ -333,12 +219,6 @@ Object {
       "firstName": null,
       "id": "e552ef88-3278-45c2-a03d-f702385f66df",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:55.805Z,
       "updatedBy": null,
@@ -362,12 +242,6 @@ Object {
       "firstName": null,
       "id": "5df6c5e4-3d6e-40d5-9401-6d0db7340bc7",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:07.849Z,
       "updatedBy": null,
@@ -379,12 +253,6 @@ Object {
       "firstName": null,
       "id": "2df551b1-f385-4f72-862b-1870e41943c3",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:06:03.258Z,
       "updatedBy": null,
@@ -408,12 +276,6 @@ Object {
       "firstName": "Tom",
       "id": "49affd08-f461-4e80-899f-7612e971ff12",
       "lastName": "De Buyser",
-      "roles": Array [
-        Role {
-          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-          "name": "Admin",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:03:51.835Z,
       "updatedBy": "development@icapps.com",
@@ -437,12 +299,6 @@ Object {
       "firstName": null,
       "id": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-          "name": "Admin",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:03:42.124Z,
       "updatedBy": null,
@@ -466,12 +322,6 @@ Object {
       "firstName": "Tom",
       "id": "49affd08-f461-4e80-899f-7612e971ff12",
       "lastName": "De Buyser",
-      "roles": Array [
-        Role {
-          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-          "name": "Admin",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:03:51.835Z,
       "updatedBy": "development@icapps.com",
@@ -495,12 +345,6 @@ Object {
       "firstName": null,
       "id": "c4cb4582-1e97-4e3e-9d49-c744c8c1a229",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-          "name": "Admin",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:03:42.124Z,
       "updatedBy": null,
@@ -512,12 +356,6 @@ Object {
       "firstName": "Tom",
       "id": "49affd08-f461-4e80-899f-7612e971ff12",
       "lastName": "De Buyser",
-      "roles": Array [
-        Role {
-          "id": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-          "name": "Admin",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:03:51.835Z,
       "updatedBy": "development@icapps.com",
@@ -529,12 +367,6 @@ Object {
       "firstName": "Benno",
       "id": "45c2c554-b06a-4209-aba8-b097cb5f8566",
       "lastName": "Meysmans",
-      "roles": Array [
-        Role {
-          "id": "d02a468f-0225-463d-a9a4-8c7d05cbe62c",
-          "name": "Support",
-        },
-        Role {
           "id": "81388934-7613-4f66-a225-a0d246f65e61",
           "name": "Medewerker",
         },
@@ -550,12 +382,6 @@ Object {
       "firstName": "Jens",
       "id": "db5e788c-2642-4c40-a63a-f13675048ddc",
       "lastName": "De Craecker",
-      "roles": Array [
-        Role {
-          "id": "d02a468f-0225-463d-a9a4-8c7d05cbe62c",
-          "name": "Support",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:04.688Z,
       "updatedBy": "development@icapps.com",
@@ -567,12 +393,6 @@ Object {
       "firstName": null,
       "id": "c356fce8-9f95-4c69-9e71-8f4d74f49b8f",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "ACTIVE",
       "updatedAt": 2020-04-17T12:04:09.483Z,
       "updatedBy": "development@icapps.com",
@@ -584,12 +404,6 @@ Object {
       "firstName": null,
       "id": "af965f04-8c7d-4e20-b230-932b0ff3a33f",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:19.138Z,
       "updatedBy": "development@icapps.com",
@@ -601,12 +415,6 @@ Object {
       "firstName": null,
       "id": "951328c3-ab15-4b58-b759-4695a8eb59ca",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:23.647Z,
       "updatedBy": null,
@@ -618,12 +426,6 @@ Object {
       "firstName": null,
       "id": "1ca59e34-00ea-42df-b3c7-c36cabb448c2",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:27.410Z,
       "updatedBy": null,
@@ -635,12 +437,6 @@ Object {
       "firstName": null,
       "id": "f639625b-57a0-4dbf-b6ff-8162228c57c8",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:31.817Z,
       "updatedBy": null,
@@ -652,12 +448,6 @@ Object {
       "firstName": null,
       "id": "5e2b0f76-caab-4d27-bc11-91eea1190fdb",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:36.553Z,
       "updatedBy": null,
@@ -669,12 +459,6 @@ Object {
       "firstName": null,
       "id": "18996066-1711-4c87-a2a0-e0c288ee1ff3",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:41.066Z,
       "updatedBy": null,
@@ -686,12 +470,6 @@ Object {
       "firstName": null,
       "id": "310f59f6-5456-4798-8ce0-48bc7cbafbb0",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:45.700Z,
       "updatedBy": null,
@@ -703,12 +481,6 @@ Object {
       "firstName": null,
       "id": "e552ef88-3278-45c2-a03d-f702385f66df",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:04:55.805Z,
       "updatedBy": null,
@@ -720,12 +492,6 @@ Object {
       "firstName": null,
       "id": "e2c1ae7f-cb01-4ffe-88b1-202835e63f85",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:00.066Z,
       "updatedBy": null,
@@ -737,12 +503,6 @@ Object {
       "firstName": null,
       "id": "85140bf6-214e-40ee-a79f-dc8c4a4b5c3a",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:03.627Z,
       "updatedBy": null,
@@ -754,12 +514,6 @@ Object {
       "firstName": null,
       "id": "9559fb04-cf53-4d95-b89d-74071b878485",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:07.802Z,
       "updatedBy": null,
@@ -771,12 +525,6 @@ Object {
       "firstName": null,
       "id": "31e1634e-f92e-4fd2-ad58-f172b94b61d9",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:12.756Z,
       "updatedBy": null,
@@ -788,12 +536,6 @@ Object {
       "firstName": null,
       "id": "a30f2f22-bdad-4bbe-b792-2210789a41ac",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:17.305Z,
       "updatedBy": null,
@@ -805,12 +547,6 @@ Object {
       "firstName": null,
       "id": "0b84e599-61db-4757-8c80-754a41be8451",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:21.385Z,
       "updatedBy": null,
@@ -822,12 +558,6 @@ Object {
       "firstName": null,
       "id": "10c93450-010c-471a-963d-14f67c84df41",
       "lastName": null,
-      "roles": Array [
-        Role {
-          "id": "81388934-7613-4f66-a225-a0d246f65e61",
-          "name": "Medewerker",
-        },
-      ],
       "state": "REGISTERING",
       "updatedAt": 2020-04-17T12:05:25.506Z,
       "updatedBy": null,

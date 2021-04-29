@@ -8,11 +8,9 @@ import {
     CreateUserHandler,
     DeactivateUserHandler,
     DeleteUserHandler,
-    ResendRegisterMailHandler,
     UpdateUserHandler,
 } from './commands';
 import { GetUserHandler, GetUsersHandler } from './queries';
-import { RegisterMailService } from './services/register-mail.service';
 
 @Module({
     imports: [
@@ -26,11 +24,9 @@ import { RegisterMailService } from './services/register-mail.service';
         CreateUserHandler,
         DeactivateUserHandler,
         DeleteUserHandler,
-        ResendRegisterMailHandler,
         UpdateUserHandler,
         GetUserHandler,
         GetUsersHandler,
-        RegisterMailService,
     ],
 })
 export class UsersModule {}

@@ -40,10 +40,7 @@ export class GetUsersHandler implements IHandler<GetUsersQuery> {
                 'user.state',
                 'user.firstName',
                 'user.lastName',
-                'role.id',
-                'role.name',
             ])
-            .innerJoin('user.roles', 'role')
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)

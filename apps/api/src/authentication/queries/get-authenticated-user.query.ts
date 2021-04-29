@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 import { UserRepository } from '@libs/models';
 import { AuthenticationUserResponse } from '../dto';
-import { permissionsFromRoles } from '../../shared/util';
 import { IHandler } from '@libs/common';
 
 export type GetAuthenticatedUserQuery = {
@@ -27,16 +26,10 @@ export class GetAuthenticatedUserHandler
                 'user.state',
                 'user.firstName',
                 'user.lastName',
-                'role.permissions',
             ])
-            .innerJoin('user.roles', 'role')
             .where('user.id = :userId', { userId: data.userId })
             .getOne();
         if (!user) return null;
-        const { roles, ...otherProps } = user;
-        return {
-            ...otherProps,
-            permissions: permissionsFromRoles(roles),
-        };
+        return user;
     }
 }

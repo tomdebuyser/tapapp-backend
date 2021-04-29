@@ -24,11 +24,11 @@ const context = 'TypeOrm';
  *             inject: [LoggerService, LoggerConfig],
  *             useFactory: async (logger: LoggerService, loggerConfig: LoggerConfig) => ({
  *                 ...config,
- *                 entities: [Role, User],
+ *                 entities: [User],
  *                 logger: new TypeormLoggerProxy(logger, loggerConfig),
  *             }),
  *         }),
- *         TypeOrmModule.forFeature([RoleRepository, UserRepository]),
+ *         TypeOrmModule.forFeature([UserRepository]),
  *     ],
  *     providers: [TypeormLoggerProxy],
  *     exports: [TypeOrmModule],

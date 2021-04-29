@@ -27,10 +27,7 @@ export class GetUserHandler implements IHandler<GetUserQuery> {
                 'user.state',
                 'user.firstName',
                 'user.lastName',
-                'role.id',
-                'role.name',
             ])
-            .innerJoin('user.roles', 'role')
             .where('user.id = :userId', { userId })
             .getOne();
     }
