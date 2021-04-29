@@ -5,13 +5,12 @@ import { UserResponse } from './get-user.dto';
 
 export enum UsersSortColumns {
     Email = 'email',
-    State = 'state',
+    IsActive = 'isActive',
     CreatedAt = 'createdAt',
     UpdatedAt = 'updatedAt',
     CreatedBy = 'createdBy',
     UpdatedBy = 'updatedBy',
-    FirstName = 'firstName',
-    LastName = 'lastName',
+    Name = 'name',
 }
 
 export class GetUsersRequestQuery extends PagingQuery {

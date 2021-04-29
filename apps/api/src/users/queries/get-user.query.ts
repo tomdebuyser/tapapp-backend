@@ -25,8 +25,7 @@ export class GetUserHandler implements IHandler<GetUserQuery> {
                 'user.updatedBy',
                 'user.email',
                 'user.state',
-                'user.firstName',
-                'user.lastName',
+                'user.name',
             ])
             .where('user.id = :userId', { userId })
             .getOne();

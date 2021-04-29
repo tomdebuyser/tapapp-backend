@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { UserRepository, User, UserState } from '@libs/models';
+import { UserRepository, User } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { IHandler } from '@libs/common';
-import { UserStateNotAllowed } from '../authentication.errors';
+import { UserNotActive } from '../authentication.errors';
 import { LoginRequest } from '../dto';
 
 const context = 'LoginHandler';
@@ -31,13 +31,12 @@ export class LoginHandler implements IHandler<LoginCommand> {
         }
 
         // Check if user is active
-        if (![UserState.Active].includes(user.state)) {
+        if (!user.isActive) {
             this.logger.warn('This action is not allowed for this user', {
                 context,
-                state: user.state,
-                allowedStates: [UserState.Active],
+                data,
             });
-            throw new UserStateNotAllowed();
+            throw new UserNotActive();
         }
 
         // Given password should match the stored hashed password

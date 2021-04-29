@@ -1,0 +1,10 @@
+{
+    "id": "e810ee33-6cd3-41dd-8755-6abba3bb9efa",
+    "createdAt": "2020-03-03T09:30:14.640Z",
+    "updatedAt": "2020-03-03T09:30:18.095Z",
+    "email": "tom.debuyser@gmail.com",
+    "type": "SUPER_ADMIN",
+    "isActive": true,
+    "name": "Tom De Buyser",
+    "password": "$2b$10$JXPifp.CTyoOOENOEli7f.2hFG8wGxYcMKffez9lxS4endBnk81/a"
+}

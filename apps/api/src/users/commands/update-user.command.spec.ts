@@ -54,8 +54,7 @@ describe('UpdateUserHandler', () => {
     describe('execute', () => {
         it('should update the user correctly #1', async () => {
             const request: UpdateUserRequest = {
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
+                name: faker.name.firstName(),
             };
             const user = createTestUser({ id: faker.datatype.uuid() });
             const session = createTestUserSession();
@@ -74,8 +73,7 @@ describe('UpdateUserHandler', () => {
             verify(
                 userRepository.save(
                     objectContaining({
-                        firstName: request.firstName,
-                        lastName: request.lastName,
+                        name: request.name,
                         updatedBy: session.email,
                     }),
                 ),
@@ -88,8 +86,7 @@ describe('UpdateUserHandler', () => {
             await expect(
                 handler.execute({
                     data: {
-                        firstName: faker.name.firstName(),
-                        lastName: faker.name.lastName(),
+                        name: faker.name.firstName(),
                         userId: faker.datatype.uuid(),
                     },
                     session: createTestUserSession(),

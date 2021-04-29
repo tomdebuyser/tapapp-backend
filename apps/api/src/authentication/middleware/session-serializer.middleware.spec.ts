@@ -5,7 +5,7 @@ import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
 import { SessionSerializer } from './session-serializer.middleware';
 import { createTestUserSession } from '../../shared/testing';
-import { UserRepository, UserState } from '@libs/models';
+import { UserRepository } from '@libs/models';
 import { createTestUser } from '@libs/testing';
 
 describe('SessionSerializer', () => {
@@ -38,9 +38,8 @@ describe('SessionSerializer', () => {
 
     it('should deserialize into a session from the cookie', async () => {
         const user = createTestUser({
-            state: UserState.Active,
-            firstName: faker.name.firstName(),
-            lastName: faker.name.lastName(),
+            isActive: true,
+            name: faker.name.firstName(),
         });
         const session = createTestUserSession(user);
         when(userRepository.findOne(anything())).thenResolve(user);

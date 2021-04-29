@@ -55,8 +55,7 @@ describe('CreateUserHandler', () => {
         it('should create a user with email and reset token #1', async () => {
             const request: CreateUserRequest = {
                 email: faker.internet.email(),
-                firstName: faker.name.firstName(),
-                lastName: faker.name.lastName(),
+                name: faker.name.firstName(),
             };
             const session = createTestUserSession();
 
@@ -68,8 +67,7 @@ describe('CreateUserHandler', () => {
                 userRepository.save(
                     objectContaining({
                         email: request.email,
-                        firstName: request.firstName,
-                        lastName: request.lastName,
+                        name: request.firstName,
                         createdBy: session.email,
                     }),
                 ),

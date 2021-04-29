@@ -38,18 +38,14 @@ export class GetUsersHandler implements IHandler<GetUsersQuery> {
                 'user.updatedBy',
                 'user.email',
                 'user.state',
-                'user.firstName',
-                'user.lastName',
+                'user.name',
             ])
             .orderBy(`user.${query.sortBy}`, query.sortDirection)
             .take(query.take)
             .skip(query.skip)
-            .where(
-                'user.email ILIKE :search OR user.firstName ILIKE :search OR user.lastName ILIKE :search',
-                {
-                    search: `%${query.search}%`,
-                },
-            )
+            .where('user.email ILIKE :search OR user.name ILIKE :search', {
+                search: `%${query.search}%`,
+            })
             .getManyAndCount();
 
         return {

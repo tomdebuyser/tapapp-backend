@@ -22,7 +22,7 @@ export class CreateUserHandler implements IHandler<CreateUserCommand> {
     ) {}
 
     async execute({ data, session }: CreateUserCommand): Promise<string> {
-        const { email, firstName, lastName } = data;
+        const { email, name } = data;
 
         // The user should not exist yet
         const existingUser = await this.userRepository.findOne({
@@ -39,8 +39,7 @@ export class CreateUserHandler implements IHandler<CreateUserCommand> {
         // Create the user
         const user = User.create({
             email,
-            firstName: firstName || null,
-            lastName: lastName || null,
+            name,
             createdBy: session.email,
         });
         await this.userRepository.save(user);

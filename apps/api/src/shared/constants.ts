@@ -1,5 +1,3 @@
-import { UserState } from '@libs/models';
-
 export enum SortDirection {
     Ascending = 'ASC',
     Descending = 'DESC',
@@ -8,7 +6,6 @@ export enum SortDirection {
 export type UserSession = {
     userId: string;
     email: string;
-    state: UserState;
-    firstName?: string;
-    lastName?: string;
+    isActive: boolean;
+    name: string;
 };

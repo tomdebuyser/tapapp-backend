@@ -34,9 +34,8 @@ export class UpdateUserHandler implements IHandler<UpdateUserCommand> {
             throw new UserNotFound();
         }
 
-        const { firstName, lastName } = data;
-        existingUser.firstName = firstName || null;
-        existingUser.lastName = lastName || null;
+        const { name } = data;
+        existingUser.name = name;
         existingUser.updatedBy = session.email;
 
         await this.userRepository.save(existingUser);

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserRepository, UserState } from '@libs/models';
+import { UserRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { IHandler } from '@libs/common';
 import { UserNotFound } from '../users.errors';
@@ -36,8 +36,7 @@ export class DeactivateUserHandler implements IHandler<DeactivateUserCommand> {
 
         // Set the state to inactive
         await this.userRepository.update(userId, {
-            state: UserState.Inactive,
-            resetToken: null,
+            isActive: false,
             updatedBy: session.email,
         });
 

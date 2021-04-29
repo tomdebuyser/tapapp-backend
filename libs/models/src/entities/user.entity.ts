@@ -1,13 +1,14 @@
-import { Entity, Column, ManyToMany, JoinTable, DeepPartial } from 'typeorm';
+import { Entity, Column, DeepPartial, ManyToOne } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
 import { AuditedEntity } from './audited.entity';
+import { Organisation } from './organisation.entity';
 
-export enum UserState {
-    Registering = 'REGISTERING',
-    Active = 'ACTIVE',
-    Inactive = 'INACTIVE',
+export enum UserType {
+    SuperAdmin = 'SUPER_ADMIN',
+    Admin = 'ADMIN',
+    User = 'USER',
 }
 
 @Entity()
@@ -15,23 +16,20 @@ export class User extends AuditedEntity {
     @Column({ unique: true })
     email: string;
 
-    /**
-     * Defaults to REGISTERING when not given.
-     */
-    @Column({ enum: UserState, default: UserState.Registering, type: 'enum' })
-    state: UserState;
+    @Column({ enum: UserType, default: UserType.User, type: 'enum' })
+    type: UserType;
 
-    @Column({ nullable: true })
-    firstName?: string;
+    @Column({ default: true })
+    isActive: boolean;
 
-    @Column({ nullable: true })
-    lastName?: string;
+    @Column()
+    name: string;
 
-    @Column({ nullable: true })
-    password?: string;
+    @Column()
+    password: string;
 
-    @Column({ nullable: true })
-    resetToken?: string;
+    @ManyToOne(() => Organisation)
+    organisation: Organisation;
 
     /**
      * Creates a User instance with given fields.

@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 
-import { UserState } from '@libs/models';
 import { UserSession } from '../constants';
 
 @Injectable()
@@ -16,7 +15,7 @@ export class AuthenticatedGuard implements CanActivate {
         const response = context.switchToHttp().getResponse<Response>();
         const session: UserSession = request.user;
 
-        if (!session || session?.state !== UserState.Active) {
+        if (!session?.isActive) {
             await destroyExpressSession(request, response);
             // We throw an UnauthorizedException because by not doing it, a ForbiddenException is returned to the client
             throw new UnauthorizedException();

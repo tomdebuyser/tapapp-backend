@@ -11,7 +11,7 @@ import {
 } from 'ts-mockito';
 import * as faker from 'faker';
 
-import { UserRepository, UserState } from '@libs/models';
+import { UserRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { UserNotFound } from '../users.errors';
 import { createTestUser } from '@libs/testing';
@@ -63,8 +63,7 @@ describe('DeactivateUserHandler', () => {
                 userRepository.update(
                     user.id,
                     objectContaining({
-                        state: UserState.Inactive,
-                        resetToken: null,
+                        isActive: false,
                         updatedBy: session.email,
                     }),
                 ),

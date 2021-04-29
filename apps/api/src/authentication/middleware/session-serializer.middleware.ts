@@ -29,9 +29,8 @@ export class SessionSerializer implements NestMiddleware {
         return {
             userId: user.id,
             email: user.email,
-            state: user.state,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            isActive: user.isActive,
+            name: user.name,
         };
     }
 }

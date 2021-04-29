@@ -24,8 +24,7 @@ export class GetAuthenticatedUserHandler
                 'user.updatedAt',
                 'user.email',
                 'user.state',
-                'user.firstName',
-                'user.lastName',
+                'user.name',
             ])
             .where('user.id = :userId', { userId: data.userId })
             .getOne();

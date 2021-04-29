@@ -6,9 +6,9 @@ import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
 
 import { LoggerService } from '@libs/logger';
-import { UserRepository, UserState } from '@libs/models';
+import { UserRepository } from '@libs/models';
 import { createTestUser } from '@libs/testing';
-import { UserStateNotAllowed } from '../authentication.errors';
+import { UserNotActive } from '../authentication.errors';
 import { LoginHandler } from './login.command';
 
 describe('LoginHandler', () => {
@@ -77,7 +77,7 @@ describe('LoginHandler', () => {
             const user = createTestUser({
                 email,
                 password,
-                state: UserState.Registering,
+                isActive: false,
             });
 
             when(userRepository.findOne(anything())).thenResolve(user);
@@ -86,7 +86,7 @@ describe('LoginHandler', () => {
                 handler.execute({
                     data: { username: email, password },
                 }),
-            ).rejects.toThrowError(UserStateNotAllowed);
+            ).rejects.toThrowError(UserNotActive);
         });
 
         it('should throw an error when the passwords do not match', async () => {
