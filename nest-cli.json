@@ -1,25 +1,24 @@
 {
     "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/silvernext/src",
+    "sourceRoot": "apps/api/src",
     "compilerOptions": {
         "plugins": ["@nestjs/swagger/plugin"],
         "webpack": true,
-        "tsConfigPath": "apps/silvernext/tsconfig.app.json",
+        "tsConfigPath": "apps/api/tsconfig.app.json",
         "assets": [
-            "**/.env.*",
-            "../../../libs/mailer/**/_compiled/*.template.html"
+            "**/.env.*"
         ]
     },
     "monorepo": true,
-    "root": "apps/silvernext",
+    "root": "apps/api",
     "projects": {
-        "silvernext": {
+        "api": {
             "type": "application",
-            "root": "apps/silvernext",
+            "root": "apps/api",
             "entryFile": "main",
-            "sourceRoot": "apps/silvernext/src",
+            "sourceRoot": "apps/api/src",
             "compilerOptions": {
-                "tsConfigPath": "apps/silvernext/tsconfig.app.json"
+                "tsConfigPath": "apps/api/tsconfig.app.json"
             }
         },
         "logger": {
@@ -29,15 +28,6 @@
             "sourceRoot": "libs/logger/src",
             "compilerOptions": {
                 "tsConfigPath": "libs/logger/tsconfig.lib.json"
-            }
-        },
-        "mailer": {
-            "type": "library",
-            "root": "libs/mailer",
-            "entryFile": "index",
-            "sourceRoot": "libs/mailer/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/mailer/tsconfig.lib.json"
             }
         },
         "models": {
@@ -65,15 +55,6 @@
             "sourceRoot": "libs/testing/src",
             "compilerOptions": {
                 "tsConfigPath": "libs/testing/tsconfig.lib.json"
-            }
-        },
-        "media": {
-            "type": "library",
-            "root": "libs/media",
-            "entryFile": "index",
-            "sourceRoot": "libs/media/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/media/tsconfig.lib.json"
             }
         }
     }

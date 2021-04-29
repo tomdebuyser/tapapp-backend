@@ -13,8 +13,6 @@
         "paths": {
             "@libs/logger": ["libs/logger/src"],
             "@libs/logger/*": ["libs/logger/src/*"],
-            "@libs/mailer": ["libs/mailer/src"],
-            "@libs/mailer/*": ["libs/mailer/src/*"],
             "@libs/models": ["libs/models/src"],
             "@libs/models/*": ["libs/models/src/*"],
             "@libs/common": ["libs/common/src"],

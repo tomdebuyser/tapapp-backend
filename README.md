@@ -1,6 +1,6 @@
-# Silvernext
+# Tapapp
 
-Monorepo for Silvernext project.
+Monorepo for Tapapp project.
 Find confluence [here](https://icapps.atlassian.net/wiki/spaces/SIL/overview)
 
 ## Getting started
@@ -43,12 +43,8 @@ $ nvm install 12.18.3 # example
 First things, we need to change we use for the docker-compose project, to something that fits the new repository.
 
 ```json
-"docker:start": "docker-compose -p silvernext -f ./docker/docker-compose.yml up -d",
-"docker:stop": "docker-compose -p silvernext -f ./docker/docker-compose.yml stop",
-
-// Change -p option, for example:
-"docker:start": "docker-compose -p lighthouse -f ./docker/docker-compose.yml up -d",
-"docker:stop": "docker-compose -p lighthouse -f ./docker/docker-compose.yml stop",
+"docker:start": "docker-compose -f ./docker/docker-compose.yml up -d",
+"docker:stop": "docker-compose -f ./docker/docker-compose.yml stop",
 ```
 
 ```bash
@@ -193,7 +189,7 @@ $ yarn docker:stop
 $ yarn test
 
 # Append name of files or module you want to test, for example:
-$ yarn test silvernext
+$ yarn test tapapp
 $ yarn test whatever
 $ ...
 ```

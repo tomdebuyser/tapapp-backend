@@ -2,8 +2,8 @@ import { DynamicModule } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { LoggerConfig, LoggerService, TypeormLoggerProxy } from '@libs/logger';
-import { UserRepository, RoleRepository } from './repositories';
-import { User, Role } from './entities';
+import { repositories } from './repositories';
+import { entities } from './entities';
 
 export class ModelsModule {
     static register(typeOrmConfig: TypeOrmModuleOptions): DynamicModule {
@@ -17,11 +17,11 @@ export class ModelsModule {
                         loggerConfig: LoggerConfig,
                     ) => ({
                         ...typeOrmConfig,
-                        entities: [Role, User],
+                        entities,
                         logger: new TypeormLoggerProxy(logger, loggerConfig),
                     }),
                 }),
-                TypeOrmModule.forFeature([RoleRepository, UserRepository]),
+                TypeOrmModule.forFeature(repositories),
             ],
             providers: [TypeormLoggerProxy],
             exports: [TypeOrmModule],
@@ -39,9 +39,9 @@ export class ModelsModule {
             imports: [
                 TypeOrmModule.forRoot({
                     ...typeOrmConfig,
-                    entities: [Role, User],
+                    entities,
                 }),
-                TypeOrmModule.forFeature([RoleRepository, UserRepository]),
+                TypeOrmModule.forFeature(repositories),
             ],
             exports: [TypeOrmModule],
         };

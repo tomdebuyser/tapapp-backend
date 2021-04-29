@@ -10,7 +10,7 @@ definitions:
             environment:
                 DB_USER: developer
                 DB_PASS: developer
-                DB_NAME: silvernext_api_test
+                DB_NAME: tapapp
                 DB_EXTENSION: '"uuid-ossp"'
 
 installDependencies: &installDependencies
