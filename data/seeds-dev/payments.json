@@ -1,0 +1,68 @@
+[
+    {
+        "id": "f58ebb78-35cd-4b11-ba8d-97ab073a9ba2",
+        "createdBy": "wtc1@tapapp.be",
+        "updatedBy": "wtc1@tapapp.be",
+        "createdAt": "2020-03-03T09:21:55.252Z",
+        "updatedAt": "2020-03-03T09:22:05.017Z",
+        "amount": 450,
+        "type": "CASH",
+        "status": "SUCCEEDED",
+        "data": null,
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        },
+        "order": {
+            "id": "38d680f3-bd5c-43d7-ae6c-ab40a7c75c10"
+        }
+    },
+    {
+        "id": "ec815fec-fb37-4176-949c-56bb96641809",
+        "createdBy": "wtc1@tapapp.be",
+        "updatedBy": "wtc1@tapapp.be",
+        "createdAt": "2020-03-03T09:22:14.238Z",
+        "updatedAt": "2020-03-03T09:22:18.815Z",
+        "amount": 200,
+        "type": "PAYCONIQ",
+        "status": "CANCELLED",
+        "data": {
+            "paymentId": "0a3b7fd3cd3a45a6b35bb851",
+            "transferAmount": 0,
+            "tippingAmount": 0,
+            "amount": 200,
+            "totalAmount": 0,
+            "description": "Betaling TAPAPP: 32fb7bcb-ba1f-4eb0-9198-00832bebfd29",
+            "reference": "32fb7bcb-ba1f-4eb0-9198-00832bebfd29",
+            "createdAt": "2019-07-18T20:00:46.052Z",
+            "expireAt": "2019-07-18T20:02:46.052Z",
+            "status": "CANCELLED",
+            "debtor": {
+                "name": "Tom De Buyser"
+            },
+            "currency": "EUR"
+        },
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        },
+        "order": {
+            "id": "32fb7bcb-ba1f-4eb0-9198-00832bebfd29"
+        }
+    },
+    {
+        "id": "9bd8c7fc-bf3a-46b6-9c3f-6e4b81a48538",
+        "createdBy": "wtc1@tapapp.be",
+        "updatedBy": "wtc1@tapapp.be",
+        "createdAt": "2020-03-03T09:22:24.764Z",
+        "updatedAt": "2020-03-03T09:22:29.216Z",
+        "amount": 200,
+        "type": "PAYCONIQ",
+        "status": "CANCELLED",
+        "data": null,
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        },
+        "order": {
+            "id": "32fb7bcb-ba1f-4eb0-9198-00832bebfd29"
+        }
+    }
+]

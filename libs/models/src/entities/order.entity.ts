@@ -1,10 +1,19 @@
-import { Entity, Column, DeepPartial, ManyToOne, OneToMany } from 'typeorm';
+import {
+    Entity,
+    Column,
+    DeepPartial,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    JoinColumn,
+} from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
 
 import { AuditedEntity } from './audited.entity';
 import { Organisation } from './organisation.entity';
 import { Product } from './product.entity';
+import { Payment } from './payment.entity';
 
 @Entity()
 export class Order extends AuditedEntity {
@@ -25,6 +34,14 @@ export class Order extends AuditedEntity {
 
     @OneToMany(() => OrderItem, item => item.order)
     items: OrderItem[];
+
+    /**
+     * There can be mutiple payments linked to one order (e.g. when payconiq payment fails and succeeds the second time)
+     */
+    @OneToMany(() => Payment, payment => payment.order, {
+        nullable: true,
+    })
+    payments?: Payment[];
 
     @ManyToOne(() => Order, order => order.mergedOrders, {
         nullable: true,
