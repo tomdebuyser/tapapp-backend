@@ -15,7 +15,10 @@ export class AuthenticatedGuard implements CanActivate {
         const response = context.switchToHttp().getResponse<Response>();
         const session: UserSession = request.user;
 
-        if (!session?.isActive) {
+        if (
+            !session?.isActive ||
+            (session?.organisation && !session.organisation.isActive)
+        ) {
             await destroyExpressSession(request, response);
             // We throw an UnauthorizedException because by not doing it, a ForbiddenException is returned to the client
             throw new UnauthorizedException();

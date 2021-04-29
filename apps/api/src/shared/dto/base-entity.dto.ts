@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseEntityResponse {
     @ApiProperty({ required: true })
-    id: string;
+    readonly id: string;
 
     @ApiProperty({ required: true })
     @Type(() => String)
-    createdAt: Date;
+    readonly createdAt: Date;
 
     @ApiProperty({ required: true })
     @Type(() => String)
-    updatedAt: Date;
+    readonly updatedAt: Date;
 }

@@ -24,13 +24,20 @@ export class SessionSerializer implements NestMiddleware {
     }
 
     private async composeUserSession(userId: string): Promise<UserSession> {
-        const user = await this.userRepository.findOne(userId);
+        const user = await this.userRepository.findOne(userId, {
+            relations: ['organisation'],
+        });
         if (!user) return null;
         return {
             userId: user.id,
-            email: user.email,
+            type: user.type,
             isActive: user.isActive,
+            email: user.email,
             name: user.name,
+            organisation: {
+                id: user.organisation?.id,
+                isActive: user.organisation?.isActive,
+            },
         };
     }
 }

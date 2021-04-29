@@ -20,11 +20,12 @@ export class GetAuthenticatedUserHandler
             .createQueryBuilder('user')
             .select([
                 'user.id',
-                'user.createdAt',
-                'user.updatedAt',
                 'user.email',
                 'user.name',
+                'organisation.id',
+                'organisation.name',
             ])
+            .innerJoin('user.organisation', 'organisation')
             .where('user.id = :userId', { userId: data.userId })
             .getOne();
         if (!user) return null;

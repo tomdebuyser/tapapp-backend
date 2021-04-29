@@ -1,6 +1,9 @@
-import { BaseEntityResponse } from '../../shared/dto';
-
-export class AuthenticationUserResponse extends BaseEntityResponse {
+export class AuthenticationUserResponse {
+    readonly id: string;
     readonly email: string;
-    readonly name?: string;
+    readonly name: string;
+    readonly organisation: {
+        readonly id: string;
+        readonly name: string;
+    };
 }
