@@ -1,8 +1,8 @@
 [
     {
         "id": "e221e3c3-6a0a-4119-b8a0-99db6692cf48",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "4869a0e7-a07b-4138-bad0-a0ce69efdc7d",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "4869a0e7-a07b-4138-bad0-a0ce69efdc7d" },
         "productIds": [
             "c9c6883b-f208-4d60-8753-72d3948dae2c",
             "a2e5c4ec-1b72-4325-9b96-b185a8a6d8f1",
@@ -11,8 +11,8 @@
     },
     {
         "id": "72f3271c-c45a-45ef-a433-5a629c24da1d",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "ce6be8b3-8380-4adc-bc02-9918d35581e6",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "ce6be8b3-8380-4adc-bc02-9918d35581e6" },
         "productIds": [
             "c9c6883b-f208-4d60-8753-72d3948dae2c",
             "b94293dc-6c54-4c34-8899-098114b84da1",
@@ -33,8 +33,8 @@
     },
     {
         "id": "887db7fb-4748-4598-855c-cab55b0b0961",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "fca5a643-ae3f-4f0d-9027-238da1443561",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "fca5a643-ae3f-4f0d-9027-238da1443561" },
         "productIds": [
             "a2e5c4ec-1b72-4325-9b96-b185a8a6d8f1",
             "a2d7f6dd-bdfe-45aa-bc64-31fabf2bf0df",
@@ -53,8 +53,8 @@
     },
     {
         "id": "345b81a4-e132-45ec-b64b-2997c0376fa8",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "1e89da2e-09f7-42e4-88f8-b985087e9853",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "1e89da2e-09f7-42e4-88f8-b985087e9853" },
         "productIds": [
             "02f9bb3b-dfee-48f4-9e9c-ceb3d0195f5c",
             "541c7923-0878-40f6-a949-255af461e7e2",
@@ -63,8 +63,8 @@
     },
     {
         "id": "3b6fe699-3d12-4edf-a584-ac45136de1e5",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "ec2092b6-0783-4697-830e-aa04290c420e",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "ec2092b6-0783-4697-830e-aa04290c420e" },
         "productIds": [
             "15ffd4dd-7556-44e7-a1a9-36a6d45ad9da",
             "1bcf1888-11f5-4bb7-aa34-34e082407ff8",
@@ -79,8 +79,8 @@
     },
     {
         "id": "8fe70fca-c6a9-4430-9cc7-2e1af0614f46",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "7589e32a-50b9-4ccf-991f-cf0974e4574c",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "7589e32a-50b9-4ccf-991f-cf0974e4574c" },
         "productIds": [
             "4ac7606c-040c-48ea-8951-8b0dce125ab5",
             "fad2195b-2a76-4d06-82d9-81dc1db63180",
@@ -89,8 +89,8 @@
     },
     {
         "id": "14b92729-0ca7-40f2-8398-1aa1e443fe22",
-        "organisationId": "0c1510ab-5dca-41e2-8912-ee165140ae90",
-        "categoryId": "372b0cfa-9229-48fd-a824-2476efdc7079",
+        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
+        "category": { "id": "372b0cfa-9229-48fd-a824-2476efdc7079" },
         "productIds": [
             "5e444f74-af61-469b-95b3-cbc7fd640a42",
             "88284209-c1be-4a3d-9c7f-3c450976fb7a",

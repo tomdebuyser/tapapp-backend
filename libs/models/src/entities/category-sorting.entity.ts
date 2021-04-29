@@ -1,17 +1,24 @@
-import { Entity, Column, DeepPartial, PrimaryColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    DeepPartial,
+    PrimaryColumn,
+    ManyToOne,
+    JoinColumn,
+} from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { v4 as uuid } from 'uuid';
+
+import { Organisation } from './organisation.entity';
 
 @Entity()
 export class CategorySorting {
     @PrimaryColumn({ default: () => 'uuid_generate_v4()', type: 'uuid' })
     id: string;
 
-    /**
-     * We do not model this as a relation because we have no benefit of selecting other properties than the id when selecting this entity.
-     */
-    @Column()
-    organisationId: string;
+    @ManyToOne(() => Organisation)
+    @JoinColumn()
+    organisation: Organisation;
 
     /**
      * This array represents an ordered list of ids of the categories within an organisation.
