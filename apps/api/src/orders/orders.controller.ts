@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Put,
     UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -14,11 +15,17 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserSession } from '../shared/constants';
 import { GetUserSession } from '../shared/decorators';
 import { AuthenticatedGuard } from '../shared/guards';
-import { CreateOrderHandler } from './commands';
-import { DeleteOrderHandler } from './commands/delete-order.command';
-import { CreateOrderRequest } from './dto';
-import { OrderResponse } from './dto/get-order.dto';
-import { OrderIdParam } from './dto/order-id.dto';
+import {
+    CreateOrderHandler,
+    DeleteOrderHandler,
+    UpdateOrderHandler,
+} from './commands';
+import {
+    CreateOrderRequest,
+    UpdateOrderRequest,
+    OrderResponse,
+    OrderIdParam,
+} from './dto';
 import { GetOrderHandler } from './queries';
 
 @ApiBearerAuth()
@@ -30,18 +37,8 @@ export class OrdersController {
         private readonly getOrderHandler: GetOrderHandler,
         private readonly createOrderHandler: CreateOrderHandler,
         private readonly deleteOrderHandler: DeleteOrderHandler,
+        private readonly updateOrderHandler: UpdateOrderHandler,
     ) {}
-
-    @Get(':orderId')
-    async getOrder(
-        @GetUserSession() userSession: UserSession,
-        @Param() params: OrderIdParam,
-    ): Promise<OrderResponse> {
-        return this.getOrderHandler.execute({
-            userSession,
-            data: params,
-        });
-    }
 
     @Post()
     async createOrder(
@@ -58,6 +55,17 @@ export class OrdersController {
         });
     }
 
+    @Get(':orderId')
+    async getOrder(
+        @GetUserSession() userSession: UserSession,
+        @Param() params: OrderIdParam,
+    ): Promise<OrderResponse> {
+        return this.getOrderHandler.execute({
+            userSession,
+            data: params,
+        });
+    }
+
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':orderId')
     deleteOrder(
@@ -65,5 +73,22 @@ export class OrdersController {
         @Param() params: OrderIdParam,
     ): Promise<void> {
         return this.deleteOrderHandler.execute({ userSession, data: params });
+    }
+
+    @Put(':orderId')
+    async updateOrder(
+        @GetUserSession() userSession: UserSession,
+        @Param() params: OrderIdParam,
+        @Body() body: UpdateOrderRequest,
+    ): Promise<OrderResponse> {
+        const { id } = await this.updateOrderHandler.execute({
+            userSession,
+            orderId: params.orderId,
+            data: body,
+        });
+        return this.getOrderHandler.execute({
+            userSession,
+            data: { orderId: id },
+        });
     }
 }

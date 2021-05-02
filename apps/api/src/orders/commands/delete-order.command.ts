@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import {
-    OrderRepository,
-    Order,
-    OrderItem,
-    OrderItemRepository,
-} from '@libs/models';
+import { OrderRepository, OrderItemRepository } from '@libs/models';
 import { LoggerService } from '@libs/logger';
 import { IHandler } from '@libs/common';
 import { UserSession } from '../../shared/constants';
-import { OrdersService } from '../orders.service';
-import { OrderIdParam } from '../dto/order-id.dto';
+import { OrderIdParam } from '../dto';
 import { OrderAlreadyFinishedException } from '../orders.errors';
 
 const context = 'DeleteOrderHandler';

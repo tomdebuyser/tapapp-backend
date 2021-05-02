@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 
 import { SharedModule } from '../shared/shared.module';
-import { CreateOrderHandler } from './commands';
-import { DeleteOrderHandler } from './commands/delete-order.command';
+import {
+    CreateOrderHandler,
+    UpdateOrderHandler,
+    DeleteOrderHandler,
+} from './commands';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { GetOrderHandler } from './queries';
@@ -15,6 +18,7 @@ import { GetOrderHandler } from './queries';
         GetOrderHandler,
         CreateOrderHandler,
         DeleteOrderHandler,
+        UpdateOrderHandler,
     ],
 })
 export class OrdersModule {}

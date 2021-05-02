@@ -7,7 +7,6 @@ import {
     OrderItemProductNotActiveException,
     OrderItemProductNotFoundException,
 } from './orders.errors';
-import { OrderItemRequest } from './dto';
 
 const context = 'OrdersService';
 
@@ -51,10 +50,10 @@ export class OrdersService {
 
     /**
      * This function calculates the total price of a set of order items.
-     * TODO: Use Dinero
+     * TODO: Use Dinero?
      */
     calculateTotalPrice(
-        items: Omit<OrderItemRequest, 'id'>[],
+        items: { amount: number; productId: string }[],
         products: Product[],
     ): number {
         return items.reduce(
