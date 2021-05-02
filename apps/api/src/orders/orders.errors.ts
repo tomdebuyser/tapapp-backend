@@ -1,4 +1,8 @@
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+    NotFoundException,
+    BadRequestException,
+    MethodNotAllowedException,
+} from '@nestjs/common';
 
 export class OrderItemProductNotFoundException extends NotFoundException {
     constructor() {
@@ -23,6 +27,15 @@ export class OrderClientNameAlreadyInUseException extends BadRequestException {
         super(
             'An unfinshed order with this client name already exists',
             'ORDER_CLIENT_NAME_ALREADY_IN_USE',
+        );
+    }
+}
+
+export class OrderAlreadyFinishedException extends MethodNotAllowedException {
+    constructor() {
+        super(
+            'The requested operation is not allowed as the order is already finished',
+            'ORDER_ALREADY_FINISHED',
         );
     }
 }
