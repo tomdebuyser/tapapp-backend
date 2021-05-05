@@ -1,61 +1,72 @@
 {
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/api/src",
-    "compilerOptions": {
-        "plugins": ["@nestjs/swagger/plugin"],
-        "webpack": true,
-        "tsConfigPath": "apps/api/tsconfig.app.json",
-        "assets": [
-            "**/.env.*"
-        ]
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api/src",
+  "compilerOptions": {
+    "plugins": [
+      "@nestjs/swagger/plugin"
+    ],
+    "webpack": true,
+    "tsConfigPath": "apps/api/tsconfig.app.json",
+    "assets": [
+      "**/.env.*"
+    ]
+  },
+  "monorepo": true,
+  "root": "apps/api",
+  "projects": {
+    "api": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.app.json"
+      }
     },
-    "monorepo": true,
-    "root": "apps/api",
-    "projects": {
-        "api": {
-            "type": "application",
-            "root": "apps/api",
-            "entryFile": "main",
-            "sourceRoot": "apps/api/src",
-            "compilerOptions": {
-                "tsConfigPath": "apps/api/tsconfig.app.json"
-            }
-        },
-        "logger": {
-            "type": "library",
-            "root": "libs/logger",
-            "entryFile": "index",
-            "sourceRoot": "libs/logger/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/logger/tsconfig.lib.json"
-            }
-        },
-        "models": {
-            "type": "library",
-            "root": "libs/models",
-            "entryFile": "index",
-            "sourceRoot": "libs/models/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/models/tsconfig.lib.json"
-            }
-        },
-        "common": {
-            "type": "library",
-            "root": "libs/common",
-            "entryFile": "index",
-            "sourceRoot": "libs/common/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/common/tsconfig.lib.json"
-            }
-        },
-        "testing": {
-            "type": "library",
-            "root": "libs/testing",
-            "entryFile": "index",
-            "sourceRoot": "libs/testing/src",
-            "compilerOptions": {
-                "tsConfigPath": "libs/testing/tsconfig.lib.json"
-            }
-        }
+    "logger": {
+      "type": "library",
+      "root": "libs/logger",
+      "entryFile": "index",
+      "sourceRoot": "libs/logger/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/logger/tsconfig.lib.json"
+      }
+    },
+    "models": {
+      "type": "library",
+      "root": "libs/models",
+      "entryFile": "index",
+      "sourceRoot": "libs/models/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/models/tsconfig.lib.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "testing": {
+      "type": "library",
+      "root": "libs/testing",
+      "entryFile": "index",
+      "sourceRoot": "libs/testing/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/testing/tsconfig.lib.json"
+      }
+    },
+    "payconiq": {
+      "type": "library",
+      "root": "libs/payconiq",
+      "entryFile": "index",
+      "sourceRoot": "libs/payconiq/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/payconiq/tsconfig.lib.json"
+      }
     }
+  }
 }

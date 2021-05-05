@@ -1,6 +1,7 @@
 import { config } from 'dotenv-safe';
 import { join } from 'path';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { PayconiqConfig } from 'libs/payconiq/src';
 
 import { LoggerConfig, LogLevel } from '@libs/logger';
 import { Environment } from '@libs/common';
@@ -38,6 +39,7 @@ type SessionOptions = {
 };
 
 type ApiOptions = {
+    baseUrl: string;
     rateLimit: number;
     port: string;
     allowedOrigins: string[];
@@ -71,6 +73,7 @@ class Config {
     static get api(): ApiOptions {
         const DEFAULT_PORT = '3001';
         return {
+            baseUrl: process.env.BASE_URL,
             rateLimit: parseInt(process.env.REQUESTS_PER_MINUTE, 10),
             port: process.env.PORT || DEFAULT_PORT,
             allowedOrigins: process.env.ALLOWED_ORIGINS.split(',').filter(
@@ -135,6 +138,15 @@ class Config {
         return {
             workers: parseInt(process.env.WEB_CONCURRENCY, 10),
             memory: parseInt(process.env.WEB_MEMORY, 10),
+        };
+    }
+
+    static get payconiq(): PayconiqConfig {
+        return {
+            environment,
+            baseUrl: process.env.BASE_URL,
+            apiKey: process.env.PAYCONIQ_API_KEY,
+            apiUrl: process.env.PAYCONIQ_API_URL,
         };
     }
 

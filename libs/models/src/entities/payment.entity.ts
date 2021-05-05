@@ -43,8 +43,11 @@ export class Payment extends AuditedEntity {
     })
     status: PaymentStatus;
 
+    /**
+     * This column contains extra information coming from the external payment provider (e.g. payconiq)
+     */
     @Column({ nullable: true, type: 'jsonb' })
-    data?: unknown; // TODO: add type
+    data?: unknown;
 
     @ManyToOne(() => Organisation)
     organisation: Organisation;
