@@ -1,20 +1,9 @@
 [
     {
-        "id": "4869a0e7-a07b-4138-bad0-a0ce69efdc7d",
-        "name": "Favorieten",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
-        "createdAt": "2020-03-03T09:25:47.881Z",
-        "updatedAt": "2020-03-03T09:25:51.215Z",
-        "organisation": {
-            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
-        }
-    },
-    {
         "id": "ce6be8b3-8380-4adc-bc02-9918d35581e6",
         "name": "Frisdrank",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:25:54.952Z",
         "updatedAt": "2020-03-03T09:25:58.495Z",
         "organisation": {
@@ -24,8 +13,8 @@
     {
         "id": "fca5a643-ae3f-4f0d-9027-238da1443561",
         "name": "Bier",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:26:02.383Z",
         "updatedAt": "2020-03-03T09:26:05.957Z",
         "organisation": {
@@ -35,8 +24,8 @@
     {
         "id": "1e89da2e-09f7-42e4-88f8-b985087e9853",
         "name": "Warme drank",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:26:09.910Z",
         "updatedAt": "2020-03-03T09:26:12.894Z",
         "organisation": {
@@ -46,8 +35,8 @@
     {
         "id": "ec2092b6-0783-4697-830e-aa04290c420e",
         "name": "Alcoholische drank",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:26:17.248Z",
         "updatedAt": "2020-03-03T09:26:20.757Z",
         "organisation": {
@@ -57,8 +46,8 @@
     {
         "id": "7589e32a-50b9-4ccf-991f-cf0974e4574c",
         "name": "Cocktails",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:26:24.657Z",
         "updatedAt": "2020-03-03T09:26:28.004Z",
         "organisation": {
@@ -68,8 +57,8 @@
     {
         "id": "372b0cfa-9229-48fd-a824-2476efdc7079",
         "name": "Snack",
-        "createdBy": "user1@tapapp.be",
-        "updatedBy": "user1@tapapp.be",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-03T09:26:31.947Z",
         "updatedAt": "2020-03-03T09:26:35.081Z",
         "organisation": {

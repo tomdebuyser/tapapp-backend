@@ -1,15 +1,5 @@
 [
     {
-        "id": "e221e3c3-6a0a-4119-b8a0-99db6692cf48",
-        "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
-        "category": { "id": "4869a0e7-a07b-4138-bad0-a0ce69efdc7d" },
-        "productIds": [
-            "c9c6883b-f208-4d60-8753-72d3948dae2c",
-            "a2e5c4ec-1b72-4325-9b96-b185a8a6d8f1",
-            "15ffd4dd-7556-44e7-a1a9-36a6d45ad9da"
-        ]
-    },
-    {
         "id": "72f3271c-c45a-45ef-a433-5a629c24da1d",
         "organisation": { "id": "0c1510ab-5dca-41e2-8912-ee165140ae90" },
         "category": { "id": "ce6be8b3-8380-4adc-bc02-9918d35581e6" },
@@ -21,6 +11,7 @@
             "cfa0e195-dc07-4997-b9f3-068a34c5a820",
             "bf7a8741-3b22-4c91-aa74-72582e2aef0a",
             "3243562d-bdad-49cc-8c05-6f1091d498b9",
+            "adb6f3de-89f0-45ab-a142-fce66f8ced67",
             "2441cfe5-109a-4224-84f5-df103cb10924",
             "4b31e3ad-e15b-49d8-a84b-886551cdd611",
             "bf51e827-c71d-402d-ac0c-4821de6ae41b",
@@ -37,7 +28,7 @@
         "category": { "id": "fca5a643-ae3f-4f0d-9027-238da1443561" },
         "productIds": [
             "a2e5c4ec-1b72-4325-9b96-b185a8a6d8f1",
-            "a2d7f6dd-bdfe-45aa-bc64-31fabf2bf0df",
+            "eafe7af6-9b75-4747-b5ff-1ca0600958f8",
             "d41e4681-4547-4475-9c89-2791c511eb5d",
             "bc243953-4769-47e5-85bb-0935deb7e5c6",
             "136ea994-df76-4f0b-8266-7b6028a19f4c",
@@ -47,8 +38,7 @@
             "f48f4d36-520d-4020-8e6e-04a74e2b7e8e",
             "8fe85cc9-1425-4058-b448-d7017d6bd503",
             "3d8f311d-b9ef-4fcf-9c73-85e4d1d304e8",
-            "6377e981-23c7-4e80-ac86-e109a1019cf6",
-            "1abd8e1d-a3d3-44dd-b7ed-b2a559f2c77e"
+            "6377e981-23c7-4e80-ac86-e109a1019cf6"
         ]
     },
     {
@@ -57,8 +47,7 @@
         "category": { "id": "1e89da2e-09f7-42e4-88f8-b985087e9853" },
         "productIds": [
             "02f9bb3b-dfee-48f4-9e9c-ceb3d0195f5c",
-            "541c7923-0878-40f6-a949-255af461e7e2",
-            "80e91dc3-6ef6-40fc-97e8-0493e046a191"
+            "541c7923-0878-40f6-a949-255af461e7e2"
         ]
     },
     {
@@ -73,8 +62,7 @@
             "e9771af5-cb88-4fa0-94bd-e3752d48f234",
             "2ba990b7-6e9d-4c80-8324-cb70d52d3195",
             "94805013-3078-4c92-a28f-5d5be4b3bb82",
-            "73bec5c2-ca29-4d8d-a73a-40158454a38a",
-            "c27ec291-5634-4ced-ba5d-66ab10a19d76"
+            "73bec5c2-ca29-4d8d-a73a-40158454a38a"
         ]
     },
     {
