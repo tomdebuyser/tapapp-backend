@@ -10,7 +10,14 @@ import { PaymentsModule } from './payments/payments.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
-    imports: [LoggerModule.register(Config.logging), AuthenticationModule, CategoriesModule, OrdersModule, PaymentsModule, WebhooksModule],
+    imports: [
+        LoggerModule.register(Config.logging),
+        AuthenticationModule,
+        CategoriesModule,
+        OrdersModule,
+        PaymentsModule,
+        WebhooksModule,
+    ],
     providers: [
         {
             provide: APP_INTERCEPTOR,
