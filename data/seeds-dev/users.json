@@ -1,35 +1,5 @@
 [
     {
-        "id": "49affd08-f461-4e80-899f-7612e971ff12",
-        "createdAt": "2020-03-03T09:30:24.076Z",
-        "updatedAt": "2020-03-03T09:30:27.518Z",
-        "createdBy": "tom.debuyser@gmail.com",
-        "updatedBy": "tom.debuyser@gmail.com",
-        "email": "wltc1@tapapp.be",
-        "type": "ADMIN",
-        "isActive": true,
-        "name": "User 1",
-        "password": "$2b$10$suEu0drRh6I266FUnyWwL.G2MM0P8JdRnAtLSQ0MyfsbeFkxnQOMG",
-        "organisation": {
-            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
-        }
-    },
-    {
-        "id": "45c2c554-b06a-4209-aba8-b097cb5f8566",
-        "createdAt": "2020-03-03T09:30:32.473Z",
-        "updatedAt": "2020-03-03T09:30:36.284Z",
-        "createdBy": "tom.debuyser@gmail.com",
-        "updatedBy": "tom.debuyser@gmail.com",
-        "email": "wltc2@tapapp.be",
-        "type": "ADMIN",
-        "isActive": true,
-        "name": "User 2",
-        "password": "$2b$10$suEu0drRh6I266FUnyWwL.G2MM0P8JdRnAtLSQ0MyfsbeFkxnQOMG",
-        "organisation": {
-            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
-        }
-    },
-    {
         "id": "db5e788c-2642-4c40-a63a-f13675048ddc",
         "createdAt": "2020-03-03T09:30:41.190Z",
         "updatedAt": "2020-03-03T09:30:44.265Z",
