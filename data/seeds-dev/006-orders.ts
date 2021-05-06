@@ -9,10 +9,10 @@ const data = JSON.parse(readFileSync(path).toString());
 
 export class OrdersSeeds1578312827195 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
-        await loadFixtures(queryRunner.manager, data, entityName);
+        // await loadFixtures(queryRunner.manager, data, entityName);
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await deleteFixtures(queryRunner.manager, data, entityName);
+        // await deleteFixtures(queryRunner.manager, data, entityName);
     }
 }
