@@ -31,6 +31,7 @@ export class Silvernext1590332049092 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`DROP EXTENSION "uuid-ossp";`);
 
+        await queryRunner.query(`DROP TYPE "user_type_enum"`);
         await queryRunner.query(`DROP TABLE "user"`, undefined);
     }
 }
