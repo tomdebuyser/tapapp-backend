@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
 export class OrderIdParam {
-    @IsUUID('4')
+    @IsUUID()
     readonly orderId: string;
 }

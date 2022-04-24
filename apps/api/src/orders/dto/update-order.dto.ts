@@ -14,7 +14,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateOrderItemRequest {
     @IsOptional()
-    @IsUUID('4')
+    @IsUUID()
     readonly id: string;
 
     @IsInt()
@@ -23,7 +23,7 @@ export class UpdateOrderItemRequest {
     @Type(() => Number)
     readonly amount: number;
 
-    @IsUUID('4')
+    @IsUUID()
     @IsNotEmpty()
     readonly productId: string;
 }

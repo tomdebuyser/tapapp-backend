@@ -18,7 +18,7 @@ export class CreateOrderItemRequest {
     @Type(() => Number)
     readonly amount: number;
 
-    @IsUUID('4')
+    @IsUUID()
     @IsNotEmpty()
     readonly productId: string;
 }

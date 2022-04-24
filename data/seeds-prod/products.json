@@ -364,6 +364,32 @@
         }
     },
     {
+        "id": "cdd5d850-37bc-45ae-8ec9-62541b52a9f7",
+        "name": "St Hubertus Blond",
+        "price": 280,
+        "logo": "hubertus.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:18:06.223Z",
+        "updatedAt": "2020-03-06T09:18:09.717Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "05f802dc-0701-4b88-9ef2-0153a037b4c5",
+        "name": "St Hubertus Amber",
+        "price": 280,
+        "logo": "hubertus.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:18:06.223Z",
+        "updatedAt": "2020-03-06T09:18:09.717Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
         "id": "02f9bb3b-dfee-48f4-9e9c-ceb3d0195f5c",
         "name": "Koffie",
         "price": 200,
@@ -569,13 +595,27 @@
         "updatedAt": "2020-03-06T09:20:37.384Z",
         "organisation": {
             "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
-        }
+        },
+        "isActive": false
     },
     {
         "id": "4cfb1b63-61c3-40d9-930f-9a5b7e5ef9a3",
         "name": "Suikerwafel",
         "price": 150,
         "logo": "suikerwafel.png",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "87a04990-2cac-4fde-885e-6f767967030d",
+        "name": "Tennisballen",
+        "price": 800,
+        "logo": "tennisballen.jpg",
         "createdBy": "wltc-admin@tapapp.be",
         "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-06T09:20:41.785Z",

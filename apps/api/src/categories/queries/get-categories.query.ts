@@ -41,6 +41,7 @@ export class GetCategoriesHandler implements IHandler<GetCategoriesQuery> {
             .where('category.organisationId = :organisationId', {
                 organisationId: organisation.id,
             })
+            .andWhere('product.isActive = :isActive', { isActive: true })
             .getMany();
 
         // Get the sorting of the categories

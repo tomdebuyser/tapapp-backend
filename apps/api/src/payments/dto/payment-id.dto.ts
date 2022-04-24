@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class PaymentIdParam {
-    @IsUUID('4')
+    @IsUUID()
     @IsNotEmpty()
     readonly paymentId: string;
 }
