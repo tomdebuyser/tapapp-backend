@@ -390,6 +390,32 @@
         }
     },
     {
+        "id": "8506428e-66cb-41e9-9879-8f2ab44521d5",
+        "name": "Chouffe Blond",
+        "price": 300,
+        "logo": "chouffe.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:18:06.223Z",
+        "updatedAt": "2020-03-06T09:18:09.717Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "52e24242-d0a3-4ca6-8ff0-1847195b947d",
+        "name": "Chouffe Cherry",
+        "price": 300,
+        "logo": "chouffe.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:18:06.223Z",
+        "updatedAt": "2020-03-06T09:18:09.717Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
         "id": "02f9bb3b-dfee-48f4-9e9c-ceb3d0195f5c",
         "name": "Koffie",
         "price": 200,
@@ -603,6 +629,45 @@
         "name": "Suikerwafel",
         "price": 150,
         "logo": "suikerwafel.png",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "3e913dc5-841a-4a86-8adb-1ca1edfb8f50",
+        "name": "Pastabeker",
+        "price": 600,
+        "logo": "pastabeker.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "2d0b732b-92ed-4953-b279-ca4f3e8ba7aa",
+        "name": "Frietjes",
+        "price": 300,
+        "logo": "frietjes.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "330cff93-34ff-45ed-8557-7e41c4df504c",
+        "name": "Curryworst",
+        "price": 200,
+        "logo": "curryworst.jpg",
         "createdBy": "wltc-admin@tapapp.be",
         "updatedBy": "wltc-admin@tapapp.be",
         "createdAt": "2020-03-06T09:20:41.785Z",
