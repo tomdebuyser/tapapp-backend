@@ -66,6 +66,17 @@
         }
     },
     {
+        "id": "91ae0204-0db2-4fcb-8f9a-33a6f1ba35fe",
+        "name": "Dagschotels",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-03T09:26:31.947Z",
+        "updatedAt": "2020-03-03T09:26:35.081Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
         "id": "16654e30-9143-4f1e-93a4-bc28baf06ded",
         "name": "Tennis",
         "createdBy": "wltc-admin@tapapp.be",

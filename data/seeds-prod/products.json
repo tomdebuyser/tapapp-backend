@@ -677,6 +677,214 @@
         }
     },
     {
+        "id": "cb274909-0c9c-4d11-88b7-04038c325a3d",
+        "name": "Stoofvlees",
+        "price": 1600,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "5d17ee9d-8e3f-4930-a205-dc0a7c94e2b4",
+        "name": "Stoofvlees (kids)",
+        "price": 800,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "0fe866ad-081b-4297-bce4-97d5e8d15813",
+        "name": "Ribbetjes",
+        "price": 1800,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "219d5e6a-edd5-4d84-9219-d66968655307",
+        "name": "Ribbetjes (kids)",
+        "price": 900,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "e490765f-d363-412c-b3e3-068190692713",
+        "name": "Tomaat garnaal",
+        "price": 2000,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "7ec8d1ed-5a3e-4238-8ec8-15349c98a4ed",
+        "name": "Tomaat garnaal (kids)",
+        "price": 1000,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "8d4d7216-4e21-4037-a08d-eb7eccd45eeb",
+        "name": "Kipfilet",
+        "price": 1600,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "9a43e8e2-b535-4f79-8de4-693e3c4fac9a",
+        "name": "Kipfilet (kids)",
+        "price": 800,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "b291dd71-bb10-4a7c-9e7a-afed9d2549df",
+        "name": "Vispan",
+        "price": 2000,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "732eb500-ea31-44cd-b0df-99b29252ef40",
+        "name": "Vispan (kids)",
+        "price": 1000,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "87b9eea7-d8c1-43c9-93b3-756959cc9796",
+        "name": "Vol au vent",
+        "price": 1600,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "402de145-ab7a-4033-8c0d-34a0279162d3",
+        "name": "Vol au vent (kids)",
+        "price": 800,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "22d4bd41-e911-49d0-8ca5-911865e66a37",
+        "name": "Pad Thai",
+        "price": 1600,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "682d9c98-5422-4d95-bdbb-70298d583537",
+        "name": "Pad Thai (kids)",
+        "price": 800,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "ec043e8d-7607-4a85-9f67-469ce7fce71a",
+        "name": "Veggie",
+        "price": 1200,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
+        "id": "689cca78-76ff-4fd3-a4ed-dc1de03b2dbc",
+        "name": "Veggie (kids)",
+        "price": 600,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
         "id": "87a04990-2cac-4fde-885e-6f767967030d",
         "name": "Tennisballen",
         "price": 800,
