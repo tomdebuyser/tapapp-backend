@@ -677,6 +677,19 @@
         }
     },
     {
+        "id": "98c8b10d-2f8f-4335-8a22-032661c0f9de",
+        "name": "Magnum",
+        "price": 200,
+        "logo": "none.jpg",
+        "createdBy": "wltc-admin@tapapp.be",
+        "updatedBy": "wltc-admin@tapapp.be",
+        "createdAt": "2020-03-06T09:20:41.785Z",
+        "updatedAt": "2020-03-06T09:20:45.146Z",
+        "organisation": {
+            "id": "0c1510ab-5dca-41e2-8912-ee165140ae90"
+        }
+    },
+    {
         "id": "cb274909-0c9c-4d11-88b7-04038c325a3d",
         "name": "Stoofvlees",
         "price": 1600,
